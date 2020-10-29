@@ -13,7 +13,6 @@ var _ = require('lodash');
 class About extends React.Component {
     constructor(props){
         super(props);
-        this.typewriting = this.typewriting.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
     componentWillMount() {
