@@ -1,0 +1,40 @@
+{
+    "name": "ERP_LUKUS",
+    "version": "1.0.0",
+    "main": "server.js",
+    "scripts": {
+        "start": "npm install && node server.js",
+        "heroku-postbuild": "cd client && npm install && npm run build"
+    },
+    "author": "boutaleb_zakariae",
+    "license": "MIT",
+    "dependencies": {
+        "body-parser": "*",
+        "cluster": "*",
+        "cors": "*",
+        "css-doodle": "*",
+        "dotenv": "*",
+        "errorhandler": "*",
+        "express": "*",
+        "express-session": "*",
+        "fs": "*",
+        "googleapis": "*",
+        "http": "*",
+        "https": "*",
+        "jwt-simple": "*",
+        "mongoose": "*",
+        "morgan": "*",
+        "nodemailer": "*",
+        "on-finished": "*",
+        "openssl": "*",
+        "password-hash": "*",
+        "socket.io": "*"
+    },
+    "devDependencies": {
+        "concurrently": "*",
+        "nodemon": "*"
+    },
+    "engines": {
+        "node": "15.x"
+    }
+}
