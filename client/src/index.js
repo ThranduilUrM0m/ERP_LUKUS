@@ -10,10 +10,12 @@ import {
 } from 'react-router-dom';
 import App from './components/App/App';
 import NotFound from './components/App/NotFound';
+
 import Home from './components/Home/Home';
-import About from './components/About/About';
-import ContactMe from './components/ContactMe/ContactMe';
+import Vehicules from './components/Vehicules/Vehicules';
+import Contact from './components/Contact/Contact';
 import Reservation from './components/Reservation/Reservation';
+
 import Login from "./components/Login/Login.js";
 import Signup from "./components/Signup/Signup.js";
 import Dashboard from './components/Dashboard/Dashboard';
@@ -30,8 +32,8 @@ ReactDOM.render(
             <App>
                 <Switch>
                     <Route exact path="/" component={Home} />
-                    <Route exact path='/about' component={About} />
-                    <Route exact path='/contact' component={ContactMe} />
+                    <Route exact path='/vehicules' component={Vehicules} />
+                    <Route exact path='/contact' component={Contact} />
                     <Route exact path='/reservation' component={Reservation} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />

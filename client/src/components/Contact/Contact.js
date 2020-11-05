@@ -6,7 +6,7 @@ import * as $ from "jquery";
 import jQuery from 'jquery';
 import 'bootstrap';
 
-class ContactMe extends React.Component {
+class Contact extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
@@ -63,4 +63,4 @@ class ContactMe extends React.Component {
     }
 }
   
-export default ContactMe
+export default Contact

@@ -10,7 +10,7 @@ import 'bootstrap';
 
 var _ = require('lodash');
 
-class About extends React.Component {
+class Vehicules extends React.Component {
     constructor(props){
         super(props);
         this.handleClick = this.handleClick.bind(this);
@@ -30,7 +30,7 @@ class About extends React.Component {
         return(
             <FullPage scrollMode={'normal'}>
 				<Slide>
-					<section className="first_section_about">
+					<section className="first_section_Vehicules">
                         <div id="social_media">
                             <div className="icons_gatherer">
                                 <a href="#" className="icon-button dribbble"><i className="fab fa-dribbble"></i><span></span></a>
@@ -44,7 +44,7 @@ class About extends React.Component {
                             </div>
                         </div>
                         <div className="wrapper_full">
-                            
+                            FUCK
                         </div>
                     </section>
 				</Slide>
@@ -64,4 +64,4 @@ const mapDispatchToProps = dispatch => ({
     
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(About);
+export default connect(mapStateToProps, mapDispatchToProps)(Vehicules);
