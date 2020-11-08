@@ -1287,6 +1287,7 @@ html {
                 transform: translate(0, -50%);
                 background: url('minibus1.jpg');
                 background-size: cover;
+                background-position: center;
                 outline: 0.5vh solid rgba($color: $black, $alpha: .8);
                 outline-offset: 2.5vh;
             }
@@ -1418,6 +1419,75 @@ html {
             }
         }
         
+        .first_section_vehicules {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0 auto;
+            overflow: hidden;
+
+            .wrapper_full {
+                overflow: hidden;
+                position: relative;
+                height: 100%;
+                width: 100%;
+                padding: 10vh 10vh 2vh 10vh;
+
+                display: grid;
+                grid-template-rows: 1fr auto auto 1fr;
+
+                
+            }
+        }
+
+        .second_section_vehicules {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0 auto;
+            overflow: hidden;
+
+            .wrapper_full {
+                overflow: hidden;
+                position: relative;
+                height: 100%;
+                width: 100%;
+                padding: 10vh 10vh 2vh 10vh;
+
+                h1 {
+                    font-size: 2.5vh;
+                    line-height: 2.5vh;
+                    font-weight: bold;
+                    width: fit-content;
+                    color: rgba($color: $black, $alpha: .8);
+                    padding-bottom: 2vh;
+                    padding-top: 2vh;
+                    margin: 0 auto;
+                    border-bottom: .5vh solid rgba($color: $main-color, $alpha: .8);
+                }
+
+                & > div {
+                    padding: 2.5vh 0;
+                    margin: 0 auto;
+                    width: 90%;
+
+                    &:first-of-type {
+                        width: 80%;
+
+                        span {
+                            p {
+                                font-size: 2.25vh;
+                                line-height: 2.25vh;
+                                text-align: center;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         .first_section_dashboard {
             position: relative;

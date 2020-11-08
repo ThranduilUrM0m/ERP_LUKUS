@@ -16,12 +16,18 @@ var _ = require('lodash');
 class Home extends React.Component {
     constructor(props) {
         super(props);
+        this.handleClick = this.handleClick.bind(this);
     }
     componentWillMount() {
         // axios operations
     }
     componentDidMount() {
         
+    }
+    handleClick(href) {
+        $('html,body').animate({scrollTop: $('#'+href).offset().top}, 200, () => {
+            $('#mail_content').focus();
+        });
     }
     render() {
         return (

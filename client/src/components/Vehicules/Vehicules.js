@@ -13,38 +13,34 @@ var _ = require('lodash');
 class Vehicules extends React.Component {
     constructor(props){
         super(props);
-        this.handleClick = this.handleClick.bind(this);
     }
     componentWillMount() {
         // axios operations
     }
     componentDidMount() {
-        $('.fixedHeaderContainer').addClass('dark_mode');
-    }
-    handleClick(href) {
-        $('html,body').animate({scrollTop: $('#'+href).offset().top}, 200, function() {
-            $('#mail_content').focus();
-        });
+        
     }
     render() {
         return(
             <FullPage scrollMode={'normal'}>
 				<Slide>
-					<section className="first_section_Vehicules">
-                        <div id="social_media">
-                            <div className="icons_gatherer">
-                                <a href="#" className="icon-button dribbble"><i className="fab fa-dribbble"></i><span></span></a>
-                                <a href="#" className="icon-button behance"><i className="fab fa-behance"></i><span></span></a>
-                                <a href="#" className="icon-button linkedin"><i className="fab fa-linkedin-in"></i><span></span></a>
-                                <a href="#" className="icon-button instagram"><i className="fab fa-instagram"></i><span></span></a>
-                                <a href="#" className="icon-button facebook"><i className="icon-facebook"></i><span></span></a>
-                                <a href="# " className="icon-button scroll">
-                                    
-                                </a>
-                            </div>
-                        </div>
+					<section className="first_section_vehicules">
                         <div className="wrapper_full">
-                            FUCK
+                            {/* Picture of the fleet */}
+                        </div>
+                    </section>
+				</Slide>
+                <Slide>
+					<section className="second_section_vehicules">
+                        <div className="wrapper_full">
+                            <h1>Des vehicules adaptés aux toutes sortes de besoins pour vous.</h1>
+                            <div>
+                                <span>
+                                    <p>Notre flotte respecte dans tous les cas la réglementation.<br></br>La variété de notre gamme de véhicules assure une réponse rapide face à vos demandes quoique imprévue d´un service extraordinaire,<br></br>Le tout avec la qualité requise et dans un délai minimum.</p>
+                                </span>
+                            </div>
+                        
+                            {/* Slider of all the vehicules categories */}
                         </div>
                     </section>
 				</Slide>
