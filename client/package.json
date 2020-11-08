@@ -45,7 +45,6 @@
     "react": "*",
     "react-bootstrap": "*",
     "react-dom": "*",
-    "react-facebook-login": "*",
     "react-full-page": "*",
     "react-ga": "*",
     "react-live-clock": "*",
