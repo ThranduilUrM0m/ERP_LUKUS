@@ -12,7 +12,7 @@ class Contact extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
     componentDidMount() {
-        $('.fixedHeaderContainer').addClass('dark_mode');
+        $('header').addClass('dark_mode');
     }
     handleClick(href) {
         $('html,body').animate({scrollTop: $('#'+href).offset().top}, 200, function() {
@@ -25,32 +25,20 @@ class Contact extends React.Component {
 				<Slide>
 					<section className="first_section_contact">
                         <div className="wrapper_full">
-							<div id="social_media">
-                                <div className="icons_gatherer">
-                                    <a href="#" className="icon-button dribbble"><i className="fab fa-dribbble"></i><span></span></a>
-                                    <a href="#" className="icon-button behance"><i className="fab fa-behance"></i><span></span></a>
-                                    <a href="#" className="icon-button linkedin"><i className="fab fa-linkedin-in"></i><span></span></a>
-                                    <a href="#" className="icon-button instagram"><i className="fab fa-instagram"></i><span></span></a>
-                                    <a href="#" className="icon-button facebook"><i className="icon-facebook"></i><span></span></a>
-                                    <a href="# " className="icon-button scroll">
-                                        
-                                    </a>
-                                </div>
-                            </div>
                             <div className="text">
+                                {/* I Dunno what to put here dude */}
                                 <div className="email_me">
-                                    <h6>For Inquiries</h6>
+                                    <h6>Pour nous contactez !</h6>
                                     <button id="reach_out_button" onClick={() => this.handleClick('footer_to')} type="button">
                                         <span>
                                             <span>
-                                                <span data-attr-span="Reach Out.">
-                                                    Reach Out.
+                                                <span data-attr-span="Contactez Nous.">
+                                                    Contactez Nous.
                                                 </span>
                                             </span>
                                         </span>
                                     </button>
                                 </div>
-                                <h1 className="talk_to_me">Talk To Us Now.</h1>
                             </div>
                         </div>
                     </section>

@@ -597,7 +597,6 @@ html {
                 }
     
                 .menu {
-                    
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
                     align-items: center;
@@ -671,6 +670,28 @@ html {
                     i {
                         font-size: 3vh;
                         color: rgba($color: $black, $alpha: .5);
+                    }
+                }
+            }
+
+            &.dark_mode {
+                margin-top: 1.25vh;
+                
+                div {
+                    .menu {
+                        li {
+                            .item {
+                                a {
+                                    color: $white;
+                                }
+                            }
+                        }
+                    }
+
+                    .reservations {
+                        i {
+                            color: rgba($color: $white, $alpha: .5);
+                        }
                     }
                 }
             }
@@ -1481,6 +1502,188 @@ html {
                                 font-size: 2.25vh;
                                 line-height: 2.25vh;
                                 text-align: center;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .first_section_contact {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0 auto;
+            border: 1.25vh solid lighten($color: $black, $amount: 5);
+
+            .wrapper_full {
+                overflow: hidden;
+                position: relative;
+                height: 100%;
+                line-height: 0;
+                background: $black;
+
+                .text {
+                    width: 100%;
+                    height: 100%;
+                    /* background: url('CONTACT.png') no-repeat;
+                    background-size: 40%;
+                    background-position: left center; */
+
+                    .email_me {
+                        position: absolute;
+                        display: flex;
+                        flex-direction: column;
+                        right: 25%;
+                        bottom: 0;
+                        transform: translate(100%, -100%);
+
+                        h6 {
+                            color: white;
+                        }
+
+                        button {
+                            position: relative;
+                            -webkit-appearance: none;
+                            border: none;
+                            background: none;
+                            color: white;
+                            width: 25vh;
+                            height: 6.5vh;
+                            font-size: 2.5vh;
+                            padding: 0;
+                            outline: none;
+
+                            span {
+                                display: block;
+                                position: relative;
+                                line-height: 6.5vh;
+                                height: 100%;
+                                cursor: pointer;
+                            }
+
+                            &>span {
+                                &>span {
+                                    &>span {
+                                        transition: color .15s ease-out .3s;
+                                        color: transparent;
+
+                                        &::after {
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            right: 0;
+                                            bottom: 0;
+                                            color: $black;
+                                            content: attr(data-attr-span);
+                                            width: 0;
+                                            height: 100%;
+                                            background: white;
+                                            white-space: nowrap;
+                                            text-align: center;
+                                            margin: auto;
+                                            overflow: hidden;
+                                            display: flex;
+                                            justify-content: center;
+                                            transition: width .2s ease-out;
+                                        }
+                                    }
+
+                                    &::before {
+                                        content: '';
+                                        position: absolute;
+                                        bottom: 0;
+                                        left: 0;
+                                        width: .15vh;
+                                        height: .15vh;
+                                        opacity: 0;
+                                    }
+
+                                    &::after {
+                                        content: '';
+                                        position: absolute;
+                                        top: 0;
+                                        right: 0;
+                                        width: .15vh;
+                                        height: .15vh;
+                                        opacity: 0;
+                                    }
+                                }
+
+                                &::before {
+                                    content: '';
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 1.25vh;
+                                    height: 0;
+                                    border: .15vh solid white;
+                                    border-right: none;
+                                    border-bottom: none;
+                                    transition: width .15s ease-out, height .15s ease-out .15s;
+                                }
+
+                                &::after {
+                                    content: '';
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 0;
+                                    height: 1.25vh;
+                                    border: .15vh solid white;
+                                    border-right: none;
+                                    border-top: none;
+                                    transition: height .15s ease-out, width .15s ease-out .15s;
+                                }
+                            }
+
+                            &:hover {
+                                &>span {
+                                    &>span {
+                                        &>span {
+                                            &::after {
+                                                width: 100%;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &:hover {
+                            button {
+                                &>span {
+                                    &::after {
+                                        height: 100% !important;
+                                    }
+
+                                    &::before {
+                                        width: 100% !important;
+                                    }
+
+                                    &>span {
+                                        &::after {
+                                            opacity: 1 !important;
+                                            border-right: .15vh solid white !important;
+                                            height: 100% !important;
+                                            width: .15vh !important;
+                                            transition: opacity 0s ease-out .29s, height .15s ease-out .3s !important;
+                                        }
+
+                                        &::before {
+                                            opacity: 1 !important;
+                                            border-bottom: .15vh solid white !important;
+                                            height: .15vh !important;
+                                            width: 100% !important;
+                                            transition: opacity 0s ease-out .29s, height .15s ease-out .3s !important;
+                                        }
+
+                                        &>span {
+                                            color: white !important;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

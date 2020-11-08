@@ -43,7 +43,6 @@
     "quill-image-uploader": "*",
     "rc-calendar": "*",
     "react": "*",
-    "react-autocomplete": "*",
     "react-bootstrap": "*",
     "react-dom": "*",
     "react-facebook-login": "*",
