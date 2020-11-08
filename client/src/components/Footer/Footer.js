@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import 'whatwg-fetch';
 import API from '../../utils/API';
 import * as $ from "jquery";
@@ -56,8 +56,8 @@ class Footer extends React.Component {
         // http://www.codingforums.com/showpost.php?s=ca38992f8716f43d325c12be6fc0198b&p=843844&postcount=3
         
         var charCodeRange = {
-            start: 48,
-            end: 49
+            start: 65,
+            end: 90
         };
         
         // get the grid's width and height
@@ -193,92 +193,62 @@ class Footer extends React.Component {
                 <div className="wrapper">
                     <div className="top_shelf">
                         <div className="first_box">
-                            <h6>Latest.</h6>
-                            <ul>
-                                {/* {
-                                    (_.orderBy(_.filter(articles, (_a) => { return !_a._hide }), ['createdAt'], ['desc']).slice(0, 3)).map((article, index) => {
-                                        return (
-                                            <li key={index}>
-                                                <Link to={`/blog/${article._id}`}>
-                                                    <span>{article.title}</span>
-                                                    <p className="text-muted author">by <b>{article.author}</b>, {moment(new Date(article.createdAt)).fromNow()}</p>
-                                                </Link>
-                                            </li>
-                                        )
-                                    })
-                                } */}
-                            </ul>
+                            <div>
+                                <h5>Information.</h5>
+                            </div>
+                            <div>
+                                <i className="fas fa-map-marker-alt"></i>
+                                <span>Chaabane 2 n456, 92000 Larache, Morocco</span>
+                            </div>
+                            <div>
+                                <i className="fas fa-phone"></i>
+                                <span>(+212) 6 54 52 84 92</span>
+                            </div>
+                            <div>
+                                <i className="fas fa-envelope"></i>
+                                <span>contact@boutaleb.dev</span>
+                            </div>
                         </div>
                         <div className="second_box">
-                            <h6>Most viewed.</h6>
-                            <ul>
-                                {/* {
-                                    (_.orderBy(_.filter(articles, (_a) => { return !_a._hide }), ['view'], ['desc']).slice(0, 3)).map((article, index) => {
-                                        return (
-                                            <li key={index}>
-                                                <Link to={`/blog/${article._id}`}>
-                                                    <span>{article.title}</span>
-                                                    <p className="text-muted author">by <b>{article.author}</b>, {moment(new Date(article.createdAt)).fromNow()}</p>
-                                                </Link>
-                                            </li>
-                                        )
-                                    })
-                                } */}
-                            </ul>
+                            <div>
+                                <h5>Navigation.</h5>
+                            </div>
+                            <div>
+                                <ul>
+                                    <li key={0}>
+                                        <NavLink to='/vehicules' activeClassName='is-active'>
+                                            <span>Nos Véhicules.</span>
+                                        </NavLink>
+                                    </li>
+                                    <li key={1}>
+                                        <NavLink to='/reservation' activeClassName='is-active'>
+                                            <span>Reservation.</span>
+                                        </NavLink>
+                                    </li>
+                                    <li key={2}>
+                                        <NavLink to='/contact' activeClassName='is-active'>
+                                            <span>Contactez Nous.</span>
+                                        </NavLink>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                         <div className="third_box">
-                            <h6>Most commented.</h6>
-                            <ul>
-                                {/* {
-                                    (_.orderBy(_.filter(articles, (_a) => { return !_a._hide }), ['comment'], ['desc']).slice(0, 3)).map((article, index) => {
-                                        return (
-                                            <li key={index}>
-                                                <Link to={`/blog/${article._id}`}>
-                                                    <span>{article.title}</span>
-                                                    <p className="text-muted author">by <b>{article.author}</b>, {moment(new Date(article.createdAt)).fromNow()}</p>
-                                                </Link>
-                                            </li>
-                                        )
-                                    })
-                                } */}
-                            </ul>
+                            
                         </div>
                         <div className="fourth_box">
-                            <h6>Latest Projects.</h6>
-                            <ul>
-                                {/* {
-                                    (_.orderBy(_.filter(projects, (_p) => { return !_p._hide }), ['createdAt'], ['asc']).slice(0, 3)).map((project, index) => {
-                                        return (
-                                            <li key={index}>
-                                                <a href={project.link_to} target="_blank" rel="noopener noreferrer">
-                                                    <span>{project.title}</span>
-                                                    <p className="text-muted author">by <b>{project.author}</b>, {moment(new Date(project.createdAt)).fromNow()}</p>
-                                                </a>
-                                            </li>
-                                        )
-                                    })
-                                } */}
-                            </ul>
+                            <div>
+                                <h5>Localisation.</h5>
+                            </div>
+                            <div>
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d417465.0584163796!2d-6.431550979614281!3d35.17044062975635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x828aa5eacb28a3fc!2slukus%20touristique!5e0!3m2!1sfr!2sma!4v1604831018991!5m2!1sfr!2sma" frameBorder="0" allowFullScreen="" aria-hidden="false" tabIndex="0"></iframe>
+                            </div>
                         </div>
                     </div>
                     <div className="mail-modal">
                         <div className="modal-inner">
                             <div className="modal-left">
-                                <div>
-                                    <h5>Other ways to get in touch</h5>
-                                </div>
-                                <div>
-                                    <i className="fas fa-map-marker-alt"></i>
-                                    <span>Meknès, Maroc</span>
-                                </div>
-                                <div>
-                                    <i className="fas fa-phone"></i>
-                                    <span>(+212) 6 54 52 84 92</span>
-                                </div>
-                                <div>
-                                    <i className="fas fa-envelope"></i>
-                                    <span>contact@boutaleb.dev</span>
-                                </div>
+                                
                             </div>
                             <div className="modal-content">
                                 <form className="mail_form">
@@ -399,7 +369,7 @@ class Footer extends React.Component {
                                     <a href="# ">Newsroom</a>
                                 </li>
                                 <li className="list-inline-item">
-                                    <span className="name">Zakariae.</span>
+                                    <span className="name">Lukus.</span>
                                 </li>
                             </ul>
                         </span>
@@ -411,13 +381,11 @@ class Footer extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    articles: state.home.articles,
-    projects: state.home.projects,
+    
 });
 
 const mapDispatchToProps = dispatch => ({
-    onLoad: data => dispatch({ type: 'HOME_PAGE_LOADED', data }),
-    onLoadProject: data => dispatch({ type: 'PROJECT_PAGE_LOADED', data }),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Footer);
