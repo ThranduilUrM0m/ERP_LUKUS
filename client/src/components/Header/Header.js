@@ -22,29 +22,8 @@ class Header extends React.Component {
     }
     render() {
         return (
-            <>
-                <header>
-                    <ul className="list-inline">
-                        <li className="list-inline-item">
-                            <a href="# ">(+212) 6 54 52 84 92</a>
-                        </li>
-                        <li className="list-inline-item">
-                            <a href="# ">ZakariaeBoutaleb@gmail.com</a>
-                        </li>
-                    </ul>
-                    <ul className="list-inline">
-                        <li className="list-inline-item">
-                            <a href="https://www.instagram.com/boutaleblcoder/">Instagram</a>
-                        </li>
-                        <li className="list-inline-item">
-                            <a href="https://fb.me/boutaleblcoder">Facebook</a>
-                        </li>
-                        <li className="list-inline-item">
-                            <a href="https://www.behance.net/boutaleblcoder/">Behance</a>
-                        </li>
-                    </ul>
-                </header>
-                <header>
+            <header>
+                <div>
                     <a className="logoHolder" href="/">
                         <img className="logo img-fluid" src="#" alt="APP_NAME"/>
                     </a>
@@ -54,10 +33,10 @@ class Header extends React.Component {
                         <li><span className="item item-2"><NavLink to='/contact' activeClassName='is-active' className="nav-link" id="_contact_link"> Contactez Nous. </NavLink></span></li>
                     </ul>
                     <a className="reservations" href="#">
-                        <i className="fas fa-suitcase-rolling"></i>
+                        <i className="fas fa-shopping-cart"></i>
                     </a>
-                </header>
-            </>
+                </div>
+            </header>
         );
     }
 }

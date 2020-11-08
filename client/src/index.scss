@@ -3,28 +3,27 @@
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville');
 @import url('https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import "~bootstrap/scss/bootstrap";
 
 $main-color: #3dc1d3;
+$main-background: #e8e8e8;
 $purple: #f985de;
 $black: #2d2d2d;
 $card_black: #17141d;
 $text-color: #777;
 $text-color-light: #ccc;
-$border-color: #eee;
+$border-color1: #eee;
 $bg-color: #f9f9f9;
 $white: #fff;
 $Holiday: #D6A2E8;
-$roboto: "Roboto",
-Helvetica,
-Arial,
-sans-serif;
+
 $calendar-red: #DD5044;
 $dark-blue: tint(#2E3C4A, 15%);
 $light-blue: tint($dark-blue, 25%);
-$border-color: #e3e3e3;
-$button-border-color: shade($border-color, 15%);
+$border-color2: #e3e3e3;
+$button-border-color: shade($border-color2, 15%);
 $black-tint1: tint($black, 20%);
 $black-tint2: tint($black, 35%);
 $black-tint3: tint($black, 50%);
@@ -48,8 +47,6 @@ $itemBg4: #7ed6df;
 $liteBg: #e1e8ee;
 $warmWhite: #e9eced;
 $green: #4CAF50;
-$mainFont: 'Roboto',
-sans-serif;
 $liteBg_gray: #E1DFE0;
 
 $Gradient: $main-color;
@@ -555,10 +552,10 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
 body,
 html {
-    color: $black;
-    background-color: white;
+    color: rgba($color: $black, $alpha: .8);
+    background-color: $bg-color;
     height: 100%;
-    font-family: $mainFont;
+    font-family: 'Ubuntu', sans-serif;
     font-size: 2.5vh;
     scroll-behavior: smooth;
 
@@ -569,38 +566,22 @@ html {
         padding-left: 0;
 
         header {
-            position: relative;
-            display: flex;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1;
 
-            &:first-of-type {
-                margin: 0 10vh;
-                font-size: 1.75vh;
-                border-bottom: 1px solid $main-color;
-
-                ul {
-                    margin-left: 0;
-                    margin-top: .5rem;
-                    margin-bottom: .5rem;
-
-                    &:first-of-type {
-                        margin-right: auto;
-                    }
-
-                    li {
-                        a {
-                            color: $main-color;
-                        }
-                    }
-                }
-            }
-
-            &:last-of-type {
+            div {
+                position: relative;
+                display: flex;
                 margin: 0 5vh;
 
                 .logoHolder {
                     display: flex;
                     align-items: center;
                     margin-left: 2.5%;
+                    margin-right: 2.5%;
                     border: none;
                     z-index: 10000;
     
@@ -689,6 +670,7 @@ html {
     
                     i {
                         font-size: 4vh;
+                        color: rgba($color: $black, $alpha: .8);
                     }
                 }
             }
@@ -1075,6 +1057,364 @@ html {
                 overflow: hidden;
                 position: relative;
                 height: 100%;
+                width: 100%;
+                padding: 10vh 10vh 2vh 10vh;
+
+                display: grid;
+                grid-template-rows: 1fr auto auto 1fr;
+
+                .text {
+                    position: relative;
+                    padding: 25vh 0 0 0;
+                    align-self: end;
+
+                    h2 {
+                        color: $white;
+                        background: $main-color;
+                        width: fit-content;
+                        padding: 1vh;
+                    }
+                }
+
+                h1 {
+                    font-size: 10vh;
+                    line-height: 10vh;
+                    margin-bottom: 3vh;
+                    margin-top: 3vh;
+                    z-index: 10;
+
+                    &:first-of-type {
+                        position: absolute;
+                        color: $white;
+                        font-size: 40vh;
+                        line-height: 40vh;
+                        top: 50%;
+                    }
+                }
+
+                button {
+                    position: relative;
+                    -webkit-appearance: none;
+                    border: none;
+                    background: none;
+                    color: $black;
+                    width: 38.5vh;
+                    height: 7.5vh;
+                    font-size: 2.25vh;
+                    margin: 3vh 0;
+                    padding: 0;
+                    outline: none;
+                    z-index: 10;
+
+                    span {
+                        display: block;
+                        position: relative;
+                        line-height: 7.5vh;
+                        height: 100%;
+                        cursor: pointer;
+                    }
+
+                    &>span {
+                        &>span {
+                            padding-left: 0;
+                            padding-right: 0;
+
+                            &>span {
+                                transition: color .15s ease-out .3s;
+                                color: transparent;
+
+                                &::after {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    color: white;
+                                    content: attr(data-attr-span);
+                                    width: 0;
+                                    height: 100%;
+                                    background: $main-color;
+                                    white-space: nowrap;
+                                    text-align: center;
+                                    margin: auto;
+                                    overflow: hidden;
+                                    display: flex;
+                                    justify-content: center;
+                                    transition: all .2s ease-out;
+                                }
+                            }
+
+                            &::before {
+                                content: '';
+                                position: absolute;
+                                bottom: 0;
+                                right: 0;
+                                width: .5vh;
+                                height: .5vh;
+                                opacity: 0;
+                            }
+
+                            &::after {
+                                content: '';
+                                position: absolute;
+                                bottom: 0;
+                                left: 0;
+                                width: .5vh;
+                                height: .5vh;
+                                opacity: 0;
+                            }
+                        }
+
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            right: 50%;
+                            width: 3.25vh;
+                            height: 0;
+                            border: .5vh solid $main-color;
+                            border-right: none;
+                            border-bottom: none;
+
+                            transition-property: width, height;
+                            transition-duration: .15s, .15s;
+                            transition-delay: .15s, 0s;
+                        }
+
+                        &::after {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 50%;
+                            width: 3.25vh;
+                            height: 0;
+                            border: .5vh solid $main-color;
+                            border-left: none;
+                            border-bottom: none;
+
+                            transition-property: width, height;
+                            transition-duration: .15s, .15s;
+                            transition-delay: .15s, 0s;
+                        }
+                    }
+
+                    &:hover {
+
+                        &>span {
+                            &>span {
+                                &>span {
+                                    &::after {
+                                        width: 100%;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                div:last-of-type {
+                    margin: 0;
+                    font-size: 1.75vh;
+                    align-self: end;
+
+                    ul {
+                        position: relative;
+                        margin-left: 0;
+                        margin-top: 2vh;
+                        margin-bottom: 0;
+
+                        &::after {
+                            content: "";
+                            position: absolute;
+                            top: 50%;
+                            right: 0;
+                            transform: translate(0, -50%);
+                            height: 1px;
+                            width: 15vw;
+                            background: $black;
+                        }
+                    }
+                }
+
+                &:hover {
+                    button {
+                        &>span {
+                            &::after {
+                                width: 50% !important;
+                                height: 100% !important;
+                                transition-delay: 0s, .15s !important;
+                            }
+
+                            &::before {
+                                width: 50% !important;
+                                height: 100% !important;
+                                transition-delay: 0s, .15s !important;
+                            }
+
+                            &>span {
+                                &::after {
+                                    opacity: 1 !important;
+                                    border-bottom: .5vh solid $main-color !important;
+                                    width: calc(50%) !important;
+                                    height: .5vh !important;
+                                    transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
+                                }
+
+                                &::before {
+                                    opacity: 1 !important;
+                                    border-bottom: .5vh solid $main-color !important;
+                                    width: calc(50%) !important;
+                                    height: .5vh !important;
+                                    transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
+                                }
+
+                                &>span {
+                                    color: $black !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &::before {
+                content: '';
+                position: absolute;
+                width: 30%;
+                height: 75%;
+                right: 15%;
+                top: 50%;
+                transform: translate(0, -50%);
+                background: url('minibus1.jpg');
+                background-size: cover;
+                outline: 0.5vh solid rgba($color: $black, $alpha: .8);
+                outline-offset: 2.5vh;
+            }
+        }
+
+        .second_section_home {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0 auto;
+            overflow: hidden;
+
+            .wrapper_full {
+                overflow: hidden;
+                position: relative;
+                height: 100%;
+                width: 100%;
+                padding: 10vh 10vh 2vh 10vh;
+
+                h1 {
+                    font-size: 2.5vh;
+                    line-height: 2.5vh;
+                    font-weight: bold;
+                    width: fit-content;
+                    color: rgba($color: $black, $alpha: .8);
+                    padding-bottom: 2vh;
+                    padding-top: 2vh;
+                    margin: 0 auto;
+                    border-bottom: .5vh solid rgba($color: $main-color, $alpha: .8);
+                }
+
+                & > div {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    column-gap: 15vh;
+                    justify-items: center; 
+                    align-items: center;
+                    padding: 2.5vh 0;
+                    margin: 0 auto;
+                    width: 90%;
+
+                    &:first-of-type {
+                        width: 70%;
+
+                        span {
+                            display: grid;
+                            grid-template-columns: repeat(2, auto);
+                            column-gap: 2.5vh;
+
+                            i {
+                                font-size: 5vh;
+                                color: $main-color;
+                            }
+
+                            p {
+                                font-size: 2.25vh;
+                                line-height: 2.25vh;
+                            }
+                        }
+                    }
+
+                    div {
+                        &.text {
+                            position: relative;
+                            align-self: start;
+                            width: 75%;
+
+                            p, h4 {
+                                width: fit-content;
+                            }
+
+                            p {
+                                font-size: 2.25vh;
+                                line-height: 2.25vh;
+                                margin-bottom: 2.5vh;
+                                margin-top: 2.5vh;
+                            }
+
+                            h4 {
+                                &:first-of-type {
+                                    color: $main-color;
+                                    font-weight: bold;
+                                }
+                            }
+
+                            &::before {
+                                content: '';
+                                position: absolute;
+                                width: 20vh;
+                                height: 6vh;
+                                top: 13.5%;
+                                left: 0;
+                                transform: translate(-50%, 0);
+                                background: $main-color;
+                                opacity: .25;
+                            }
+                        }
+
+                        &.squares {
+                            display: grid;
+                            grid-template-columns: repeat(2, 1fr);
+                            grid-template-rows: repeat(2, 1fr);
+                            column-gap: 2.5vh;
+                            justify-items: center; 
+                            align-items: center;
+                            text-align: center;
+                            width: 100%;
+                            height: 100%;
+
+                            span {
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                width: 90%;
+                                height: 90%;
+                                border-radius: 4px;
+                                box-shadow:1px 12px 28px rgba(0,0,0,.19);
+
+                                i {
+                                    font-size: 5vh;
+                                    color: $main-color;
+                                    margin-bottom: 2.5vh;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         
@@ -1400,7 +1740,7 @@ html {
                                                 color: $text-color-light;
                                                 font-size: 70%;
                                                 padding: .75em 0;
-                                                border-bottom: .15vh solid $border-color;
+                                                border-bottom: .15vh solid $border-color2;
                                             }
 
                                             .body {
@@ -1888,7 +2228,7 @@ html {
                                                                 height: 5.25vh;
                                                                 width: 100%;
                                                                 line-height: 1;
-                                                                font-family: $roboto;
+                                                                font-family: 'Ubuntu', sans-serif;
                                                                 margin: 0;
                                                                 padding: 0;
                                                                 box-shadow: none;
