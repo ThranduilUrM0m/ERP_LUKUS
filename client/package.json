@@ -6,7 +6,7 @@
     "axios": "*",
     "react": "^16.0.0",
     "react-bootstrap": "*",
-    "react-dom": "*",
+    "react-dom": "^16.0.0",
     "react-facebook-login": "*",
     "react-router": "*",
     "react-router-dom": "*",
