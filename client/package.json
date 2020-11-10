@@ -50,7 +50,7 @@
     "react-full-page": "*",
     "react-ga": "*",
     "react-live-clock": "*",
-    "react-moment": "*",
+    "react-moment": "^0.9.7",
     "react-quill": "*",
     "react-redux": "*",
     "react-router": "*",
