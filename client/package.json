@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@testing-library/jest-dom": "*",
+    "@testing-library/react": "*",
     "@testing-library/user-event": "*",
     "@types/jquery": "*",
     "axios": "*",
@@ -41,7 +42,7 @@
     "quill-image-resize-module": "*",
     "quill-image-uploader": "*",
     "rc-calendar": "*",
-    "react": "17.0.0",
+    "react": "*",
     "react-autocomplete": "*",
     "react-bootstrap": "*",
     "react-dom": "*",
