@@ -1,70 +1,17 @@
 {
   "name": "client",
   "version": "0.1.0",
-  "private": false,
-  "devDependencies": {
-    "@babel/compat-data": "*",
-    "@babel/preset-react": "*",
-    "babel": "*",
-    "babel-loader": "*",
-    "babel-plugin-transform-object-rest-spread": "*",
-    "babel-preset-env": "*",
-    "babel-preset-react": "*",
-    "css-loader": "*",
-    "extract-text-webpack-plugin": "*",
-    "file-loader": "*",
-    "html-loader": "*",
-    "html-webpack-plugin": "*",
-    "jquery": "*",
-    "sass-loader": "*",
-    "style-loader": "*"
-  },
+  "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "*",
-    "@testing-library/react": "*",
-    "@testing-library/user-event": "*",
-    "@types/jquery": "*",
     "axios": "*",
-    "axios-progress-bar": "*",
-    "babel-polyfill": "*",
-    "bootstrap": "*",
-    "chart.js": "*",
-    "fingerprintjs": "*",
-    "history": "*",
-    "http-proxy-middleware": "*",
-    "jquery": "*",
-    "moment": "*",
-    "moment-timezone": "*",
-    "paginationjs": "*",
-    "popper.js": "*",
-    "prop-types": "*",
-    "quill": "*",
-    "quill-image-resize-module": "*",
-    "quill-image-uploader": "*",
-    "rc-calendar": "*",
     "react": "*",
-    "react-autocomplete": "*",
     "react-bootstrap": "*",
     "react-dom": "*",
     "react-facebook-login": "*",
-    "react-full-page": "*",
-    "react-ga": "*",
-    "react-live-clock": "*",
-    "react-moment": "*",
-    "react-quill": "*",
-    "react-redux": "*",
     "react-router": "*",
     "react-router-dom": "*",
     "react-scripts": "*",
-    "react-share": "*",
-    "redux": "*",
-    "redux-socket.io": "*",
-    "redux-thunk": "*",
-    "sass": "*",
-    "serve": "*",
-    "socket.io-client": "*",
-    "swiper": "*",
-    "underscore": "*"
+    "serve": "*"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -86,9 +33,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "resolutions": {
-    "@babel/preset-env": "*"
-  },
-  "proxy": "http://localhost:8800"
+  }
 }
