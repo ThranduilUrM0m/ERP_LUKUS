@@ -42,7 +42,7 @@
     "quill-image-resize-module": "*",
     "quill-image-uploader": "*",
     "rc-calendar": "*",
-    "react": "*",
+    "react": "17.0.0",
     "react-autocomplete": "*",
     "react-bootstrap": "*",
     "react-dom": "*",
