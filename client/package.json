@@ -11,7 +11,6 @@
     "babel-preset-env": "*",
     "babel-preset-react": "*",
     "css-loader": "*",
-    "extract-text-webpack-plugin": "*",
     "file-loader": "*",
     "html-loader": "*",
     "html-webpack-plugin": "*",
