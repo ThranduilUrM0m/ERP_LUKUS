@@ -1,7 +1,7 @@
 {
   "name": "client",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@babel/compat-data": "*",
     "@babel/preset-react": "*",
