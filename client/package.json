@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "*",
-    "react": "*",
+    "react": "16.0.0",
     "react-bootstrap": "*",
     "react-dom": "*",
     "react-facebook-login": "*",
