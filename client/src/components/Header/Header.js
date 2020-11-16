@@ -3,8 +3,13 @@ import axios from 'axios';
 import moment from 'moment';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-/* import logo from '../../logo.svg';
-import favicon from '../../favicon.svg'; */
+import logo from '../../logo.svg';
+import favicon from '../../favicon.svg';
+
+/* 
+cheuf l log w lfavicon dial CV ina taille 3endhum w red lukus f7alha bach yjiw 9edhum, 3ad generer favicon w 7eto blast li kayn daba */
+
+
 import * as $ from "jquery";
 import 'bootstrap';
 
@@ -15,17 +20,32 @@ class Header extends React.Component {
         super(props);
 		this.state = {
             _reservations: [],
+            logo_to_show: logo,
         };
     }
     componentDidMount() {
-        
+        const self = this;
+        function displayWindowSize(){
+            if ($(window).width() <= 425) {
+                self.setState({
+                    logo_to_show: favicon
+                });
+            } else {
+                self.setState({
+                    logo_to_show: logo
+                });
+            }
+        }
+        window.addEventListener("resize", displayWindowSize);
+        displayWindowSize();
     }
     render() {
+        const { logo_to_show } = this.state;
         return (
             <header>
                 <div>
                     <a className="logoHolder" href="/">
-                        <img className="logo img-fluid" src="#" alt="APP_NAME"/>
+                        <img className="logo img-fluid" src={logo_to_show} alt="APP_NAME"/>
                     </a>
                     <ul className="menu">
                         <li><span className="item item-0"><NavLink to='/vehicules' activeClassName='is-active' className="nav-link" id="_vehicules_link"> Nos Véhicules. </NavLink></span></li>

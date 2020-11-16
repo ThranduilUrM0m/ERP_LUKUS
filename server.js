@@ -49,7 +49,23 @@ const setupWorkerProcesses = () => {
 
 const setUpExpress = () => {
     // IMPORT MODELS
-    //const _model = require('./models/_model');
+    const agenceModel = require('./models/Agence');
+    const bonModel = require('./models/Bon');
+    const clientModel = require('./models/Client');
+    const devisModel = require('./models/Devis');
+    const employeModel = require('./models/Employe');
+    const factureModel = require('./models/Facture');
+    const fournisseurModel = require('./models/Fournisseur');
+    const passagerModel = require('./models/Passager');
+    const permissionModel = require('./models/Permission');
+    const posteModel = require('./models/Poste');
+    const produitModel = require('./models/Produit');
+    const reservationModel = require('./models/Reservation');
+    const revueDePerformanceModel = require('./models/RevueDePerformance');
+    const societeModel = require('./models/Societe');
+    const stockModel = require('./models/Stock');
+    const vehiculeModel = require('./models/Vehicule');
+    const voyageModel = require('./models/Voyage');
 
     //On définit notre objet express nommé app
     const app = express();

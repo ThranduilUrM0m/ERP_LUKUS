@@ -6,7 +6,6 @@
     "@babel/compat-data": "*",
     "@babel/preset-react": "*",
     "babel": "*",
-    "babel-loader": "*",
     "babel-plugin-transform-object-rest-spread": "*",
     "babel-preset-env": "*",
     "babel-preset-react": "*",
