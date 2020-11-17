@@ -5,11 +5,22 @@ import Footer from '../Footer/Footer';
 import { connect } from 'react-redux';
 import { FullPage, Slide } from 'react-full-page';
 import { Link } from 'react-router-dom';
-import minibus1 from '../../minibus1.jpg';
 import 'whatwg-fetch';
 import * as $ from "jquery";
 import jQuery from 'jquery';
 import 'bootstrap';
+
+import minibus1 from '../../minibus1.jpg';
+import minibus2 from '../../minibus2.jpg';
+import minibus3 from '../../minibus3.jpg';
+import minibus4 from '../../minibus4.jpg';
+import minibus5 from '../../minibus5.jpg';
+import minibus6 from '../../minibus6.jpg';
+import minibus7 from '../../minibus7.jpg';
+import minibus8 from '../../minibus8.jpg';
+import minibus9 from '../../minibus9.jpg';
+import minibus10 from '../../minibus10.jpg';
+import minibus11 from '../../minibus11.jpg';
 
 var _ = require('lodash');
 
@@ -41,6 +52,21 @@ class Home extends React.Component {
                                 <h2>Vous amener à destination beaucoup plus rapidement.</h2>
                             </div>
                             <h1>LUKUS Transport</h1>
+                            <div className="slider">
+                                <ul>
+                                    <li><img src={minibus1}/></li>
+                                    <li><img src={minibus2}/></li>
+                                    <li><img src={minibus3}/></li>
+                                    <li><img src={minibus4}/></li>
+                                    <li><img src={minibus5}/></li>
+                                    <li><img src={minibus6}/></li>
+                                    <li><img src={minibus4}/></li>
+                                    <li><img src={minibus8}/></li>
+                                    <li><img src={minibus9}/></li>
+                                    <li><img src={minibus10}/></li>
+                                    <li><img src={minibus11}/></li>
+                                </ul>
+                            </div>
                             <button id="reach_out_button" onClick={() => this.handleClick('footer_to')} type="button">
                                 <span>
                                     <span>

@@ -405,6 +405,43 @@ $strips-angle: 45deg;
     align-items: $align;
 }
 
+$slides: 11;
+$time: 4;
+$trans: 0.25;
+$tot: ($time + $trans) * $slides;
+
+@keyframes sliding {
+    @for $i from 0 through $slides - 1 {
+      $t: ($time + $trans) * $i;
+      $n: $t + $time;
+      #{($t / $tot) * 100}% { transform: translateX($i * -100%); }
+      #{($n / $tot) * 100}% { transform: translateX($i * -100%); }
+    }
+    100% { transform: translateX($slides * -100%); }
+}
+
+@keyframes firstjump {
+    0% { left: 0%; }
+    50% { left: 0%; }
+    51% { left: $slides * 100%; }
+    100% { left: $slides * 100%; }
+}
+
+@mixin posElement() {
+    &:first-child {
+        left: 0;
+        z-index: 0;
+        //animation: firstjump #{$tot}s infinite;
+    }
+     
+    @for $i from 1 through $slides - 1 {
+        &:nth-child(#{$i + 1}) {
+            left: $i * 100%;
+            z-index: $i;
+        }
+    } 
+}
+
 a,
 a:hover {
     color: #20232a;
@@ -584,35 +621,36 @@ html {
                     margin-right: 2.5%;
                     border: none;
                     z-index: 10000;
-    
+
                     img {
                         height: 5vh;
                     }
                 }
-    
+
                 .menu {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
                     align-items: center;
                     justify-items: center;
                     place-content: stretch;
-    
+
                     padding: 0;
                     margin: 0;
                     margin-right: auto;
                     list-style: none;
+
                     li {
                         margin: 0;
                         padding: 0;
-                        
+
                         .item {
                             display: block;
-    
+
                             a {
                                 position: relative;
                                 transition: all .3s ease-out;
-        
-                                &.is-active {    
+
+                                &.is-active {
                                     &::after {
                                         width: calc(100% - 2rem);
                                         height: .5vh;
@@ -624,7 +662,7 @@ html {
                                         transform: translateX(0);
                                     }
                                 }
-        
+
                                 &::after {
                                     display: block;
                                     content: '';
@@ -640,9 +678,9 @@ html {
                                     transition: all .2s ease-out;
                                 }
                             }
-        
+
                             &:hover {
-                                a:not(.is-active) {    
+                                a:not(.is-active) {
                                     &::after {
                                         opacity: .8;
                                         filter: none;
@@ -653,14 +691,14 @@ html {
                         }
                     }
                 }
-    
+
                 .reservations {
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     width: 10vh;
                     height: 10vh;
-    
+
                     i {
                         font-size: 3vh;
                         color: rgba($color: $black, $alpha: .5);
@@ -670,7 +708,7 @@ html {
 
             &.dark_mode {
                 margin-top: 1.25vh;
-                
+
                 div {
                     .menu {
                         li {
@@ -1082,6 +1120,7 @@ html {
                     position: relative;
                     padding: 25vh 0 0 0;
                     align-self: end;
+                    z-index: 10;
 
                     h2 {
                         color: $white;
@@ -1104,6 +1143,44 @@ html {
                         font-size: 40vh;
                         line-height: 40vh;
                         top: 50%;
+                    }
+                }
+
+                .slider {
+                    position: absolute;
+                    overflow: hidden;
+                    width: 35%;
+                    height: 75%;
+                    right: 15%;
+                    top: 50%;
+                    transform: translate(0, -50%);
+                    outline: 0.5vh solid rgba($color: $black, $alpha: .8);
+                    outline-offset: 2.5vh;
+
+                    ul {
+                        list-style: none;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        margin-bottom: 0;
+                        animation: sliding #{$tot}s infinite;
+
+                        li {
+                            position: absolute;
+                            top: 0;
+                            width: 100%;
+                            height: 100%;
+                            @include posElement();
+
+                            img {
+                                display: block;
+                                min-height: 100%;
+                                min-width: 100%;
+                                object-fit: cover;
+                            }
+                        }
                     }
                 }
 
@@ -1291,21 +1368,6 @@ html {
                     }
                 }
             }
-
-            &::before {
-                content: '';
-                position: absolute;
-                width: 30%;
-                height: 75%;
-                right: 15%;
-                top: 50%;
-                transform: translate(0, -50%);
-                background: url('minibus1.jpg');
-                background-size: cover;
-                background-position: center;
-                outline: 0.5vh solid rgba($color: $black, $alpha: .8);
-                outline-offset: 2.5vh;
-            }
         }
 
         .second_section_home {
@@ -1324,22 +1386,29 @@ html {
                 padding: 10vh 10vh 2vh 10vh;
 
                 h1 {
-                    font-size: 2.5vh;
-                    line-height: 2.5vh;
+                    position: relative;
+                    font-size: 4vh;
+                    line-height: 4vh;
                     font-weight: bold;
                     width: fit-content;
                     color: rgba($color: $black, $alpha: .8);
-                    padding-bottom: 2vh;
-                    padding-top: 2vh;
                     margin: 0 auto;
-                    border-bottom: .5vh solid rgba($color: $main-color, $alpha: .8);
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        width: 100%;
+                        height: 1vh;
+                        background: rgba($color: $main-color, $alpha: .8);
+                        bottom: 0;
+                    }
                 }
 
-                & > div {
+                &>div {
                     display: grid;
                     grid-template-columns: repeat(2, 1fr);
                     column-gap: 15vh;
-                    justify-items: center; 
+                    justify-items: center;
                     align-items: center;
                     padding: 2.5vh 0;
                     margin: 0 auto;
@@ -1371,7 +1440,8 @@ html {
                             align-self: start;
                             width: 75%;
 
-                            p, h4 {
+                            p,
+                            h4 {
                                 width: fit-content;
                             }
 
@@ -1407,7 +1477,7 @@ html {
                             grid-template-columns: repeat(2, 1fr);
                             grid-template-rows: repeat(2, 1fr);
                             column-gap: 2.5vh;
-                            justify-items: center; 
+                            justify-items: center;
                             align-items: center;
                             text-align: center;
                             width: 100%;
@@ -1420,7 +1490,7 @@ html {
                                 width: 90%;
                                 height: 90%;
                                 border-radius: 4px;
-                                box-shadow:1px 12px 28px rgba(0,0,0,.19);
+                                box-shadow: 1px 12px 28px rgba(0, 0, 0, .19);
 
                                 i {
                                     font-size: 5vh;
@@ -1433,7 +1503,7 @@ html {
                 }
             }
         }
-        
+
         .first_section_vehicules {
             position: relative;
             width: 100%;
@@ -1449,10 +1519,65 @@ html {
                 width: 100%;
                 padding: 10vh 10vh 2vh 10vh;
 
-                display: grid;
-                grid-template-rows: 1fr auto auto 1fr;
+                .text {
+                    position: absolute;
+                    top: 100%;
+                    left: 25%;
+                    transform: translate(-25%, -100%);
 
-                
+                    h1 {
+                        position: relative;
+                        width: fit-content;
+                        color: $white;
+                        font-size: 8vh;
+                        line-height: 8vh;
+                        margin-left: 10vh;
+                        
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            width: 100%;
+                            height: 1vh;
+                            background: rgba($color: $main-color, $alpha: .8);
+                            bottom: 0;
+                            transform: translate(0, -75%);
+                            z-index: -1;
+                        }
+                    }
+    
+                    &>div {
+                        padding: 2.5vh 0;
+                        width: 90%;
+                        margin-left: 10vh;
+    
+                        &:first-of-type {
+                            width: 80%;
+    
+                            span {
+                                p {
+                                    font-size: 2.75vh;
+                                    font-weight: normal;
+                                    color: $white;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: 90%;
+                    height: 80%;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translate(-50%, 0);
+                    background: url('fleet1.jpg');
+                    background-size: cover;
+                    background-position: center;
+                    outline: 0.5vh solid rgba($color: $black, $alpha: .8);
+                    outline-offset: 2.5vh;
+                }
             }
         }
 
@@ -1472,20 +1597,15 @@ html {
                 padding: 10vh 10vh 2vh 10vh;
 
                 h1 {
-                    font-size: 2.5vh;
-                    line-height: 2.5vh;
-                    font-weight: bold;
                     width: fit-content;
                     color: rgba($color: $black, $alpha: .8);
                     padding-bottom: 2vh;
                     padding-top: 2vh;
-                    margin: 0 auto;
                     border-bottom: .5vh solid rgba($color: $main-color, $alpha: .8);
                 }
 
-                & > div {
+                &>div {
                     padding: 2.5vh 0;
-                    margin: 0 auto;
                     width: 90%;
 
                     &:first-of-type {
@@ -1495,7 +1615,209 @@ html {
                             p {
                                 font-size: 2.25vh;
                                 line-height: 2.25vh;
-                                text-align: center;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .first_section_reservation {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0 auto;
+            overflow: hidden;
+
+            .wrapper_full {
+                overflow: hidden;
+                position: relative;
+                height: 100%;
+                width: 100%;
+                padding: 10vh 10vh 2vh 10vh;
+
+                display: grid;
+                grid-template-columns: 30% 70%;
+
+                .leftside {
+                    background: $main-color;
+                    box-shadow: inset 0px 0px 25px 0px rgba(0, 0, 0, 0.25)
+                }
+
+                .mail_form {
+                    transition: all .6s ease-out;
+                    height: 100%;
+                    padding: 1.25vh;
+                    background: $white;
+
+                    display: grid;
+                    grid-template-rows: 7.5vh 7.5vh auto 7.5vh;
+
+                    .row {
+                        margin-right: 0;
+                        margin-left: 0;
+                        margin-bottom: 0;
+
+                        &:last-of-type {
+                            button {
+                                position: relative;
+                                -webkit-appearance: none;
+                                border: none;
+                                background: none;
+                                color: $black;
+                                width: 38.5vh;
+                                height: 7.5vh;
+                                font-size: 2.25vh;
+                                margin-bottom: 2.5vh;
+                                padding: 0;
+                                outline: none;
+                                z-index: 10;
+
+                                span {
+                                    display: block;
+                                    position: relative;
+                                    line-height: 7.5vh;
+                                    height: 100%;
+                                    cursor: pointer;
+                                }
+
+                                &>span {
+                                    &>span {
+                                        padding-left: 0;
+                                        padding-right: 0;
+
+                                        &>span {
+                                            transition: color .15s ease-out .3s;
+                                            color: transparent;
+
+                                            &::after {
+                                                position: absolute;
+                                                top: 0;
+                                                left: 0;
+                                                right: 0;
+                                                bottom: 0;
+                                                color: white;
+                                                content: attr(data-attr-span);
+                                                width: 0;
+                                                height: 100%;
+                                                background: $main-color;
+                                                white-space: nowrap;
+                                                text-align: center;
+                                                margin: auto;
+                                                overflow: hidden;
+                                                display: flex;
+                                                justify-content: center;
+                                                transition: all .2s ease-out;
+                                            }
+                                        }
+
+                                        &::before {
+                                            content: '';
+                                            position: absolute;
+                                            bottom: 0;
+                                            right: 0;
+                                            width: .5vh;
+                                            height: .5vh;
+                                            opacity: 0;
+                                        }
+
+                                        &::after {
+                                            content: '';
+                                            position: absolute;
+                                            bottom: 0;
+                                            left: 0;
+                                            width: .5vh;
+                                            height: .5vh;
+                                            opacity: 0;
+                                        }
+                                    }
+
+                                    &::before {
+                                        content: '';
+                                        position: absolute;
+                                        top: 0;
+                                        right: 50%;
+                                        width: 3.25vh;
+                                        height: 0;
+                                        border: .5vh solid $main-color;
+                                        border-right: none;
+                                        border-bottom: none;
+
+                                        transition-property: width, height;
+                                        transition-duration: .15s, .15s;
+                                        transition-delay: .15s, 0s;
+                                    }
+
+                                    &::after {
+                                        content: '';
+                                        position: absolute;
+                                        top: 0;
+                                        left: 50%;
+                                        width: 3.25vh;
+                                        height: 0;
+                                        border: .5vh solid $main-color;
+                                        border-left: none;
+                                        border-bottom: none;
+
+                                        transition-property: width, height;
+                                        transition-duration: .15s, .15s;
+                                        transition-delay: .15s, 0s;
+                                    }
+                                }
+
+                                &:hover {
+
+                                    &>span {
+                                        &>span {
+                                            &>span {
+                                                &::after {
+                                                    width: 100%;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        button {
+                            &>span {
+                                &::after {
+                                    width: 50% !important;
+                                    height: 100% !important;
+                                    transition-delay: 0s, .15s !important;
+                                }
+
+                                &::before {
+                                    width: 50% !important;
+                                    height: 100% !important;
+                                    transition-delay: 0s, .15s !important;
+                                }
+
+                                &>span {
+                                    &::after {
+                                        opacity: 1 !important;
+                                        border-bottom: .5vh solid $main-color !important;
+                                        width: calc(50%) !important;
+                                        height: .5vh !important;
+                                        transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
+                                    }
+
+                                    &::before {
+                                        opacity: 1 !important;
+                                        border-bottom: .5vh solid $main-color !important;
+                                        width: calc(50%) !important;
+                                        height: .5vh !important;
+                                        transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
+                                    }
+
+                                    &>span {
+                                        color: $black !important;
+                                    }
+                                }
                             }
                         }
                     }
@@ -1685,22 +2007,6 @@ html {
             }
         }
 
-        .first_section_home {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            margin: 0 auto;
-            overflow: hidden;
-
-            .wrapper_full {
-                overflow: hidden;
-                position: relative;
-                height: 100%;
-                width: 100%;
-                padding: 10vh 10vh 2vh 10vh;
-            }
-        }
 
         .first_section_dashboard {
             position: relative;
@@ -3297,7 +3603,8 @@ html {
                                                     padding: 1.25vh;
                                                     width: 100%;
 
-                                                    ._account_head, ._accounts_head {
+                                                    ._account_head,
+                                                    ._accounts_head {
                                                         display: flex;
                                                         flex-direction: column;
                                                         width: calc(100% - 3.75vh);
@@ -3327,6 +3634,7 @@ html {
                                                                     margin-right: 0;
                                                                     margin-left: 0;
                                                                     margin-bottom: 0;
+
                                                                     &:last-of-type {
                                                                         justify-content: flex-end;
 
@@ -3343,7 +3651,7 @@ html {
                                                                             padding: 0;
                                                                             outline: none;
                                                                             z-index: 10;
-                                
+
                                                                             span {
                                                                                 display: block;
                                                                                 position: relative;
@@ -3351,16 +3659,16 @@ html {
                                                                                 height: 100%;
                                                                                 cursor: pointer;
                                                                             }
-                                
+
                                                                             &>span {
                                                                                 &>span {
                                                                                     padding-left: 0;
                                                                                     padding-right: 0;
-                                
+
                                                                                     &>span {
                                                                                         transition: color .15s ease-out .3s;
                                                                                         color: transparent;
-                                
+
                                                                                         &::after {
                                                                                             position: absolute;
                                                                                             top: 0;
@@ -3381,7 +3689,7 @@ html {
                                                                                             transition: all .2s ease-out;
                                                                                         }
                                                                                     }
-                                
+
                                                                                     &::before {
                                                                                         content: '';
                                                                                         position: absolute;
@@ -3391,7 +3699,7 @@ html {
                                                                                         height: .5vh;
                                                                                         opacity: 0;
                                                                                     }
-                                
+
                                                                                     &::after {
                                                                                         content: '';
                                                                                         position: absolute;
@@ -3402,7 +3710,7 @@ html {
                                                                                         opacity: 0;
                                                                                     }
                                                                                 }
-                                
+
                                                                                 &::before {
                                                                                     content: '';
                                                                                     position: absolute;
@@ -3413,12 +3721,12 @@ html {
                                                                                     border: .5vh solid $main-color;
                                                                                     border-right: none;
                                                                                     border-bottom: none;
-                                
+
                                                                                     transition-property: width, height;
                                                                                     transition-duration: .15s, .15s;
                                                                                     transition-delay: .15s, 0s;
                                                                                 }
-                                
+
                                                                                 &::after {
                                                                                     content: '';
                                                                                     position: absolute;
@@ -3429,15 +3737,15 @@ html {
                                                                                     border: .5vh solid $main-color;
                                                                                     border-left: none;
                                                                                     border-bottom: none;
-                                
+
                                                                                     transition-property: width, height;
                                                                                     transition-duration: .15s, .15s;
                                                                                     transition-delay: .15s, 0s;
                                                                                 }
                                                                             }
-                                
+
                                                                             &:hover {
-                                
+
                                                                                 &>span {
                                                                                     &>span {
                                                                                         &>span {
@@ -3451,7 +3759,7 @@ html {
                                                                         }
                                                                     }
                                                                 }
-                                
+
                                                                 &:hover {
                                                                     button {
                                                                         &>span {
@@ -3460,13 +3768,13 @@ html {
                                                                                 height: 100% !important;
                                                                                 transition-delay: 0s, .15s !important;
                                                                             }
-                                
+
                                                                             &::before {
                                                                                 width: 50% !important;
                                                                                 height: 100% !important;
                                                                                 transition-delay: 0s, .15s !important;
                                                                             }
-                                
+
                                                                             &>span {
                                                                                 &::after {
                                                                                     opacity: 1 !important;
@@ -3475,7 +3783,7 @@ html {
                                                                                     height: .5vh !important;
                                                                                     transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
                                                                                 }
-                                
+
                                                                                 &::before {
                                                                                     opacity: 1 !important;
                                                                                     border-bottom: .5vh solid $main-color !important;
@@ -3483,7 +3791,7 @@ html {
                                                                                     height: .5vh !important;
                                                                                     transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
                                                                                 }
-                                
+
                                                                                 &>span {
                                                                                     color: $black !important;
                                                                                 }
@@ -6142,7 +6450,7 @@ html {
 
                     z-index: 1052;
 
-                    & > div {
+                    &>div {
                         position: relative;
                         background: $Gradient;
                         padding: 1.25vh;
@@ -6179,7 +6487,7 @@ html {
                             div {
                                 ul {
                                     height: calc(100% - 6.5vh);
-        
+
                                     li {
                                         margin-bottom: 1.25vh;
 
@@ -6187,7 +6495,7 @@ html {
                                             font-size: 2vh;
                                             color: $white;
                                             transition: all .5s ease-out;
-        
+
                                             &:hover {
                                                 text-shadow: 0 0 .15vh rgba($white, 1);
                                                 text-decoration: underline;
@@ -6246,7 +6554,7 @@ html {
                             align-items: flex-start;
                             width: 50%;
 
-                            
+
                         }
 
                         .modal-content {
@@ -6563,9 +6871,7 @@ html {
 
     body,
     html {
-        .container-fluid {
-            
-        }
+        .container-fluid {}
     }
 }
 
@@ -6573,9 +6879,7 @@ html {
 
     body,
     html {
-        .container-fluid {
-            
-        }
+        .container-fluid {}
     }
 }
 
@@ -6585,9 +6889,7 @@ html {
 
     body,
     html {
-        .container-fluid {
-            
-        }
+        .container-fluid {}
     }
 }
 
@@ -6596,9 +6898,7 @@ html {
 
     body,
     html {
-        .container-fluid {
-
-        }
+        .container-fluid {}
     }
 }
 
@@ -6607,9 +6907,7 @@ html {
 
     body,
     html {
-        .container-fluid {
-            
-        }
+        .container-fluid {}
     }
 }
 
@@ -6617,9 +6915,7 @@ html {
 
     body,
     html {
-        .container-fluid {
-
-        }
+        .container-fluid {}
     }
 }
 
@@ -6629,9 +6925,7 @@ html {
     html {
         font-size: 2.5vw;
 
-        .container-fluid {
-
-        }
+        .container-fluid {}
     }
 }
 
@@ -6639,9 +6933,7 @@ html {
 
     body,
     html {
-        .container-fluid {
-
-        }
+        .container-fluid {}
     }
 }
 
@@ -6650,8 +6942,6 @@ html {
     body,
     html {
 
-        .container-fluid {
-
-        }
+        .container-fluid {}
     }
 }
