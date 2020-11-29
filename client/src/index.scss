@@ -484,7 +484,8 @@ img {
         textarea {
             box-sizing: border-box;
             color: $black;
-            height: calc(100% - 1vh);
+            height: calc(100% - 1vh) !important;
+            min-height: calc(100% - 1vh) !important;
             margin: 1vh 0 0 0;
             padding: .75vh 0 0 0;
             box-shadow: none;
@@ -1625,154 +1626,287 @@ html {
         .first_section_reservation {
             position: relative;
             width: 100%;
-            height: 100%;
+            height: fit-content;
+            min-height: 100vh;
             padding: 0;
             margin: 0 auto;
-            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
 
             .wrapper_full {
-                overflow: hidden;
                 position: relative;
-                height: 100%;
                 width: 100%;
+                height: 100%;
                 padding: 10vh 10vh 2vh 10vh;
+                min-height: 100vh;
+                overflow: hidden;
 
                 display: grid;
                 grid-template-columns: 30% 70%;
+                place-items: stretch;
+                place-content: stretch;
 
                 .leftside {
                     background: $main-color;
-                    box-shadow: inset 0px 0px 25px 0px rgba(0, 0, 0, 0.25)
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 0 1.25vh 0 0;
+                    border-radius: 1px;
+
+                    svg {
+                        width: 100%;
+                        height: 100%;
+
+                        circle {
+                            fill: #fff;
+                        }
+                    }
                 }
 
-                .mail_form {
-                    transition: all .6s ease-out;
-                    height: 100%;
-                    padding: 1.25vh;
-                    background: $white;
+                .rightside {
+                    margin: 0 0 0 1.25vh;
 
                     display: grid;
-                    grid-template-rows: 7.5vh 7.5vh auto 7.5vh;
+                    grid-template-rows: auto 1fr;
 
-                    .row {
-                        margin-right: 0;
-                        margin-left: 0;
-                        margin-bottom: 0;
+                    .avis {
+                        background: $white;
+                        transition: all .6s ease-out;
+                        height: calc(100% - 1.25vh);
+                        padding: 2.5vh;
+                        margin: 0 0 1.25vh 0;
+                        border-radius: 1px;
+                    }
 
-                        &:last-of-type {
-                            button {
-                                position: relative;
-                                -webkit-appearance: none;
-                                border: none;
-                                background: none;
-                                color: $black;
-                                width: 38.5vh;
-                                height: 7.5vh;
-                                font-size: 2.25vh;
-                                margin-bottom: 2.5vh;
+                    .mail_form {
+                        background: $white;
+                        transition: all .6s ease-out;
+                        height: calc(100% - 1.25vh);
+                        padding: 0;
+                        margin: 1.25vh 0 0 0;
+                        border-radius: 1px;
+    
+                        display: grid;
+                        grid-template-rows: calc(7.5vh + 1rem) auto;
+    
+                        .card-header {
+                            margin: 0;
+                            padding: 0.5rem 1.25rem;
+                            background: none;
+    
+                            ul {
+                                display: grid;
+                                grid-template-columns: repeat(2, auto);
+                                justify-content: flex-start;
+                                align-content: stretch;
+                                align-items: center;
+                                grid-gap: 2.5vh;
+    
+                                height: 100%;
+                                width: 100%;
                                 padding: 0;
-                                outline: none;
-                                z-index: 10;
-
-                                span {
-                                    display: block;
+                                margin: 0;
+                                list-style: none;
+    
+                                li {
                                     position: relative;
-                                    line-height: 7.5vh;
                                     height: 100%;
-                                    cursor: pointer;
-                                }
+                                    margin: 0;
+                                    padding: 0;
+                                    transition: all .3s ease-out;
 
-                                &>span {
-                                    &>span {
-                                        padding-left: 0;
-                                        padding-right: 0;
-
-                                        &>span {
-                                            transition: color .15s ease-out .3s;
-                                            color: transparent;
-
-                                            &::after {
-                                                position: absolute;
-                                                top: 0;
-                                                left: 0;
-                                                right: 0;
-                                                bottom: 0;
-                                                color: white;
-                                                content: attr(data-attr-span);
-                                                width: 0;
-                                                height: 100%;
-                                                background: $main-color;
-                                                white-space: nowrap;
-                                                text-align: center;
-                                                margin: auto;
-                                                overflow: hidden;
-                                                display: flex;
-                                                justify-content: center;
-                                                transition: all .2s ease-out;
-                                            }
-                                        }
-
-                                        &::before {
-                                            content: '';
-                                            position: absolute;
-                                            bottom: 0;
-                                            right: 0;
-                                            width: .5vh;
-                                            height: .5vh;
-                                            opacity: 0;
-                                        }
-
-                                        &::after {
-                                            content: '';
-                                            position: absolute;
-                                            bottom: 0;
-                                            left: 0;
-                                            width: .5vh;
-                                            height: .5vh;
-                                            opacity: 0;
-                                        }
+                                    display: flex;
+                                    align-items: center;
+    
+                                    .item {
+                                        display: block;
                                     }
-
-                                    &::before {
-                                        content: '';
-                                        position: absolute;
-                                        top: 0;
-                                        right: 50%;
-                                        width: 3.25vh;
-                                        height: 0;
-                                        border: .5vh solid $main-color;
-                                        border-right: none;
-                                        border-bottom: none;
-
-                                        transition-property: width, height;
-                                        transition-duration: .15s, .15s;
-                                        transition-delay: .15s, 0s;
+    
+                                    &.active {
+                                        &::after {
+                                            width: 100%;
+                                            height: .5vh;
+                                            bottom: -.5rem;
+                                            background: $main-color;
+                                            opacity: .8;
+                                            -ms-filter: none;
+                                            filter: none;
+                                            transform: translateX(0);
+                                        }
                                     }
 
                                     &::after {
+                                        display: block;
                                         content: '';
+                                        width: 100%;
+                                        height: .25vh;
+                                        background: $main-color;
                                         position: absolute;
-                                        top: 0;
-                                        left: 50%;
-                                        width: 3.25vh;
-                                        height: 0;
-                                        border: .5vh solid $main-color;
-                                        border-left: none;
-                                        border-bottom: none;
-
-                                        transition-property: width, height;
-                                        transition-duration: .15s, .15s;
-                                        transition-delay: .15s, 0s;
+                                        bottom: -.5rem;
+                                        opacity: 0;
+                                        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+                                        filter: alpha(opacity=0);
+                                        transform: translateX(100%);
+                                        transition: all .2s ease-out;
+                                    }
+    
+                                    &:hover {
+                                        &:not(.active) {
+                                            &::after {
+                                                opacity: .8;
+                                                filter: none;
+                                                transform: translateX(0);
+                                            }
+                                        }
                                     }
                                 }
+                            }
+                        }
+    
+                        .fieldset {
+                            position: relative;
+                            border: 0 none;
+                            border-radius: 0;
+                            box-sizing: border-box;
+                            width: 90%;
+                            padding: 2.5vh;
+                            margin: 1.25vh 5% 0 5%;
+    
+                            display: grid;
 
-                                &:hover {
+                            &.first-of-type {
+                                grid-template-rows: 7.5vh 7.5vh 7.5vh auto;
+                            }
+    
+                            &.last-of-type {
+                                display: none;
+                                grid-template-rows: 7.5vh 7.5vh 7.5vh 7.5vh auto 7.5vh;
+                            }
+                        }
+    
+                        .row {
+                            margin-right: 0;
+                            margin-left: 0;
+                            margin-bottom: 0;
+    
+                            &:last-of-type {
+                                align-items: flex-end;
 
+                                button {
+                                    position: relative;
+                                    -webkit-appearance: none;
+                                    border: none;
+                                    background: none;
+                                    color: $black;
+                                    width: 38.5vh;
+                                    height: 7.5vh;
+                                    font-size: 2.25vh;
+                                    margin-bottom: 2.5vh;
+                                    padding: 0;
+                                    outline: none;
+                                    z-index: 10;
+    
+                                    span {
+                                        display: block;
+                                        position: relative;
+                                        line-height: 7.5vh;
+                                        height: 100%;
+                                        cursor: pointer;
+                                    }
+    
                                     &>span {
                                         &>span {
+                                            padding-left: 0;
+                                            padding-right: 0;
+    
                                             &>span {
+                                                transition: color .15s ease-out .3s;
+                                                color: transparent;
+    
                                                 &::after {
-                                                    width: 100%;
+                                                    position: absolute;
+                                                    top: 0;
+                                                    left: 0;
+                                                    right: 0;
+                                                    bottom: 0;
+                                                    color: white;
+                                                    content: attr(data-attr-span);
+                                                    width: 0;
+                                                    height: 100%;
+                                                    background: $main-color;
+                                                    white-space: nowrap;
+                                                    text-align: center;
+                                                    margin: auto;
+                                                    overflow: hidden;
+                                                    display: flex;
+                                                    justify-content: center;
+                                                    transition: all .2s ease-out;
+                                                }
+                                            }
+    
+                                            &::before {
+                                                content: '';
+                                                position: absolute;
+                                                bottom: 0;
+                                                right: 0;
+                                                width: .5vh;
+                                                height: .5vh;
+                                                opacity: 0;
+                                            }
+    
+                                            &::after {
+                                                content: '';
+                                                position: absolute;
+                                                bottom: 0;
+                                                left: 0;
+                                                width: .5vh;
+                                                height: .5vh;
+                                                opacity: 0;
+                                            }
+                                        }
+    
+                                        &::before {
+                                            content: '';
+                                            position: absolute;
+                                            top: 0;
+                                            right: 50%;
+                                            width: 3.25vh;
+                                            height: 0;
+                                            border: .5vh solid $main-color;
+                                            border-right: none;
+                                            border-bottom: none;
+    
+                                            transition-property: width, height;
+                                            transition-duration: .15s, .15s;
+                                            transition-delay: .15s, 0s;
+                                        }
+    
+                                        &::after {
+                                            content: '';
+                                            position: absolute;
+                                            top: 0;
+                                            left: 50%;
+                                            width: 3.25vh;
+                                            height: 0;
+                                            border: .5vh solid $main-color;
+                                            border-left: none;
+                                            border-bottom: none;
+    
+                                            transition-property: width, height;
+                                            transition-duration: .15s, .15s;
+                                            transition-delay: .15s, 0s;
+                                        }
+                                    }
+    
+                                    &:hover {
+    
+                                        &>span {
+                                            &>span {
+                                                &>span {
+                                                    &::after {
+                                                        width: 100%;
+                                                    }
                                                 }
                                             }
                                         }
@@ -1780,42 +1914,42 @@ html {
                                 }
                             }
                         }
-                    }
-
-                    &:hover {
-                        button {
-                            &>span {
-                                &::after {
-                                    width: 50% !important;
-                                    height: 100% !important;
-                                    transition-delay: 0s, .15s !important;
-                                }
-
-                                &::before {
-                                    width: 50% !important;
-                                    height: 100% !important;
-                                    transition-delay: 0s, .15s !important;
-                                }
-
+    
+                        &:hover {
+                            button {
                                 &>span {
                                     &::after {
-                                        opacity: 1 !important;
-                                        border-bottom: .5vh solid $main-color !important;
-                                        width: calc(50%) !important;
-                                        height: .5vh !important;
-                                        transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
+                                        width: 50% !important;
+                                        height: 100% !important;
+                                        transition-delay: 0s, .15s !important;
                                     }
-
+    
                                     &::before {
-                                        opacity: 1 !important;
-                                        border-bottom: .5vh solid $main-color !important;
-                                        width: calc(50%) !important;
-                                        height: .5vh !important;
-                                        transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
+                                        width: 50% !important;
+                                        height: 100% !important;
+                                        transition-delay: 0s, .15s !important;
                                     }
-
+    
                                     &>span {
-                                        color: $black !important;
+                                        &::after {
+                                            opacity: 1 !important;
+                                            border-bottom: .5vh solid $main-color !important;
+                                            width: calc(50%) !important;
+                                            height: .5vh !important;
+                                            transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
+                                        }
+    
+                                        &::before {
+                                            opacity: 1 !important;
+                                            border-bottom: .5vh solid $main-color !important;
+                                            width: calc(50%) !important;
+                                            height: .5vh !important;
+                                            transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
+                                        }
+    
+                                        &>span {
+                                            color: $black !important;
+                                        }
                                     }
                                 }
                             }
@@ -2007,7 +2141,6 @@ html {
             }
         }
 
-
         .first_section_dashboard {
             position: relative;
             width: 100%;
@@ -2035,14 +2168,14 @@ html {
                         .logoHolder {
                             width: 10vh;
                             height: 10vh;
-                            transform: scale(.8);
 
                             img {
-                                height: 100%;
+                                height: -webkit-fill-available;
+                                padding: 0.5vh
                             }
                         }
 
-                        .settings_dashboard {
+                        .menu_dashboard {
                             display: flex;
                             flex: 1;
                             flex-direction: column;
@@ -2108,512 +2241,6 @@ html {
 
                         &:hover {
                             clip-path: inset(0 0 0 0);
-                        }
-                    }
-
-                    &.right_nav {
-                        position: fixed;
-                        right: 0;
-                        margin: 0;
-                        width: 22.5%;
-                        height: 100vh;
-                        z-index: 9998;
-                        background-color: $white;
-
-
-                        .nav_header {
-                            display: flex;
-                            justify-content: space-between;
-                        }
-
-                        .card {
-                            position: relative;
-                            width: calc(100% - 2.5vh);
-                            margin: 1.25vh;
-                            height: fit-content;
-                            border: none;
-                            border-radius: 0;
-                            background: transparent;
-                            box-shadow: 0px 0px 10px -5px rgba(255, 255, 255, 0.25);
-
-                            &__content {
-                                height: fit-content;
-                                width: 100%;
-
-                                ._pane {
-                                    height: fit-content;
-                                    width: 100%;
-                                    padding: 1.25vh .25vh;
-
-                                    ._calendar_content {
-                                        color: $black;
-
-                                        .icon {
-                                            font-family: 'Material Icons', serif;
-                                            font-style: normal;
-                                            display: inline-block;
-                                            vertical-align: middle;
-                                            line-height: 1;
-                                            text-transform: none;
-                                            letter-spacing: normal;
-                                            word-wrap: normal;
-                                            white-space: nowrap;
-                                            direction: ltr;
-
-                                            -webkit-font-smoothing: antialiased;
-                                            text-rendering: optimizeLegibility;
-                                            -moz-osx-font-smoothing: grayscale;
-                                            font-feature-settings: 'liga';
-                                        }
-
-                                        * {
-                                            box-sizing: border-box;
-                                        }
-
-                                        /* GRID */
-                                        .row {
-                                            margin: 0;
-                                            padding: 0;
-                                            display: flex;
-                                            flex-direction: row;
-                                            flex-wrap: wrap;
-                                            align-items: center;
-                                            width: 100%;
-                                        }
-
-                                        .row-middle {
-                                            align-items: center;
-                                        }
-
-                                        .col {
-                                            flex-grow: 1;
-                                            flex-basis: calc(100%/7);
-                                            max-width: 100%;
-                                            width: calc(100%/7);
-                                        }
-
-                                        .col-start {
-                                            display: flex;
-                                            justify-content: flex-start;
-                                            align-items: center;
-                                            text-align: left;
-                                            flex-grow: 9;
-
-                                            .calendar_icon_div {
-                                                position: relative;
-                                                float: left;
-                                                font-size: 2vh;
-                                                margin-right: 2vh;
-
-                                                .calendar_icon {
-                                                    background: #ccc;
-                                                    text-align: center;
-
-                                                    border-radius: .5vh;
-
-                                                    padding-top: .75vh;
-                                                    width: 7.5vh;
-                                                    height: 6.5vh;
-
-                                                    display: flex;
-                                                    flex-direction: column;
-
-                                                    margin: 0;
-
-                                                    .a {
-                                                        text-transform: uppercase;
-                                                        padding: .3vh .5vh 0 .5vh;
-                                                    }
-
-                                                    .b {
-                                                        background: #ccc;
-                                                        padding: 0 .5vh .3vh .5vh;
-                                                        border-radius: .5vh;
-
-                                                        &::before,
-                                                        &::after {
-                                                            content: '';
-                                                            float: left;
-                                                            position: absolute;
-                                                            top: -.6vh;
-                                                            width: .5vh;
-                                                            height: .5vh;
-                                                            background: #ccc;
-
-                                                            z-index: 2;
-
-                                                            border-radius: .5vh;
-                                                        }
-
-                                                        &:before {
-                                                            left: 1.15vh;
-                                                        }
-
-                                                        &:after {
-                                                            right: 1.15vh;
-                                                        }
-                                                    }
-
-                                                    &::before,
-                                                    &::after {
-                                                        content: '';
-                                                        float: left;
-                                                        position: absolute;
-                                                        top: .5vh;
-                                                        width: 1vh;
-                                                        height: 1vh;
-                                                        background: #f9f9f9;
-                                                        z-index: 1;
-                                                        border-radius: 100%;
-                                                        box-shadow: 0 .15vh .15vh #fff;
-                                                    }
-
-                                                    &:before {
-                                                        left: 1vh;
-                                                    }
-
-                                                    &:after {
-                                                        right: 1vh;
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        .col-center {
-                                            justify-content: center;
-                                            text-align: center;
-                                        }
-
-                                        .col-end {
-                                            justify-content: flex-end;
-                                            text-align: right;
-                                            z-index: 9999;
-                                        }
-
-                                        /* Calendar */
-                                        .calendar {
-                                            display: block;
-                                            position: relative;
-                                            width: 100%;
-                                            margin: auto;
-
-                                            .header {
-                                                font-weight: 500;
-                                                font-size: 1rem;
-                                                padding: 0;
-                                                margin: 0;
-
-                                                .icon {
-                                                    cursor: pointer;
-                                                    transition: all .15s ease-out;
-                                                    color: $purple;
-
-                                                    &:hover {
-                                                        transform: scale(1.05);
-                                                        transition: all .05s ease-out;
-                                                        color: $main-color;
-                                                    }
-
-                                                    &:first-of-type {
-                                                        margin-left: 1em;
-                                                    }
-
-                                                    &:last-of-type {
-                                                        margin-right: 1em;
-                                                    }
-                                                }
-                                            }
-
-                                            .days {
-                                                font-weight: 400;
-                                                color: $text-color-light;
-                                                font-size: 70%;
-                                                padding: .75em 0;
-                                                border-bottom: .15vh solid $border-color2;
-                                            }
-
-                                            .body {
-                                                .cell {
-                                                    position: relative;
-                                                    height: 5vh;
-                                                    overflow: hidden;
-                                                    cursor: pointer;
-                                                    transition: all .25s ease-out;
-                                                    text-align: center;
-
-                                                    &:hover {
-                                                        background: $bg-color;
-                                                        transition: all .5s ease-out;
-
-                                                        .bg {
-                                                            opacity: .05;
-                                                            transition: all .5s ease-out;
-                                                        }
-                                                    }
-
-                                                    &:last-child {
-                                                        border-right: none;
-                                                    }
-
-                                                    .number {
-                                                        font-size: 82.5%;
-                                                        line-height: 1;
-                                                        font-weight: 700;
-                                                    }
-
-                                                    .bg {
-                                                        font-weight: 700;
-                                                        line-height: 1;
-                                                        color: $main-color;
-                                                        opacity: 0;
-                                                        font-size: 12vh;
-                                                        position: absolute;
-                                                        top: -.2em;
-                                                        right: -.05em;
-                                                        transition: all .25s ease-out;
-                                                        letter-spacing: -.07em;
-                                                    }
-                                                }
-
-                                                .selected {
-                                                    &::before {
-                                                        content: "";
-                                                        position: absolute;
-                                                        top: 50%;
-                                                        left: 50%;
-                                                        transform: translate(-50%, 100%);
-                                                        height: 1.25vh;
-                                                        width: 1.25vh;
-                                                        background-color: $main-color;
-                                                        border-radius: 50%;
-                                                        display: inline-block;
-                                                        z-index: -1;
-                                                    }
-
-                                                    .bg {
-                                                        opacity: .15;
-                                                        transition: all .5s ease-out;
-                                                    }
-                                                }
-
-                                                .notification {
-                                                    &::before {
-                                                        content: "";
-                                                        position: absolute;
-                                                        top: 100%;
-                                                        left: 50%;
-                                                        transform: translate(-50%, -120%);
-                                                        height: 1.25vh;
-                                                        width: 1.25vh;
-                                                        background-color: $green;
-                                                        border-radius: 50%;
-                                                        display: inline-block;
-                                                    }
-
-                                                    .bg {
-                                                        opacity: .15;
-                                                        transition: all .5s ease-out;
-                                                    }
-                                                }
-
-                                                .row {
-                                                    &:last-child {
-                                                        border-bottom: none;
-                                                    }
-                                                }
-
-                                                .disabled {
-                                                    color: $text-color-light;
-                                                    pointer-events: none;
-                                                }
-
-                                                .col {
-                                                    flex-grow: 0;
-                                                    flex-basis: calc(100%/7);
-                                                    width: calc(100%/7);
-                                                    display: flex;
-                                                    align-items: center;
-                                                    justify-content: center;
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    ._byPopularity_content {
-                                        position: relative;
-                                        padding: 2.5vh;
-                                        height: 100%;
-                                        width: 100%;
-
-                                        display: grid;
-                                        grid-template-rows: 30% 70%;
-
-
-                                        .canvas_header {
-                                            h6 {
-                                                color: $white;
-                                            }
-                                        }
-
-                                        canvas {
-                                            width: 40%;
-                                        }
-
-                                        .description {
-                                            position: absolute;
-                                            top: 65%;
-                                            left: 50%;
-                                            transform: translate(-50%, -50%);
-                                            font-size: 3vh;
-                                            color: $white;
-                                        }
-                                    }
-                                }
-                            }
-
-                            &._main {
-                                flex: 1;
-
-                                .header_text {
-                                    margin: 4vh 1.75vh 1.75vh 1.75vh;
-                                    text-align: center;
-
-                                    span {
-                                        font-size: 1.5vh;
-                                        border: .15vh solid #ddd;
-                                        background: $main-color;
-                                        color: white;
-                                        display: inline-block;
-                                        padding: .75vh;
-                                        margin: 0 1.25vh 0 0;
-                                        border-radius: .75vh;
-                                        height: fit-content;
-
-                                        p {
-                                            margin-bottom: 0;
-                                        }
-                                    }
-
-                                    h5 {
-                                        font-size: 3.75vh;
-                                        margin: 0;
-                                        margin-top: 1.25vh;
-                                        color: $black;
-                                    }
-
-                                    h6 {
-                                        font-size: 1.75vh;
-                                        margin: 0;
-                                        color: rgba($color: $black, $alpha: 0.5);
-                                    }
-                                }
-
-                                .latest_notifications {
-                                    position: relative;
-                                    margin-top: auto;
-
-                                    .notifications_list {
-                                        li {
-                                            display: flex;
-                                            align-items: center;
-                                            margin: auto 1.25vh 1.25vh 1.25vh;
-                                            padding: 1.25vh;
-                                            background: lighten($color: $Gradient, $amount: 40);
-                                            border-radius: 0;
-                                            font-size: 2vh;
-
-                                            .New {
-                                                font-size: 1.5vh;
-                                                border: .15vh solid #ddd;
-                                                background: $main-color;
-                                                color: white;
-                                                display: inline-block;
-                                                padding: .75vh;
-                                                margin: 0 1.25vh 0 0;
-                                                border-radius: .75vh;
-                                                height: fit-content;
-                                            }
-
-                                            span {
-                                                display: flex;
-                                                flex-direction: column;
-
-                                                p {
-                                                    margin: 0;
-
-                                                    &.Date {
-                                                        font-weight: bold;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                .user_analytics {
-                                    position: relative;
-                                    margin: 2.5vh 1.25vh 0 1.25vh;
-                                    padding: 1.25vh 1.25vh 5vh 1.25vh;
-                                    border-radius: 0;
-
-                                    display: grid;
-                                    grid-template-columns: repeat(3, 1fr);
-
-                                    &::after {
-                                        position: absolute;
-                                        content: '';
-                                        width: 100%;
-                                        height: 1px;
-                                        bottom: 0;
-                                        background: rgba($color: $black, $alpha: 0.2);
-                                    }
-
-                                    &>div {
-                                        display: flex;
-                                        flex-direction: column;
-                                        align-items: center;
-
-                                        span {
-
-                                            &:first-of-type {
-                                                font-weight: bold;
-                                                font-size: 2.75vh;
-                                            }
-
-                                            &:last-of-type {
-                                                font-weight: normal;
-                                                font-size: 1.75vh;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            /* .timeanddatenow {
-                                position: absolute;
-                                width: 100%;
-                                right: 0;
-                                margin: 2.5vh;
-
-                                .datenow {
-                                    color: rgba(0, 0, 0, .5);
-                                    text-align: center;
-                                    line-height: 1;
-                                    font-size: 1.25em;
-                                    font-weight: bold;
-                                }
-                            } */
-                        }
-
-                        .copyright {
-                            color: $black;
-                            font-size: 1.6vh;
-                            margin: 1.25vh;
-
-                            i {
-                                margin-right: .75vh;
-                                margin-left: .75vh;
-                            }
                         }
                     }
                 }

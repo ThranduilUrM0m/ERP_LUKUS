@@ -14,6 +14,7 @@ import * as $ from "jquery";
 import jQuery from 'jquery';
 import 'bootstrap';
 import socketIOClient from "socket.io-client";
+import favicon from '../../favicon.svg';
 
 const socketURL =
     process.env.NODE_ENV === 'production'
@@ -28,7 +29,7 @@ class Dashboard extends React.Component {
         super(props);
 
         this.state = {
-            modal_msg: ''
+            modal_msg: '',
         };
 
         this.disconnect = this.disconnect.bind(this);
@@ -230,34 +231,48 @@ class Dashboard extends React.Component {
                         <div className="wrapper_full">
                             <div className="nav nav-pills flex-column left_nav">
                                 <a className="logoHolder" href="/">
-                                    <img className="logo img-fluid" src="#" alt="APP_NAME" />
+                                    <img className="logo img-fluid" src={favicon} alt="APP_NAME" />
                                 </a>
-                                <ul className="settings_dashboard">
-                                    <li><a href="#1a" className="nav_link active" data-toggle="tab"><i className="fas fa-th-large"></i>Dashboard</a></li>
-                                    <li><a href="#3a" className="nav_link" data-toggle="tab"><i className="far fa-bell"></i>Notifications</a></li>
-                                    <li><a href="#4a" className="nav_link" data-toggle="tab"><i className="fas fa-chart-line"></i>Analytics</a></li>
-                                    <li><a href="#2a" className="nav_link" data-toggle="tab"><i className="fas fa-sliders-h"></i>Settings</a></li>
+                                <ul className="menu_dashboard">
+                                    <li><a href="#1a" className="nav_link active" data-toggle="tab"><i className="fas fa-home"></i>Accueil</a></li>
+                                    <li><a href="#2a" className="nav_link" data-toggle="tab"><i className="fas fa-money-check-alt"></i>Finance</a></li>
+                                    <li><a href="#3a" className="nav_link" data-toggle="tab"><i className="far fa-id-badge"></i>Personnel</a></li>
+                                    <li><a href="#4a" className="nav_link" data-toggle="tab"><i className="fas fa-user-tie"></i>Clients</a></li>
+                                    <li><a href="#5a" className="nav_link" data-toggle="tab"><i className="far fa-address-book"></i>Fournisseurs</a></li>
+                                    <li><a href="#6a" className="nav_link" data-toggle="tab"><i className="fas fa-car-side"></i>Vehicules</a></li>
+                                    <li><a href="#7a" className="nav_link" data-toggle="tab"><i className="far fa-calendar-check"></i>Reservations</a></li>
+                                    <li><a href="#8a" className="nav_link" data-toggle="tab"><i className="fas fa-suitcase-rolling"></i>Voyages</a></li>
+                                    <li><a href="#9a" className="nav_link" data-toggle="tab"><i className="fas fa-people-carry"></i>Stock</a></li>
                                     <li><a href="# " className="nav_link logout" onClick={() => this.disconnect()}><i className="fas fa-sign-out-alt"></i>Logout.</a></li>
                                 </ul>
                             </div>
-                            <div className="nav nav-pills flex-column right_nav">
-                                <div className="copyright">
-                                    <i className="far fa-copyright"></i>
-                                    <span>{moment().format('YYYY')}</span> - With <i className="fas fa-heart"></i> from Zakariae boutaleb.
-                                </div>
-                            </div>
-
+                            
                             <div className="tab-content clearfix">
-                                <div className="dashboard_pane tab-pane active" id="1a">
+                                <div className="home_pane tab-pane active" id="1a">
                                     
                                 </div>
-                                <div className="settings_pane tab-pane" id="2a">
+                                <div className="finance_pane tab-pane" id="2a">
                                     
                                 </div>
-                                <div className="notifications_pane tab-pane" id="3a">
+                                <div className="personnel_pane tab-pane" id="3a">
 
                                 </div>
-                                <div className="analytics_pane tab-pane" id="4a">
+                                <div className="clients_pane tab-pane" id="4a">
+                                    
+                                </div>
+                                <div className="fournisseurs_pane tab-pane" id="4a">
+                                    
+                                </div>
+                                <div className="vehicules_pane tab-pane" id="4a">
+                                    
+                                </div>
+                                <div className="reservations_pane tab-pane" id="4a">
+                                    
+                                </div>
+                                <div className="voyages_pane tab-pane" id="4a">
+                                    
+                                </div>
+                                <div className="stocks_pane tab-pane" id="4a">
                                     
                                 </div>
                             </div>

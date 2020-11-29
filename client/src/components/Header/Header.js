@@ -38,6 +38,10 @@ class Header extends React.Component {
         }
         window.addEventListener("resize", displayWindowSize);
         displayWindowSize();
+
+        let _url = window.location.pathname;
+        if(_url === "/login" || _url === "/signup" || _url === "/dashboard")
+            $('header').hide();
     }
     render() {
         const { logo_to_show } = this.state;
