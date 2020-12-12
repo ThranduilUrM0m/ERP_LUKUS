@@ -18,30 +18,30 @@ const setupWorkerProcesses = () => {
 
     // iterate on number of cores need to be utilized by an application
     // current example will utilize all of them
-    for(let i = 0; i < numCores; i++) {
+    for (let i = 0; i < numCores; i++) {
         // creating workers and pushing reference in an array
         // these references can be used to receive messages from workers
         workers.push(cluster.fork());
 
         // to receive messages from worker process
-        workers[i].on('message', function(message) {
+        workers[i].on('message', function (message) {
             console.log(message);
         });
     }
 
     // process is clustered on a core and process id is assigned
-    cluster.on('online', function(worker) {
+    cluster.on('online', function (worker) {
         console.log('Worker ' + worker.process.pid + ' is listening');
     });
 
     // if any of the worker process dies then start a new one by simply forking another one
-    cluster.on('exit', function(worker, code, signal) {
+    cluster.on('exit', function (worker, code, signal) {
         console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
         console.log('Starting a new worker');
         cluster.fork();
         workers.push(cluster.fork());
         // to receive messages from worker process
-        workers[workers.length-1].on('message', function(message) {
+        workers[workers.length - 1].on('message', function (message) {
             console.log(message);
         });
     });
@@ -86,8 +86,8 @@ const setUpExpress = () => {
     mongoose.set('debug', true);
 
     var db = mongoose.connection;
-    db.on('error', ()=> {console.log( '---FAILED to connect to mongoose')});
-    db.once('open', () => {console.log( '+++Connected to mongoose')});
+    db.on('error', () => { console.log('---FAILED to connect to mongoose') });
+    db.once('open', () => { console.log('+++Connected to mongoose') });
 
     app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
     app.use(bodyParser.json({ limit: '50mb' }));
@@ -106,9 +106,9 @@ const setUpExpress = () => {
     /*React root*/
     if (process.env.NODE_ENV === 'production') {
         app.use(express.static('client/build'));
-    
+
         const path = require('path');
-        app.get('*', (req,res) => {
+        app.get('*', (req, res) => {
             res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
         })
     }
@@ -122,11 +122,26 @@ const setUpExpress = () => {
     //This creates our socket using the instance of the server
     const io = socketIO(server);
 
-    const types = [];
-    io.on('connection', function(socket){
+    const types = [
+        'VEHICULE_PAGE_LOADED',
+        'USER_PAGE_LOADED',
+        'SET_EDIT_USER'
+    ];
+    io.on('connection', function (socket) {
 
         socket.on('action', (action) => {
-            
+            if(!types.includes(action.type)) {
+                if(action.type == 'SUBMIT_VEHICULE' || action.type == 'DELETE_VEHICULE' || action.type == 'EDIT_VEHICULE') {
+                    db.collection("vehicules").find({}).toArray(function(err, docs){
+                        io.sockets.emit('action', { type:'VEHICULE_PAGE_LOADED', data: { _vehicules: docs} });
+                    });
+                    console.log('/*****************'+(action.type).toUpperCase()+' ACTION FIRED*****************/');
+                }
+            }
+        });
+        socket.on('USER_UPDATED', (data) => {
+            console.log('/*****************USER_UPDATED*****************/');
+            io.sockets.emit('USER_UPDATED_GET', 'GET_USERS' );
         });
 
         socket.on('disconnect', () => {
@@ -147,7 +162,7 @@ const setUpExpress = () => {
 const setupServer = (isClusterRequired) => {
 
     // if it is a master process then call setting up worker process
-    if(isClusterRequired && cluster.isMaster) {
+    if (isClusterRequired && cluster.isMaster) {
         setupWorkerProcesses();
     } else {
         // to setup server configurations and share port address for incoming requests

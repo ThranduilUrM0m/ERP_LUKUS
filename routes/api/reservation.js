@@ -4,7 +4,7 @@ const Reservation = mongoose.model('Reservation');
 
 router.post('/', (req, res, next) => {
   const { body } = req;
-
+  
   if(!body._reservation_nombreadultes) {
     return res.status(422).json({
       errors: {
@@ -12,7 +12,7 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
+  
   if(!body._reservation_nombreenfants) {
     return res.status(422).json({
       errors: {
@@ -20,7 +20,7 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
+  
   if(!body._reservation_datereservation) {
     return res.status(422).json({
       errors: {
@@ -28,15 +28,7 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
-  if(!body._reservation_commentaire) {
-    return res.status(422).json({
-      errors: {
-        _reservation_commentaire: 'is required',
-      },
-    });
-  }
-
+  
   if(!body.Voyage) {
     return res.status(422).json({
       errors: {
@@ -44,7 +36,7 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
+  
   if(!body.Client) {
     return res.status(422).json({
       errors: {
@@ -52,7 +44,7 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
+  
   const finalReservation = new Reservation(body);
   return finalReservation.save()
     .then(() => {
@@ -98,10 +90,6 @@ router.patch('/:id', (req, res, next) => {
 
   if(typeof body._reservation_datereservation !== 'undefined') {
     req.reservation._reservation_datereservation = body._reservation_datereservation;
-  }
-
-  if(typeof body._reservation_commentaire !== 'undefined') {
-    req.reservation._reservation_commentaire = body._reservation_commentaire;
   }
 
   if(typeof body.Voyage !== 'undefined') {

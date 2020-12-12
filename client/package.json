@@ -49,11 +49,13 @@
     "react-ga": "*",
     "react-live-clock": "*",
     "react-moment": "^0.9.7",
+    "react-phone-number-input": "^3.1.8",
     "react-quill": "*",
     "react-redux": "*",
     "react-router": "*",
     "react-router-dom": "*",
     "react-scripts": "*",
+    "react-select": "*",
     "react-share": "*",
     "redux": "*",
     "redux-socket.io": "*",
@@ -62,7 +64,8 @@
     "serve": "*",
     "socket.io-client": "*",
     "swiper": "*",
-    "underscore": "*"
+    "underscore": "*",
+    "validator": "*"
   },
   "scripts": {
     "start": "react-scripts start",

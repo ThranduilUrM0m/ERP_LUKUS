@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+
 const Reservation = new Schema({
   _reservation_nombreadultes: {
     type: Number
@@ -13,11 +14,14 @@ const Reservation = new Schema({
   _reservation_commentaire: {
     type: String
   },
-  Voyage: [{
+  _reservation_status: {
+    type: String
+  },
+  Voyage: {
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'Voyage'
-  }],
+  },
   Client: {
     type: Schema.Types.ObjectId,
     required: true,

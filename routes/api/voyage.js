@@ -36,23 +36,7 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
-  if(!body._voyage_statut) {
-    return res.status(422).json({
-      errors: {
-        _voyage_statut: 'is required',
-      },
-    });
-  }
-
-  if(!body.Passager) {
-    return res.status(422).json({
-      errors: {
-        Passager: 'is required',
-      },
-    });
-  }
-
+  
   if(!body.Vehicule) {
     return res.status(422).json({
       errors: {
@@ -110,14 +94,6 @@ router.patch('/:id', (req, res, next) => {
 
   if(typeof body._voyage_lieuarrive !== 'undefined') {
     req.voyage._voyage_lieuarrive = body._voyage_lieuarrive;
-  }
-
-  if(typeof body._voyage_statut !== 'undefined') {
-    req.voyage._voyage_statut = body._voyage_statut;
-  }
-
-  if(typeof body.Passager !== 'undefined') {
-    req.voyage.Passager = body.Passager;
   }
 
   if(typeof body.Vehicule !== 'undefined') {

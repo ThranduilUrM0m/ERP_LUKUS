@@ -12,7 +12,7 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
+  
   if(!body._client_nomcontact) {
     return res.status(422).json({
       errors: {
@@ -20,15 +20,7 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
-  if(!body._client_raison) {
-    return res.status(422).json({
-      errors: {
-        _client_raison: 'is required',
-      },
-    });
-  }
-
+  
   if(!body._client_adresse) {
     return res.status(422).json({
       errors: {
@@ -36,7 +28,7 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
+  
   if(!body._client_telephone) {
     return res.status(422).json({
       errors: {
@@ -44,7 +36,7 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
+  
   if(!body._client_email) {
     return res.status(422).json({
       errors: {
@@ -52,7 +44,7 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
+  
   if(!body._client_ville) {
     return res.status(422).json({
       errors: {
@@ -60,51 +52,11 @@ router.post('/', (req, res, next) => {
       },
     });
   }
-
+  
   if(!body._client_pays) {
     return res.status(422).json({
       errors: {
         _client_pays: 'is required',
-      },
-    });
-  }
-
-  if(!body._client_ICE) {
-    return res.status(422).json({
-      errors: {
-        _client_ICE: 'is required',
-      },
-    });
-  }
-
-  if(!body._client_IF) {
-    return res.status(422).json({
-      errors: {
-        _client_IF: 'is required',
-      },
-    });
-  }
-
-  if(!body._client_RC) {
-    return res.status(422).json({
-      errors: {
-        _client_RC: 'is required',
-      },
-    });
-  }
-
-  if(!body._client_patente) {
-    return res.status(422).json({
-      errors: {
-        _client_patente: 'is required',
-      },
-    });
-  }
-
-  if(!body._client_contrat) {
-    return res.status(422).json({
-      errors: {
-        _client_contratj: 'is required',
       },
     });
   }
@@ -152,10 +104,6 @@ router.patch('/:id', (req, res, next) => {
     req.client._client_nomcontact = body._client_nomcontact;
   }
 
-  if(typeof body._client_raison !== 'undefined') {
-    req.client._client_raison = body._client_raison;
-  }
-
   if(typeof body._client_adresse !== 'undefined') {
     req.client._client_adresse = body._client_adresse;
   }
@@ -174,26 +122,6 @@ router.patch('/:id', (req, res, next) => {
 
   if(typeof body._client_pays !== 'undefined') {
     req.client._client_pays = body._client_pays;
-  }
-
-  if(typeof body._client_ICE !== 'undefined') {
-    req.client._client_ICE = body._client_ICE;
-  }
-
-  if(typeof body._client_IF !== 'undefined') {
-    req.client._client_IF = body._client_IF;
-  }
-
-  if(typeof body._client_RC !== 'undefined') {
-    req.client._client_RC = body._client_RC;
-  }
-
-  if(typeof body._client_patente !== 'undefined') {
-    req.client._client_patente = body._client_patente;
-  }
-
-  if(typeof body._client_contrat !== 'undefined') {
-    req.client._client_contrat = body._client_contrat;
   }
   
   return req.client.save()

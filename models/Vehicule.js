@@ -28,6 +28,9 @@ const Vehicule = new Schema({
   _vehicule_volumereservoir: {
     type: Schema.Types.Decimal128
   },
+  _vehicule_image: {
+    type: String
+  },
   _vehicule_assurance: {
     _vehicule_assurance_entrepriseassurance: {
       type: String
@@ -205,7 +208,7 @@ const Vehicule = new Schema({
     _vehicule_visitetechnique_image: {
       type: String
     }
-  }]
+  }],
 }, { timestamps: true });
 
 mongoose.model('Vehicule', Vehicule);

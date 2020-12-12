@@ -77,10 +77,10 @@ router.post('/', (req, res, next) => {
     });
   }
 
-  if(!body._vehicule_assurance) {
+  if(!body._vehicule_image) {
     return res.status(422).json({
       errors: {
-        _vehicule_assurance: 'is required',
+        _vehicule_image: 'is required',
       },
     });
   }
@@ -133,26 +133,10 @@ router.post('/', (req, res, next) => {
     });
   }
 
-  if(!body._vehicule_recharge) {
-    return res.status(422).json({
-      errors: {
-        _vehicule_recharge: 'is required',
-      },
-    });
-  }
-
   if(!body._vehicule_kmparvidange) {
     return res.status(422).json({
       errors: {
         _vehicule_kmparvidange: 'is required',
-      },
-    });
-  }
-
-  if(!body._vehicule_vidange) {
-    return res.status(422).json({
-      errors: {
-        _vehicule_vidange: 'is required',
       },
     });
   }
@@ -165,10 +149,10 @@ router.post('/', (req, res, next) => {
     });
   }
 
-  if(!body._vehicule_visitetechnique) {
+  if(!body._vehicule_assurance) {
     return res.status(422).json({
       errors: {
-        _vehicule_visitetechnique: 'is required',
+        _vehicule_assurance: 'is required',
       },
     });
   }
@@ -176,7 +160,7 @@ router.post('/', (req, res, next) => {
   const finalVehicule = new Vehicule(body);
   return finalVehicule.save()
     .then(() => {
-      res.json({ vehicule: finalVehicule.toJSON() });
+      res.json({ _vehicule: finalVehicule.toJSON() });
     })
     .catch(next);
 });
@@ -184,16 +168,16 @@ router.post('/', (req, res, next) => {
 router.get('/', (req, res, next) => {
   return Vehicule.find()
     .sort({ createdAt: 'descending' })
-    .then((vehicules) => res.json({ vehicules: vehicules.map(vehicule => vehicule.toJSON()) }))
+    .then((_vehicules) => res.json({ _vehicules: _vehicules.map(_vehicule => _vehicule.toJSON()) }))
     .catch(next);
 });
 
 router.param('id', (req, res, next, id) => {
-  return Vehicule.findById(id, (err, vehicule) => {
+  return Vehicule.findById(id, (err, _vehicule) => {
     if(err) {
       return res.sendStatus(404);
-    } else if(vehicule) {
-      req.vehicule = vehicule;
+    } else if(_vehicule) {
+      req._vehicule = _vehicule;
       return next();
     }
   }).catch(next);
@@ -201,7 +185,7 @@ router.param('id', (req, res, next, id) => {
 
 router.get('/:id', (req, res, next) => {
   return res.json({
-    vehicule: req.vehicule.toJSON(),
+    _vehicule: req._vehicule.toJSON(),
   });
 });
 
@@ -209,91 +193,83 @@ router.patch('/:id', (req, res, next) => {
   const { body } = req;
 
   if(typeof body._vehicule_numerochassis !== 'undefined') {
-    req.vehicule._vehicule_numerochassis = body._vehicule_numerochassis;
+    req._vehicule._vehicule_numerochassis = body._vehicule_numerochassis;
   }
 
   if(typeof body._vehicule_datefabrication !== 'undefined') {
-    req.vehicule._vehicule_datefabrication = body._vehicule_datefabrication;
+    req._vehicule._vehicule_datefabrication = body._vehicule_datefabrication;
   }
 
   if(typeof body._vehicule_model !== 'undefined') {
-    req.vehicule._vehicule_model = body._vehicule_model;
+    req._vehicule._vehicule_model = body._vehicule_model;
   }
 
   if(typeof body._vehicule_numeroregistration !== 'undefined') {
-    req.vehicule._vehicule_numeroregistration = body._vehicule_numeroregistration;
+    req._vehicule._vehicule_numeroregistration = body._vehicule_numeroregistration;
   }
 
   if(typeof body._vehicule_marque !== 'undefined') {
-    req.vehicule._vehicule_marque = body._vehicule_marque;
+    req._vehicule._vehicule_marque = body._vehicule_marque;
   }
 
   if(typeof body._vehicule_fabricant !== 'undefined') {
-    req.vehicule._vehicule_fabricant = body._vehicule_fabricant;
+    req._vehicule._vehicule_fabricant = body._vehicule_fabricant;
   }
 
   if(typeof body._vehicule_moteur !== 'undefined') {
-    req.vehicule._vehicule_moteur = body._vehicule_moteur;
+    req._vehicule._vehicule_moteur = body._vehicule_moteur;
   }
 
   if(typeof body._vehicule_poidsavide !== 'undefined') {
-    req.vehicule._vehicule_poidsavide = body._vehicule_poidsavide;
+    req._vehicule._vehicule_poidsavide = body._vehicule_poidsavide;
   }
 
   if(typeof body._vehicule_volumereservoir !== 'undefined') {
-    req.vehicule._vehicule_volumereservoir = body._vehicule_volumereservoir;
+    req._vehicule._vehicule_volumereservoir = body._vehicule_volumereservoir;
   }
 
-  if(typeof body._vehicule_assurance !== 'undefined') {
-    req.vehicule._vehicule_assurance = body._vehicule_assurance;
+  if(typeof body._vehicule_image !== 'undefined') {
+    req._vehicule._vehicule_image = body._vehicule_image;
   }
 
   if(typeof body._vehicule_carteautorisation !== 'undefined') {
-    req.vehicule._vehicule_carteautorisation = body._vehicule_carteautorisation;
+    req._vehicule._vehicule_carteautorisation = body._vehicule_carteautorisation;
   }
 
   if(typeof body._vehicule_cartegrise !== 'undefined') {
-    req.vehicule._vehicule_cartegrise = body._vehicule_cartegrise;
+    req._vehicule._vehicule_cartegrise = body._vehicule_cartegrise;
   }
 
   if(typeof body._vehicule_categorie !== 'undefined') {
-    req.vehicule._vehicule_categorie = body._vehicule_categorie;
+    req._vehicule._vehicule_categorie = body._vehicule_categorie;
   }
 
   if(typeof body._vehicule_certificatinstallation !== 'undefined') {
-    req.reservation._vehicule_certificatinstallation = body._vehicule_certificatinstallation;
+    req._vehicule._vehicule_certificatinstallation = body._vehicule_certificatinstallation;
   }
 
   if(typeof body._vehicule_consommation !== 'undefined') {
-    req.reservation._vehicule_consommation = body._vehicule_consommation;
+    req._vehicule._vehicule_consommation = body._vehicule_consommation;
   }
 
   if(typeof body._vehicule_extincteur !== 'undefined') {
-    req.reservation._vehicule_extincteur = body._vehicule_extincteur;
-  }
-
-  if(typeof body._vehicule_recharge !== 'undefined') {
-    req.reservation._vehicule_recharge = body._vehicule_recharge;
-  }
-
-  if(typeof body._vehicule_kmparvidange !== 'undefined') {
-    req.reservation._vehicule_kmparvidange = body._vehicule_kmparvidange;
+    req._vehicule._vehicule_extincteur = body._vehicule_extincteur;
   }
 
   if(typeof body._vehicule_vidange !== 'undefined') {
-    req.reservation._vehicule_vidange = body._vehicule_vidange;
+    req._vehicule._vehicule_vidange = body._vehicule_vidange;
   }
 
   if(typeof body._vehicule_vignette !== 'undefined') {
-    req.reservation._vehicule_vignette = body._vehicule_vignette;
+    req._vehicule._vehicule_vignette = body._vehicule_vignette;
   }
 
-  if(typeof body._vehicule_visitetechnique !== 'undefined') {
-    req.reservation._vehicule_visitetechnique = body._vehicule_visitetechnique;
+  if(typeof body._vehicule_assurance !== 'undefined') {
+    req._vehicule._vehicule_assurance = body._vehicule_assurance;
   }
   
-  return req.vehicule.save()
-    .then(() => res.json({ vehicule: req.vehicule.toJSON() }))
+  return req._vehicule.save()
+    .then(() => res.json({ _vehicule: req._vehicule.toJSON() }))
     .catch(next);
 });
 
