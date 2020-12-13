@@ -69,7 +69,7 @@ const Employe = new Schema({
   },
   RevueDePerformance: [{
     type: Schema.Types.ObjectId,
-    required: true,
+    required: false,
     ref: 'RevueDePerformance'
   }]
 }, { timestamps: true });

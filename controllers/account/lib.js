@@ -117,58 +117,6 @@ async function resendTokenPost(req, res, next) {
     });
 }
 
-async function signup(req, res) {
-    const { _user_email, _user_username, _user_password, _user_fingerprint, _user_isVerified, _user_logindate, Employe, Permission } = req.body;
-    try {
-        if (!_user_email || !_user_username || !_user_password || !_user_fingerprint || !_user_isVerified || !_user_logindate || !Employe || !Permission) {
-            return res.status(400).json({
-                text: "It looks like some information about u, wasn't correctly submitted, please retry."
-            });
-        }
-        const user = {
-            _user_email: _user_email,
-            _user_username: _user_username,
-            _user_password: passwordHash.generate(_user_password),
-            _user_fingerprint: _user_fingerprint,
-            _user_isVerified: _user_isVerified,
-            _user_logindate: _user_logindate,
-            Employe: Employe,
-            Permission: Permission
-        };
-        const findUserByEmail = await User.findOne({
-            _user_email: user._user_email
-        });
-        const findUserByUsername = await User.findOne({
-            _user_username: user._user_username
-        });
-        if (findUserByEmail) {
-            return res.status(400).json({
-                text: "This Email exists already can u, please submit another Email."
-            });
-        }
-        if (findUserByUsername) {
-            return res.status(400).json({
-                text: "This Username exists already can u, please submit another Username."
-            });
-        }
-        
-        // Sauvegarde de l'utilisateur en base
-        const userData = new User(user);
-        const userObject = await userData.save();
-
-        // Create a verification token for this user
-        var token = new Token({ _userId: userData._id, token: crypto.randomBytes(16).toString('hex') });
-        const tokenObject = await token.save();
-
-        //send mail
-        verification_email(userData._user_email, 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + token.token + '.\n');
-        return res.status(200).json({
-            text: "And that's it, only thing left is verify your email. \nWe have sent you an email verification."
-        });
-    } catch (error) {
-        return res.status(500).json({ error });
-    }
-}
 async function login(req, res) {
     const { _user_email, _user_password } = req.body;
     
@@ -259,7 +207,6 @@ async function get_users(req, res) {
 exports.get_user = get_user;
 exports.get_users = get_users;
 exports.login = login;
-exports.signup = signup;
 exports.send_mail = send_mail;
 exports.confirmationPost = confirmationPost;
 exports.resendTokenPost = resendTokenPost;

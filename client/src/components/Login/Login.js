@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from 'react-redux';
 import API from "../../utils/API";
 import { FullPage, Slide } from 'react-full-page';
 import 'whatwg-fetch';
@@ -8,44 +9,44 @@ import * as $ from "jquery";
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
-        this.state = {
-			email: '',
-			password: '',
-			modal_msg: ''
+		this.state = {
+			_user_email: '',
+			_user_password: '',
+			modal_msg: '',
 		};
-        this.send_login = this.send_login.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+		this.send_login = this.send_login.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 	componentWillMount() {
-		if(localStorage.getItem('email')) {
+		if (localStorage.getItem('_user_email')) {
 			window.location = "/dashboard";
 		}
 	}
 	async send_login() {
 		let self = this;
-        const { email, password } = this.state;
-        await API.login(email, password)
-		.then((res) => {
-			localStorage.setItem("token", res.data.token);
-			localStorage.setItem('email', res.data.email);
-			localStorage.setItem('username', res.data.username);
-			window.location = "/dashboard";
-		})
-		.catch((error) => {
-			self.setState({
-				modal_msg: error.response.data.text
-			}, () => {
-				$('#login_modal').modal('toggle');
+		const { _user_email, _user_password } = this.state;
+		await API.login(_user_email, _user_password)
+			.then((res) => {
+				localStorage.setItem("token", res.data.token);
+				localStorage.setItem('_user_email', res.data._user_email);
+				localStorage.setItem('_user_username', res.data._user_username);
+				window.location = "/dashboard";
+			})
+			.catch((error) => {
+				self.setState({
+					modal_msg: error.response.data.text
+				}, () => {
+					$('#login_modal').modal('toggle');
+				});
 			});
-		});
-    }
+	}
 	handleChange(event) {
 		this.setState({
 			[event.target.id]: event.target.value
 		});
 	}
 	render() {
-		const { email, password, modal_msg } = this.state;
+		const { _user_email, _user_password, modal_msg } = this.state;
 		return (
 			<FullPage>
 				<Slide>
@@ -72,40 +73,40 @@ class Login extends React.Component {
 									<div className="Login">
 										<div className='row'>
 											<div className='input-field col s12'>
-												<input 
-												className='validate form-group-input' 
-												type='email' 
-												name='email' 
-												id='email' 
-												required="required"
-												value={email} 
-												onChange={this.handleChange}
+												<input
+													className='validate form-group-input'
+													type='email'
+													name='_user_email'
+													id='_user_email'
+													required="required"
+													value={_user_email}
+													onChange={this.handleChange}
 												/>
-												<label htmlFor='email' className={email ? 'active' : ''}>Email</label>
+												<label htmlFor='_user_email' className={_user_email ? 'active' : ''}>Email</label>
 												<div className="form-group-line"></div>
 											</div>
 										</div>
 										<div className='row'>
 											<div className='input-field col s12'>
-												<input 
-												className='validate form-group-input' 
-												type='password' 
-												name='password' 
-												id='password' 
-												required="required" 
-												value={password} 
-												onChange={this.handleChange}
+												<input
+													className='validate form-group-input'
+													type='password'
+													name='_user_password'
+													id='_user_password'
+													required="required"
+													value={_user_password}
+													onChange={this.handleChange}
 												/>
-												<label htmlFor='password' className={password ? 'active' : ''}>Password</label>
+												<label htmlFor='_user_password' className={_user_password ? 'active' : ''}>Password</label>
 												<div className="form-group-line"></div>
 											</div>
 										</div>
 										<div className="row">
 											<div className="input-field col s12">
-												<button 
-													className="pull-right" 
+												<button
+													className="pull-right"
 													type="submit"
-													name='btn_login' 
+													name='btn_login'
 													onClick={this.send_login}
 												>
 													<span>
@@ -123,28 +124,7 @@ class Login extends React.Component {
 							</div>
 							<div className="Content">
 								<div className="card">
-									<div className="face face1">
-										<div className="content">
-											<h4>Signup.</h4>
-										</div>
-									</div>
-									<div className="face face2">
-										<div className="content">
-											<span>
-												<h6>Welcome to boutaleb.</h6>
-												<p>The blog to speak louder.</p>
-											</span>
-											<a className="text-muted" href="/signup">
-												<span>
-													<span>
-														<span data-attr-span="signup.">
-															signup.
-														</span>
-													</span>
-												</span>
-											</a>
-										</div>
-									</div>
+
 								</div>
 							</div>
 						</div>
@@ -155,4 +135,12 @@ class Login extends React.Component {
 	}
 }
 
-export default Login
+const mapStateToProps = state => ({
+
+});
+
+const mapDispatchToProps = dispatch => ({
+	
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

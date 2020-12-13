@@ -53,14 +53,6 @@ router.post('/', (req, res, next) => {
     });
   }
 
-  if(!body._employe_nombreenfants) {
-    return res.status(422).json({
-      errors: {
-        _employe_nombreenfants: 'is required',
-      },
-    });
-  }
-
   if(!body._employe_adresse) {
     return res.status(422).json({
       errors: {
@@ -105,14 +97,6 @@ router.post('/', (req, res, next) => {
     return res.status(422).json({
       errors: {
         Poste: 'is required',
-      },
-    });
-  }
-
-  if(!body.RevueDePerformance) {
-    return res.status(422).json({
-      errors: {
-        RevueDePerformance: 'is required',
       },
     });
   }
@@ -176,10 +160,6 @@ router.patch('/:id', (req, res, next) => {
     req.employe._employe_situationfamille = body._employe_situationfamille;
   }
 
-  if(typeof body._employe_nombreenfants !== 'undefined') {
-    req.employe._employe_nombreenfants = body._employe_nombreenfants;
-  }
-
   if(typeof body._employe_adresse !== 'undefined') {
     req.employe._employe_adresse = body._employe_adresse;
   }
@@ -202,10 +182,6 @@ router.patch('/:id', (req, res, next) => {
 
   if(typeof body.Poste !== 'undefined') {
     req.employe.Poste = body.Poste;
-  }
-
-  if(typeof body.RevueDePerformance !== 'undefined') {
-    req.employe.RevueDePerformance = body.RevueDePerformance;
   }
   
   return req.employe.save()

@@ -603,10 +603,12 @@ img {
             top: 100%;
             display: none;
             font-size: 70%;
-            
-            &#dateDepartHelp, &#dateArriveeHelp {
+
+            &#dateDepartHelp,
+            &#dateArriveeHelp {
                 top: 0;
             }
+
             &.active {
                 display: inline;
             }
@@ -2739,6 +2741,616 @@ html {
 
                                                     &>span {
                                                         color: rgba($color: $black, $alpha: .5) !important;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &.parametres_pane {
+                            ._parametres_pane {
+                                background: $white;
+                                height: 100%;
+                                box-shadow: 0vh 0vh 5vh -2.5vh rgba(0, 0, 0, 0.25);
+
+                                display: grid;
+                                grid-template-rows: auto 1fr;
+                                justify-content: stretch;
+                                align-content: stretch;
+                                justify-items: stretch;
+                                align-items: stretch;
+
+                                ._parametres_header {
+                                    display: flex;
+                                    justify-content: flex-end;
+                                    padding: 1.25vh;
+
+                                    form {
+                                        position: relative;
+                                        margin-left: auto;
+
+                                        &::before {
+                                            position: absolute;
+                                            content: "";
+                                            display: inline-block;
+                                            background: rgba($color: $black, $alpha: .5);
+                                            bottom: 0;
+                                            right: 0;
+                                            width: 45vh;
+                                            height: 0.32vh;
+                                        }
+
+                                        .search-wrapper_parametres {
+                                            cursor: pointer;
+                                            position: relative;
+                                            transform-origin: 100% 50%;
+                                            margin: 0;
+                                            transition: all .2s ease-out;
+
+                                            width: 7vh;
+                                            height: 7vh;
+
+                                            input {
+                                                outline: none;
+                                                overflow: hidden;
+                                                font-size: 2.5vh;
+                                                font-weight: 100;
+                                                transform: scale(0);
+                                                transform-origin: right center;
+                                                transition: all .2s ease-out;
+                                                box-shadow: none;
+
+                                                height: 7vh;
+                                            }
+
+                                            label,
+                                            .form-group-line {
+                                                display: none;
+                                            }
+
+                                            .hover_effect {
+                                                display: block;
+                                                box-sizing: border-box;
+                                                width: 0;
+                                                height: 0;
+                                                top: 50%;
+                                                transform: translate(50%, -50%);
+                                                border-radius: 0;
+                                                transform-origin: center;
+                                                margin: 0;
+                                                position: absolute;
+                                                transition: all .3s ease-out;
+                                                background-color: $main-color;
+
+                                                right: 3.5vh;
+                                            }
+
+                                            .search_parametres {
+                                                position: absolute;
+                                                display: block;
+                                                box-sizing: border-box;
+                                                color: $white;
+                                                top: 50%;
+                                                transform: translate(50%, -50%);
+                                                transition: all .3s ease-out;
+                                                border-radius: 100%;
+                                                cursor: pointer;
+
+                                                width: 3vh;
+                                                height: 3vh;
+                                                border: .5vh solid rgba($color: $black, $alpha: .5);
+                                                right: 3.5vh;
+
+                                                &::before,
+                                                &::after {
+                                                    content: '';
+                                                    box-sizing: border-box;
+                                                    position: absolute;
+                                                    display: block;
+                                                    transition: all .2s ease-out;
+                                                    top: 100%;
+                                                    width: 50%;
+
+                                                    height: .5vh;
+                                                }
+
+                                                &::before {
+                                                    right: 100%;
+                                                    transform-origin: right;
+                                                    transform: translate(-25%, 25%) rotate(-45deg);
+                                                }
+
+                                                &::after {
+                                                    left: 100%;
+                                                    transform-origin: left;
+                                                    transform: translate(25%, 25%) rotate(45deg);
+                                                    background: rgba($color: $black, $alpha: .5);
+                                                }
+
+                                                &.active {
+                                                    border: none;
+
+                                                    &::before,
+                                                    &::after {
+                                                        background: rgba($color: $black, $alpha: .5);
+                                                        transform-origin: center center;
+                                                        top: 50%;
+                                                        left: 50%;
+                                                        right: 0;
+                                                        width: 100%;
+                                                    }
+
+                                                    &::before {
+                                                        transform: translate(-50%, -50%) rotate(-45deg);
+                                                    }
+
+                                                    &::after {
+                                                        transform: translate(-50%, -50%) rotate(45deg);
+                                                    }
+                                                }
+                                            }
+
+                                            &:hover {
+                                                .hover_effect {
+                                                    width: 7vh;
+                                                    height: 7vh;
+                                                    border-radius: 7vh;
+                                                }
+
+                                                .search_parametres {
+                                                    border-color: $white;
+
+                                                    &::after {
+                                                        background: $white;
+                                                    }
+
+                                                    &.active {
+                                                        &::before {
+                                                            background: $white;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            &.focused {
+                                                width: 45vh;
+
+                                                input {
+                                                    box-sizing: inherit;
+                                                    width: 100%;
+                                                    height: 100%;
+                                                    margin: 0;
+                                                    padding: 0 7.5vh 0 2.5vh;
+                                                    transform: scale(1);
+                                                }
+
+                                                label {
+                                                    display: initial;
+                                                    left: 2.5vh;
+                                                    width: calc(100% - 2.5vh);
+                                                }
+
+                                                .form-group-line {
+                                                    display: initial;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                ._parametres_content {
+                                    position: relative;
+                                    padding: 1.25vh;
+
+                                    .forms {
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                        list-style: none;
+                                        margin: 0;
+                                        padding: 0;
+                                        height: auto;
+                                        width: 100%;
+        
+                                        .forms__item {
+                                            display: flex;
+                                            padding: 2.5vh;
+                                            width: 100%;
+                                            height: fit-content;
+                                            min-height: 12vh;
+        
+                                            .card {
+                                                border: .1vh solid lighten(#34495E, 10%);
+                                                border-radius: 0;
+                                                box-shadow: 2.5vh 5vh 5vh -2.5vh rgba(0, 0, 0, .25);
+                                                display: flex;
+                                                flex-direction: column;
+                                                margin: 0;
+                                                width: 100%;
+                                                height: 100%;
+        
+                                                &__content {
+                                                    display: flex;
+                                                    flex: 1 1 auto;
+                                                    flex-direction: column;
+        
+                                                    ._pane {
+                                                        display: flex;
+                                                        height: 100%;
+                                                        flex-direction: row;
+        
+                                                        ._content {
+                                                            padding: 1.25vh;
+                                                            width: 100%;
+        
+                                                            ._account_head, ._accounts_head {
+                                                                display: flex;
+                                                                flex-direction: column;
+                                                                width: calc(100% - 3.75vh);
+                                                                height: fit-content;
+                                                                margin: 0 auto;
+        
+                                                                p {
+                                                                    font-size: 2vh;
+                                                                }
+                                                            }
+        
+                                                            .data_container {
+                                                                position: relative;
+                                                                width: calc(100% - 3.75vh);
+                                                                margin: 0 auto;
+        
+                                                                ._form {
+                                                                    height: 100%;
+        
+                                                                    .modal-content_user {
+                                                                        padding: 1.25vh 0;
+                                                                        margin: 0;
+                                                                        display: grid;
+                                                                        grid-template-rows: 7.5vh 7.5vh 7.5vh;
+        
+                                                                        .row {
+                                                                            margin-right: 0;
+                                                                            margin-left: 0;
+                                                                            margin-bottom: 0;
+                                                                            &:last-of-type {
+                                                                                justify-content: flex-end;
+        
+                                                                                button {
+                                                                                    position: relative;
+                                                                                    -webkit-appearance: none;
+                                                                                    border: none;
+                                                                                    background: none;
+                                                                                    color: $black;
+                                                                                    width: 38.5vh;
+                                                                                    height: 7.5vh;
+                                                                                    font-size: 2.25vh;
+                                                                                    margin-bottom: 2.5vh;
+                                                                                    padding: 0;
+                                                                                    outline: none;
+                                                                                    z-index: 10;
+                                        
+                                                                                    span {
+                                                                                        display: block;
+                                                                                        position: relative;
+                                                                                        line-height: 7.5vh;
+                                                                                        height: 100%;
+                                                                                        cursor: pointer;
+                                                                                    }
+                                        
+                                                                                    &>span {
+                                                                                        &>span {
+                                                                                            padding-left: 0;
+                                                                                            padding-right: 0;
+                                        
+                                                                                            &>span {
+                                                                                                transition: color .15s ease-out .3s;
+                                                                                                color: transparent;
+                                        
+                                                                                                &::after {
+                                                                                                    position: absolute;
+                                                                                                    top: 0;
+                                                                                                    left: 0;
+                                                                                                    right: 0;
+                                                                                                    bottom: 0;
+                                                                                                    color: white;
+                                                                                                    content: attr(data-attr-span);
+                                                                                                    width: 0;
+                                                                                                    height: 100%;
+                                                                                                    background: $main-color;
+                                                                                                    white-space: nowrap;
+                                                                                                    text-align: center;
+                                                                                                    margin: auto;
+                                                                                                    overflow: hidden;
+                                                                                                    display: flex;
+                                                                                                    justify-content: center;
+                                                                                                    transition: all .2s ease-out;
+                                                                                                }
+                                                                                            }
+                                        
+                                                                                            &::before {
+                                                                                                content: '';
+                                                                                                position: absolute;
+                                                                                                bottom: 0;
+                                                                                                right: 0;
+                                                                                                width: .5vh;
+                                                                                                height: .5vh;
+                                                                                                opacity: 0;
+                                                                                            }
+                                        
+                                                                                            &::after {
+                                                                                                content: '';
+                                                                                                position: absolute;
+                                                                                                bottom: 0;
+                                                                                                left: 0;
+                                                                                                width: .5vh;
+                                                                                                height: .5vh;
+                                                                                                opacity: 0;
+                                                                                            }
+                                                                                        }
+                                        
+                                                                                        &::before {
+                                                                                            content: '';
+                                                                                            position: absolute;
+                                                                                            top: 0;
+                                                                                            right: 50%;
+                                                                                            width: 3.25vh;
+                                                                                            height: 0;
+                                                                                            border: .5vh solid $main-color;
+                                                                                            border-right: none;
+                                                                                            border-bottom: none;
+                                        
+                                                                                            transition-property: width, height;
+                                                                                            transition-duration: .15s, .15s;
+                                                                                            transition-delay: .15s, 0s;
+                                                                                        }
+                                        
+                                                                                        &::after {
+                                                                                            content: '';
+                                                                                            position: absolute;
+                                                                                            top: 0;
+                                                                                            left: 50%;
+                                                                                            width: 3.25vh;
+                                                                                            height: 0;
+                                                                                            border: .5vh solid $main-color;
+                                                                                            border-left: none;
+                                                                                            border-bottom: none;
+                                        
+                                                                                            transition-property: width, height;
+                                                                                            transition-duration: .15s, .15s;
+                                                                                            transition-delay: .15s, 0s;
+                                                                                        }
+                                                                                    }
+                                        
+                                                                                    &:hover {
+                                        
+                                                                                        &>span {
+                                                                                            &>span {
+                                                                                                &>span {
+                                                                                                    &::after {
+                                                                                                        width: 100%;
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                        
+                                                                        &:hover {
+                                                                            button {
+                                                                                &>span {
+                                                                                    &::after {
+                                                                                        width: 50% !important;
+                                                                                        height: 100% !important;
+                                                                                        transition-delay: 0s, .15s !important;
+                                                                                    }
+                                        
+                                                                                    &::before {
+                                                                                        width: 50% !important;
+                                                                                        height: 100% !important;
+                                                                                        transition-delay: 0s, .15s !important;
+                                                                                    }
+                                        
+                                                                                    &>span {
+                                                                                        &::after {
+                                                                                            opacity: 1 !important;
+                                                                                            border-bottom: .5vh solid $main-color !important;
+                                                                                            width: calc(50%) !important;
+                                                                                            height: .5vh !important;
+                                                                                            transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
+                                                                                        }
+                                        
+                                                                                        &::before {
+                                                                                            opacity: 1 !important;
+                                                                                            border-bottom: .5vh solid $main-color !important;
+                                                                                            width: calc(50%) !important;
+                                                                                            height: .5vh !important;
+                                                                                            transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
+                                                                                        }
+                                        
+                                                                                        &>span {
+                                                                                            color: $black !important;
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+        
+                                                                table {
+                                                                    border-radius: 0;
+                                                                    border-collapse: collapse;
+        
+                                                                    tr {
+                                                                        position: relative;
+                                                                        box-shadow: .6vh .6vh .5vh -1.25vh rgba(0, 0, 0, .5);
+        
+                                                                        &:not(.spacer) {
+                                                                            background: white;
+                                                                        }
+        
+                                                                        &.spacer {
+                                                                            height: 2.5vh;
+                                                                        }
+        
+                                                                        th {
+                                                                            color: rgba($color: $black, $alpha: .25);
+                                                                            display: none;
+                                                                        }
+        
+                                                                        td {
+                                                                            height: 100%;
+                                                                            display: block;
+        
+                                                                            p {
+                                                                                padding: 1.25vh;
+                                                                                margin: .5vh;
+                                                                                font-size: 1.6vh;
+                                                                                border: .15vh solid #ddd;
+                                                                                background: #eee;
+                                                                                display: inline-block;
+                                                                                border-radius: .15vh;
+                                                                                height: fit-content;
+                                                                                width: fit-content;
+                                                                            }
+        
+                                                                            &:before {
+                                                                                content: attr(data-th)": ";
+                                                                                font-weight: bold;
+                                                                                width: 6.5em;
+                                                                                color: rgba($color: $black, $alpha: .25);
+                                                                                display: inline-block;
+        
+                                                                                @media (min-width: $breakpoint-alpha) {
+                                                                                    display: none;
+                                                                                }
+                                                                            }
+                                                                        }
+        
+                                                                        th,
+                                                                        td {
+                                                                            text-align: left;
+                                                                            vertical-align: middle;
+                                                                            font-size: 2vh;
+                                                                            padding: 1.25vh;
+                                                                            margin: 0;
+                                                                            height: 11.5vh;
+                                                                            border: none;
+        
+                                                                            &:first-of-type {
+                                                                                padding-left: 3.75vh;
+                                                                            }
+        
+                                                                            &.type {
+                                                                                position: relative;
+        
+                                                                                &::after {
+                                                                                    display: none;
+                                                                                    content: 'User Deleted';
+                                                                                    position: absolute;
+                                                                                    top: 50%;
+                                                                                    right: .5vh;
+                                                                                    transform: translate(0, -50%);
+                                                                                    width: fit-content;
+                                                                                    height: fit-content;
+                                                                                    padding: 1.25vh;
+                                                                                    font-size: 2vh;
+                                                                                    border: .15vh solid #ddd;
+                                                                                    background: #eee;
+                                                                                    border-radius: .15vh;
+                                                                                }
+        
+                                                                                &.user_deleted {
+                                                                                    &::after {
+                                                                                        display: inline-block;
+                                                                                    }
+                                                                                }
+                                                                            }
+        
+                                                                            @media (min-width: $breakpoint-alpha) {
+                                                                                display: table-cell;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+        
+                                                                .accounts_list {
+                                                                    position: relative;
+        
+                                                                    thead {
+                                                                        th {
+                                                                            color: rgba(0, 0, 0, .5);
+                                                                            font-weight: initial;
+                                                                            cursor: pointer;
+                                                                            position: relative;
+        
+                                                                            ._arrow {
+                                                                                float: right;
+        
+                                                                                i.fa-caret-down,
+                                                                                i.fa-caret-up {
+                                                                                    color: $itemBg4;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+        
+                                                                    tbody {
+                                                                        tr.active {
+                                                                            td {
+                                                                                background-color: rgba($color: $purple, $alpha: .25);
+                                                                            }
+                                                                        }
+        
+                                                                        td {
+                                                                            text-align: left;
+        
+                                                                            span {
+                                                                                cursor: pointer;
+        
+                                                                                &.dropdown-toggle::after {
+                                                                                    display: none;
+                                                                                }
+                                                                            }
+        
+                                                                            .dropdown-menu {
+                                                                                position: absolute;
+                                                                                transform-origin: right;
+                                                                                will-change: transform;
+                                                                                transform: unset !important;
+                                                                                top: 100% !important;
+                                                                                left: unset !important;
+                                                                                right: 0;
+                                                                                min-width: unset;
+                                                                                padding: 0;
+        
+                                                                                &.show {
+                                                                                    display: flex !important;
+                                                                                }
+        
+                                                                                .dropdown-item {
+                                                                                    width: 6.5vh;
+                                                                                    height: 6.5vh;
+                                                                                    padding: .5vh;
+                                                                                    display: flex;
+                                                                                    justify-content: center;
+                                                                                    align-items: center;
+                                                                                }
+                                                                            }
+        
+                                                                            &.show {
+                                                                                display: table-cell !important;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
@@ -4959,6 +5571,49 @@ html {
                         }
                     }
                 }
+            }
+        }
+
+        #login_modal {
+            height: fit-content;
+            width: fit-content;
+            padding-right: 0 !important;
+            top: 50%;
+            transform: translateY(-50%);
+
+            &.show {
+                opacity: 1;
+            }
+
+            .modal-dialog {
+                margin: 0;
+            }
+
+            .modal-close {
+                color: #aaa;
+                font-size: 80%;
+                position: absolute;
+                right: 0;
+                top: 0;
+                text-align: center;
+                text-decoration: none;
+            }
+
+            h5 {
+                margin: 0 0 2.25vh;
+            }
+
+            div:not(:last-of-type) {
+                margin-bottom: 2.25vh;
+            }
+
+            small {
+                color: #aaa;
+            }
+
+            a {
+                text-decoration: underline;
+                cursor: pointer;
             }
         }
 

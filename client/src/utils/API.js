@@ -5,20 +5,17 @@ const headers = {
 const burl = "";
 
 export default {
-    login: function(email, password) {
+    login: function(_user_email, _user_password) {
         return axios.post(
             `${burl}/user/login`,
             {
-                email,
-                password
+                _user_email,
+                _user_password
             },
             {
                 headers: headers
             }
         );
-    },
-    signup: function(send) {
-        return axios.post(`${burl}/user/signup`, send, { headers: headers });
     },
     send_mail: function(send) {
         return axios.post(`${burl}/user/send_mail`, send, { headers: headers });
@@ -32,11 +29,11 @@ export default {
     update_roles: function(send) {
         return axios.patch(`${burl}/user/update_roles`, send, { headers: headers });
     },
-    get_user: function(email) {
+    get_user: function(_user_email) {
         return axios.post(
             `${burl}/user/get_user`,
             {
-                email
+                _user_email
             },
             {
                 headers: headers

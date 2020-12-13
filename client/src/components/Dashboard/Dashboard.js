@@ -1,14 +1,11 @@
 import React from "react";
 import axios from 'axios';
 import moment from 'moment';
-import Calendar from './Calendar';
+import Account from './Account';
 import Autocomplete from 'react-autocomplete';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import API from "../../utils/API";
 import { FullPage, Slide } from 'react-full-page';
-import Clock from 'react-live-clock';
-import Chart from 'chart.js';
 import 'whatwg-fetch';
 import * as $ from "jquery";
 import jQuery from 'jquery';
@@ -30,7 +27,12 @@ class Dashboard extends React.Component {
 
         this.state = {
             modal_msg: '',
+
+            _user: {},
+
             _search_value_vehicules: '',
+            _search_value_parametres: '',
+
             _vehicule_marque: '',
             _vehicule_fabricant: '',
             _vehicule_numerochassis: '',
@@ -97,12 +99,7 @@ class Dashboard extends React.Component {
         };
 
         this.disconnect = this.disconnect.bind(this);
-        this.get_users = this.get_users.bind(this);
         this.get_user = this.get_user.bind(this);
-        this.send_user = this.send_user.bind(this);
-
-        this.handleEditUser = this.handleEditUser.bind(this);
-        this.handleDeleteUser = this.handleDeleteUser.bind(this);
 
         this.handleDeleteVehicule = this.handleDeleteVehicule.bind(this);
         this.handleEditVehicule = this.handleEditVehicule.bind(this);
@@ -121,6 +118,7 @@ class Dashboard extends React.Component {
     }
     componentWillMount() {
         const self = this;
+
         this.get_user();
         socket.on("USER_UPDATED_GET", data => self.get_user());
 
@@ -164,12 +162,6 @@ class Dashboard extends React.Component {
         this._handleClickEvents();
     }
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.userToEdit) {
-            this.setState({
-                _user_toEdit_username: nextProps.userToEdit.username,
-                _user_toEdit_roles: nextProps.userToEdit.roles,
-            });
-        }
         if (nextProps._vehiculeToEdit) {
             this.setState({
                 _vehicule_marque: nextProps._vehiculeToEdit._vehicule_marque,
@@ -581,13 +573,13 @@ class Dashboard extends React.Component {
     }
 
     _handleClickEvents() {
-        let searchWrapper = document.querySelector('.search-wrapper_vehicules'),
-            searchInput = document.querySelector('.search-input_vehicules'),
-            searchIcon = document.querySelector('.search_vehicules'),
+        let searchWrapper = document.querySelector('.search-wrapper_vehicules, .search-wrapper_parametres'),
+            searchInput = document.querySelector('.search-input_vehicules, .search-input_parametres'),
+            searchIcon = document.querySelector('.search_vehicules, .search_parametres'),
             searchActivated = false,
             self = this;
 
-        $('.search_form_vehicules').click((event) => {
+        $('.search_form_vehicules, .search_form_parametres').click((event) => {
             if (!searchActivated) {
                 searchWrapper.classList.add('focused');
                 searchIcon.classList.add('active');
@@ -602,130 +594,35 @@ class Dashboard extends React.Component {
                         _search_value_vehicules: ''
                     });
                 }
+                if ($(event.target).hasClass('search_parametres')) {
+                    searchWrapper.classList.remove('focused');
+                    searchIcon.classList.remove('active');
+                    searchActivated = !searchActivated;
+                    self.setState({
+                        _search_value_parametres: ''
+                    });
+                }
             }
         });
 
     }
 
-    async get_users() {
-        const self = this;
-        const { _user } = this.state;
-        if (_.includes(_user.roles, 'admin')) {
-            await API.get_users()
-                .then((res) => {
-                    self.setState({
-                        _users: res.data.users,
-                    });
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-        } else {
-            self.setState(prevState => ({
-                _users: [_user]
-            }));
-        }
-    }
     async get_user() {
         const self = this;
-        await API.get_user(localStorage.getItem('email'))
+
+        await API.get_user(localStorage.getItem('_user_email'))
             .then((res) => {
                 self.setState({
                     _user: res.data.user,
                 }, () => {
-                    self.get_users();
+
                 });
             })
             .catch((err) => {
                 console.error(err);
             });
     }
-    async send_user() {
-        let self = this;
-        const { _user_toEdit_username, _user_toEdit_roles, _user } = this.state;
 
-        try {
-            await API.update_roles({ _user_toEdit_username, _user_toEdit_roles })
-                .then((res) => {
-                    self.setState({
-                        modal_msg: res.data.text
-                    }, () => {
-                        console.log(_user_toEdit_roles);
-                        function setEditFunction() {
-                            return new Promise((resolve, reject) => {
-                                setTimeout(function () {
-                                    $('#edit_modal').modal('toggle');
-                                    self.get_users();
-                                    self.get_user();
-                                    socket.emit("USER_UPDATED", res.data.text);
-                                    true ? resolve('Success') : reject('Error');
-                                }, 2000);
-                            })
-                        }
-                        setEditFunction()
-                            .then(() => {
-                                $('#myModal').on('hidden.bs.modal', function (e) {
-                                    if (_.includes(_user.roles, 'Deleted')) {
-                                        self.disconnect();
-                                    }
-                                })
-                            });
-                    })
-                })
-                .catch((error) => {
-                    self.setState({
-                        modal_msg: error.response.data.text
-                    }, () => {
-                        $('#edit_modal_error_roles').modal('toggle');
-                    });
-                });
-        } catch (error) {
-            self.setState({
-                modal_msg: JSON.stringify(error)
-            }, () => {
-                $('#edit_modal_error_roles').modal('toggle');
-            });
-        }
-    }
-    handleEditUser(user) {
-        const { setEditUser } = this.props;
-        setEditUser(user);
-    }
-    handleDeleteUser(user) {
-        const self = this;
-        const { onSubmitNotification } = this.props;
-        const { _user_toEdit_username, _user_toEdit_roles, _user } = this.state;
-
-        function setEditFunction() {
-            return new Promise((resolve, reject) => {
-                setTimeout(function () {
-                    self.handleEditUser(user);
-                    true ? resolve('Success') : reject('Error');
-                }, 2000);
-            })
-        }
-        setEditFunction()
-            .then(() => {
-                self.setState(prevState => ({
-                    _user_toEdit_roles: prevState._user_toEdit_roles.concat('Deleted')
-                }), () => {
-                    self.send_user();
-                    return axios.post('/api/notifications', {
-                        type: 'User Deleted',
-                        description: 'User \' ' + user.username + ' \' Deleted.',
-                        author: _user.email
-                    })
-                        .then((res_n) => {
-                            onSubmitNotification(res_n.data);
-                        })
-                        .catch(error => {
-                            console.log(error)
-                        });
-                });
-                return true;
-            })
-            .catch(err => console.log('There was an error:' + err));
-    }
     disconnect() {
         API.logout();
         window.location = "/login";
@@ -733,7 +630,9 @@ class Dashboard extends React.Component {
     render() {
         const {
             modal_msg,
+            _user,
             _search_value_vehicules,
+            _search_value_parametres,
             _vehicule_marque,
             _vehicule_fabricant,
             _vehicule_numerochassis,
@@ -829,7 +728,18 @@ class Dashboard extends React.Component {
                                                                     <div className="card__content">
                                                                         <div className="_vehicule_pane _pane">
                                                                             <div className="_vehicule_content _content">
-
+                                                                                <div className="_vehicule_datefabrication">
+                                                                                    {_v._vehicule_datefabrication}
+                                                                                </div>
+                                                                                <div className="_vehicule_marque">
+                                                                                    {_v._vehicule_marque}
+                                                                                </div>
+                                                                                <div className="_vehicule_model">
+                                                                                    {_v._vehicule_model}
+                                                                                </div>
+                                                                                <div className="_vehicule_moteur">
+                                                                                    {_v._vehicule_moteur}
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -874,7 +784,110 @@ class Dashboard extends React.Component {
 
                                 </div>
                                 <div className="parametres_pane tab-pane" id="10a">
+                                    <div className="_parametres_pane">
+                                        <div className="_parametres_header">
+                                            <form className="search_form_parametres">
+                                                <div className="input-field search-wrapper_parametres">
+                                                    <input
+                                                        className="search-input_parametres validate form-group-input _search_value_parametres"
+                                                        id="_search_value_parametres"
+                                                        type="text"
+                                                        name="_search_value_parametres"
+                                                        value={_search_value_parametres}
+                                                        onChange={this.handleChange}
+                                                    />
+                                                    <label htmlFor='_search_value_parametres' className={_search_value_parametres ? 'active' : ''}>Search.</label>
+                                                    <div className="form-group-line"></div>
 
+                                                    <span className="hover_effect"></span>
+                                                    <div className='search_parametres'></div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div className="_parametres_content">
+                                            <ul className="forms">
+                                                <li className="forms__item">
+                                                    <div className="card">
+                                                        <div className="card__content">
+                                                            <div className="_account_pane _pane">
+                                                                <div className="_account_content _content">
+                                                                    <div className="_account_head">
+                                                                        <h4>Account Settings.</h4>
+                                                                        <p className="text-muted">Here you can change the email address you use and password</p>
+                                                                    </div>
+                                                                    <div className="_account_data data_container">
+                                                                        <Account />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li className="forms__item">
+                                                    <div className="card">
+                                                        <div className="card__content">
+                                                            <div className="_accoutns_pane _pane">
+                                                                <div className="_accounts_content _content">
+                                                                    <div className="_accounts_head">
+                                                                        <h4>Accounts.</h4>
+                                                                    </div>
+                                                                    <div className="_accounts_data data_container">
+                                                                        <table className="accounts_list table table-striped">
+                                                                            <thead>
+                                                                                <tr className="accounts_list_header">
+                                                                                    <th>Username</th>
+                                                                                    <th>Email</th>
+                                                                                    <th>Fingerprint</th>
+                                                                                    <th>Created At</th>
+                                                                                    <th>Roles</th>
+                                                                                    <th>Verified</th>
+                                                                                    <th className="_empty"></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                {
+                                                                                    /* _.orderBy(_users, ['createdAt'], ['desc']).map((_u, index) => {
+                                                                                        return (
+                                                                                            <>
+                                                                                                <tr className="spacer"></tr>
+                                                                                                <tr key={index} className={`user_card user_anchor ${_u._id === _user._id ? 'active' : ''}`}>
+                                                                                                    <td data-th="Username">{_u.username}</td>
+                                                                                                    <td data-th="Email">{_u.email}</td>
+                                                                                                    <td data-th="Fingerprint">{_u.fingerprint}</td>
+                                                                                                    <td data-th="Created">{moment(_u.createdAt).format('dddd, MMM Do YYYY')}</td>
+                                                                                                    <td data-th="Roles">{_.isEmpty(_u.roles) ? 'Reader' : _.map(_u.roles, (r) => { return <p key={r}>{r}</p>; })}</td>
+                                                                                                    <td data-th="Verified">{_u.isVerified ? 'Verified' : 'Not Verified'}</td>
+                                                                                                    <td className="dropdown">
+                                                                                                        <span className="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                            <i className="fas fa-ellipsis-h"></i>
+                                                                                                        </span>
+                                                                                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                                                            {(() => {
+                                                                                                                if (_.includes(_user.roles, 'admin')) {
+                                                                                                                    return (
+                                                                                                                        <a className="dropdown-item" href="# " data-toggle="modal" data-target="#_user_modal" onClick={() => this.handleEditUser(_u)}><i className="fas fa-edit"></i></a>
+                                                                                                                    )
+                                                                                                                }
+                                                                                                            })()}
+                                                                                                            <a className="dropdown-item" href="# " onClick={() => this.handleDeleteUser(_u)}><i className="far fa-trash-alt"></i></a>
+                                                                                                        </div>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </>
+                                                                                        )
+                                                                                    }) */
+                                                                                }
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

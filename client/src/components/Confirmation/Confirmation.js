@@ -7,11 +7,11 @@ import * as $ from "jquery";
 import socketIOClient from "socket.io-client";
 
 const socketURL =
-  process.env.NODE_ENV === 'production'
-    ? window.location.hostname
-    : 'localhost:8800';
-    
-const socket = socketIOClient(socketURL, {'transports': ['websocket', 'polling']});
+    process.env.NODE_ENV === 'production'
+        ? window.location.hostname
+        : 'localhost:8800';
+
+const socket = socketIOClient(socketURL, { 'transports': ['websocket', 'polling'] });
 
 class Confirmation extends React.Component {
     constructor(props) {
@@ -29,57 +29,45 @@ class Confirmation extends React.Component {
         let self = this;
         const { onSubmitNotification } = this.props;
         await API.confirmation({ token })
-        .then((res) => {
-            self.setState({
-                modal_msg: res.data.text
-            }, () => {
-                socket.emit("USER_UPDATED", res.data.text);
-                $('#confirmation_modal').modal('toggle');
-                return axios.post('/api/notifications', {
-                    type: 'Account verified',
-                    description: 'Account with token \''+token+'\' Verified.',
-                    author: token
-                })
-                .then((res_n) => onSubmitNotification(res_n.data))
-                .catch(error => {
-                    console.log(error)
+            .then((res) => {
+                self.setState({
+                    modal_msg: res.data.text
+                }, () => {
+                    socket.emit("USER_UPDATED", res.data.text);
+                    $('#confirmation_modal').modal('toggle');
+                    return axios.post('/api/notifications', {
+                        type: 'Account verified',
+                        description: 'Account with token \'' + token + '\' Verified.',
+                        author: token
+                    })
+                        .then((res_n) => onSubmitNotification(res_n.data))
+                        .catch(error => {
+                            console.log(error)
+                        });
+                });
+            })
+            .catch((error) => {
+                self.setState({
+                    modal_msg: error.response.data.text
+                }, () => {
+                    $('#confirmation_modal').modal('toggle');
                 });
             });
-        })
-        .catch((error) => {
-            self.setState({
-                modal_msg: error.response.data.text
-            }, () => {
-                $('#confirmation_modal').modal('toggle');
-            });
-        });
     }
     render() {
         const { modal_msg } = this.state;
-        return(
+        return (
             <FullPage>
-				<Slide>
-					<section className="first_section_404">
-                        <div id="social_media">
-                            <div className="icons_gatherer">
-                                <a href="https://dribbble.com/boutaleblcoder" className="icon-button dribbble"><i className="fab fa-dribbble"></i><span></span></a>
-                                <a href="https://www.behance.net/boutaleblcoder/" className="icon-button behance"><i className="fab fa-behance"></i><span></span></a>
-                                <a href="https://www.linkedin.com/in/zakariae-bou-taleb-657953122/" className="icon-button linkedin"><i className="fab fa-linkedin-in"></i><span></span></a>
-                                <a href="https://www.instagram.com/boutaleblcoder/" className="icon-button instagram"><i className="fab fa-instagram"></i><span></span></a>
-                                <a href="https://fb.me/boutaleblcoder" className="icon-button facebook"><i className="icon-facebook"></i><span></span></a>
-                                <a href="# " className="icon-button scroll">
-                                    
-                                </a>
+                <Slide>
+                    <section className="first_section_404">
+                        <div className="wrapper_full">
+                            <div className="_verification_message">
+                                {modal_msg}
                             </div>
                         </div>
-						<div className="wrapper_full">
-							<div className="_verification_message">
-                                { modal_msg }
-                            </div>
-						</div>
-					</section>
-				</Slide>
-			</FullPage>
+                    </section>
+                </Slide>
+            </FullPage>
         )
     }
 }

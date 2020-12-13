@@ -376,7 +376,7 @@ class Reservation extends React.Component {
             })
             .catch((errors) => {
                 console.log(errors);
-            })
+            });
     }
 
     render() {

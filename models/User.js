@@ -4,7 +4,7 @@ const jwt = require('jwt-simple');
 const config = require('../config/config');
 
 const { Schema } = mongoose;
-
+ 
 const User = new Schema({
     _user_email: {
         type: String,
@@ -43,7 +43,7 @@ const User = new Schema({
         type: Schema.Types.ObjectId, required: true, ref: 'Employe'
     },
     Permission: [{
-        type: Schema.Types.ObjectId, required: true, ref: 'Permission'
+        type: Schema.Types.ObjectId, required: false, ref: 'Permission'
     }]
 }, { timestamps: true });
 

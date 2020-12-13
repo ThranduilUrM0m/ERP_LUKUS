@@ -17,7 +17,6 @@ import Contact from './components/Contact/Contact';
 import Reservation from './components/Reservation/Reservation';
 
 import Login from "./components/Login/Login.js";
-import Signup from "./components/Signup/Signup.js";
 import Dashboard from './components/Dashboard/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import Confirmation from './components/Confirmation/Confirmation';
@@ -36,7 +35,6 @@ ReactDOM.render(
                     <Route exact path='/contact' component={Contact} />
                     <Route exact path='/reservation' component={Reservation} />
                     <Route exact path="/login" component={Login} />
-                    <Route exact path="/signup" component={Signup} />
                     <Route path={`/confirmation/:token_id`} component={Confirmation} />
                     <PrivateRoute path='/dashboard' component={Dashboard} />
                     <Route component={NotFound} />
