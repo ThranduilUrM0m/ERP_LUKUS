@@ -16,7 +16,7 @@ router.post('/', (req, res, next) => {
   const finalPermission = new Permission(body);
   return finalPermission.save()
     .then(() => {
-      res.json({ permission: finalPermission.toJSON() });
+      res.json({ _permission: finalPermission.toJSON() });
     })
     .catch(next);
 });
@@ -24,16 +24,16 @@ router.post('/', (req, res, next) => {
 router.get('/', (req, res, next) => {
   return Permission.find()
     .sort({ createdAt: 'descending' })
-    .then((permissions) => res.json({ permissions: permissions.map(permission => permission.toJSON()) }))
+    .then((_permissions) => res.json({ _permissions: _permissions.map(_permission => _permission.toJSON()) }))
     .catch(next);
 });
 
 router.param('id', (req, res, next, id) => {
-  return Permission.findById(id, (err, permission) => {
+  return Permission.findById(id, (err, _permission) => {
     if(err) {
       return res.sendStatus(404);
-    } else if(permission) {
-      req.permission = permission;
+    } else if(_permission) {
+      req._permission = _permission;
       return next();
     }
   }).catch(next);
@@ -41,7 +41,7 @@ router.param('id', (req, res, next, id) => {
 
 router.get('/:id', (req, res, next) => {
   return res.json({
-    permission: req.permission.toJSON(),
+    _permission: req._permission.toJSON(),
   });
 });
 
@@ -49,16 +49,16 @@ router.patch('/:id', (req, res, next) => {
   const { body } = req;
 
   if(typeof body._permission_titre !== 'undefined') {
-    req.permission._permission_titre = body._permission_titre;
+    req._permission._permission_titre = body._permission_titre;
   }
   
-  return req.permission.save()
-    .then(() => res.json({ permission: req.permission.toJSON() }))
+  return req._permission.save()
+    .then(() => res.json({ _permission: req._permission.toJSON() }))
     .catch(next);
 });
 
 router.delete('/:id', (req, res, next) => {
-  return Permission.findByIdAndRemove(req.permission._id)
+  return Permission.findByIdAndRemove(req._permission._id)
     .then(() => res.sendStatus(200))
     .catch(next);
 });

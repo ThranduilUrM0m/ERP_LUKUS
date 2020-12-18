@@ -654,8 +654,40 @@ class Dashboard extends React.Component {
             _vehicule_extincteur,
         } = this.state;
         const {
+            _agences,
+            _agenceToEdit,
+            _bons,
+            _bonToEdit,
+            _clients,
+            _clientToEdit,
+            _deviss,
+            _devisToEdit,
+            _employes,
+            _employeToEdit,
+            _factures,
+            _factureToEdit,
+            _fournisseurs,
+            _fournisseurToEdit,
+            _passagers,
+            _passagerToEdit,
+            _permissions,
+            _permissionToEdit,
+            _postes,
+            _posteToEdit,
+            _produits,
+            _produitToEdit,
+            _reservations,
+            _reservationToEdit,
+            _revueDePerformances,
+            _revueDePerformanceToEdit,
+            _societes,
+            _societeToEdit,
+            _stocks,
+            _stockToEdit,
+            _vehicules,
             _vehiculeToEdit,
-            _vehicules
+            _voyages,
+            _voyageToEdit
         } = this.props;
         return (
             <FullPage scrollMode={'normal'}>

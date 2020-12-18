@@ -49,23 +49,23 @@ const setupWorkerProcesses = () => {
 
 const setUpExpress = () => {
     // IMPORT MODELS
-    const agenceModel = require('./models/Agence');
-    const bonModel = require('./models/Bon');
-    const clientModel = require('./models/Client');
-    const devisModel = require('./models/Devis');
-    const employeModel = require('./models/Employe');
-    const factureModel = require('./models/Facture');
-    const fournisseurModel = require('./models/Fournisseur');
-    const passagerModel = require('./models/Passager');
-    const permissionModel = require('./models/Permission');
-    const posteModel = require('./models/Poste');
-    const produitModel = require('./models/Produit');
-    const reservationModel = require('./models/Reservation');
-    const revueDePerformanceModel = require('./models/RevueDePerformance');
-    const societeModel = require('./models/Societe');
-    const stockModel = require('./models/Stock');
-    const vehiculeModel = require('./models/Vehicule');
-    const voyageModel = require('./models/Voyage');
+    const Agence = require('./models/Agence');
+    const Bon = require('./models/Bon');
+    const Client = require('./models/Client');
+    const Devis = require('./models/Devis');
+    const Employe = require('./models/Employe');
+    const Facture = require('./models/Facture');
+    const Fournisseur = require('./models/Fournisseur');
+    const Passager = require('./models/Passager');
+    const Permission = require('./models/Permission');
+    const Poste = require('./models/Poste');
+    const Produit = require('./models/Produit');
+    const Reservation = require('./models/Reservation');
+    const RevueDePerformance = require('./models/RevueDePerformance');
+    const Societe = require('./models/Societe');
+    const Stock = require('./models/Stock');
+    const Vehicule = require('./models/Vehicule');
+    const Voyage = require('./models/Voyage');
 
     //On définit notre objet express nommé app
     const app = express();
@@ -75,7 +75,7 @@ const setUpExpress = () => {
     mongoose.Promise = global.Promise;
     mongoose.set('useFindAndModify', false);
     mongoose
-        .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/erp_db", { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
+        .connect(process.env.MONGODB_URI || "mongodb+srv://thranduilUrMom:ThranduilUrM0m@lukus.2pv2o.mongodb.net/erp_db?retryWrites=true&w=majority", { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
         .then(() => {
             console.log("Connected to mongoDB");
         })
