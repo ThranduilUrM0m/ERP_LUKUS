@@ -5,6 +5,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import "~bootstrap/scss/bootstrap";
 
@@ -838,48 +839,19 @@ html {
                 padding: 10vh 10vh 2vh 10vh;
 
                 display: grid;
-                grid-template-rows: 1fr auto auto 1fr;
-
-                .text {
-                    position: relative;
-                    padding: 25vh 0 0 0;
-                    align-self: end;
-                    z-index: 10;
-
-                    h2 {
-                        color: $white;
-                        background: $main-color;
-                        width: fit-content;
-                        padding: 1vh;
-                    }
-                }
-
-                h1 {
-                    font-size: 10vh;
-                    line-height: 10vh;
-                    margin-bottom: 3vh;
-                    margin-top: 3vh;
-                    z-index: 10;
-
-                    &:first-of-type {
-                        position: absolute;
-                        color: $white;
-                        font-size: 40vh;
-                        line-height: 40vh;
-                        top: 50%;
-                    }
-                }
+                grid-template-rows: 1fr auto;
 
                 .slider {
                     position: absolute;
                     overflow: hidden;
                     width: 35%;
                     height: 75%;
-                    right: 15%;
+                    left: 5%;
                     top: 50%;
                     transform: translate(0, -50%);
                     outline: 0.5vh solid rgba($color: $black, $alpha: .8);
                     outline-offset: 2.5vh;
+                    z-index: 10;
 
                     ul {
                         list-style: none;
@@ -908,119 +880,149 @@ html {
                     }
                 }
 
-                button {
+                .text {
+                    display: flex;
+                    flex-direction: column;
                     position: relative;
-                    -webkit-appearance: none;
-                    border: none;
-                    background: none;
-                    color: $black;
-                    width: 38.5vh;
-                    height: 7.5vh;
-                    font-size: 2.25vh;
-                    margin: 3vh 0;
-                    padding: 0;
-                    outline: none;
-                    z-index: 10;
+                    padding: 25vh 0 0 0;
+                    margin-left: auto;
+                    width: 50%;
 
-                    span {
-                        display: block;
-                        position: relative;
-                        line-height: 7.5vh;
-                        height: 100%;
-                        cursor: pointer;
+                    h1 {
+                        font-size: 10vh;
+                        line-height: 10vh;
+
+                        &:first-of-type {
+                            position: absolute;
+                            color: darken($white, 10);
+                            font-size: 40vh;
+                            line-height: 40vh;
+                            top: 75%;
+                            right: 0;
+                        }
+
+                        &:last-of-type {
+                            color: $main-color;
+                            font-family: 'Kaushan Script', cursive;
+                            font-size: 20vh;
+                        }
                     }
 
-                    &>span {
-                        &>span {
-                            padding-left: 0;
-                            padding-right: 0;
+                    button {
+                        position: relative;
+                        -webkit-appearance: none;
+                        border: none;
+                        background: none;
+                        color: $black;
+                        width: 38.5vh;
+                        height: 7.5vh;
+                        font-size: 2.25vh;
+                        margin: auto 3vh 0;
+                        padding: 0;
+                        outline: none;
+                        z-index: 10;
+                        align-self: flex-end;
 
+                        span {
+                            display: block;
+                            position: relative;
+                            line-height: 7.5vh;
+                            height: 100%;
+                            cursor: pointer;
+                        }
+
+                        &>span {
                             &>span {
-                                transition: color .15s ease-out .3s;
-                                color: transparent;
+                                padding-left: 0;
+                                padding-right: 0;
+
+                                &>span {
+                                    transition: color .15s ease-out .3s;
+                                    color: transparent;
+
+                                    &::after {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        right: 0;
+                                        bottom: 0;
+                                        color: $white;
+                                        content: attr(data-attr-span);
+                                        width: 0;
+                                        height: 100%;
+                                        background: $main-color;
+                                        white-space: nowrap;
+                                        text-align: center;
+                                        margin: auto;
+                                        overflow: hidden;
+                                        display: flex;
+                                        justify-content: center;
+                                        transition: all .2s ease-out;
+                                    }
+                                }
+
+                                &::before {
+                                    content: '';
+                                    position: absolute;
+                                    bottom: 0;
+                                    right: 0;
+                                    width: .5vh;
+                                    height: .5vh;
+                                    opacity: 0;
+                                }
 
                                 &::after {
+                                    content: '';
                                     position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    right: 0;
                                     bottom: 0;
-                                    color: $white;
-                                    content: attr(data-attr-span);
-                                    width: 0;
-                                    height: 100%;
-                                    background: $main-color;
-                                    white-space: nowrap;
-                                    text-align: center;
-                                    margin: auto;
-                                    overflow: hidden;
-                                    display: flex;
-                                    justify-content: center;
-                                    transition: all .2s ease-out;
+                                    left: 0;
+                                    width: .5vh;
+                                    height: .5vh;
+                                    opacity: 0;
                                 }
                             }
 
                             &::before {
                                 content: '';
                                 position: absolute;
-                                bottom: 0;
-                                right: 0;
-                                width: .5vh;
-                                height: .5vh;
-                                opacity: 0;
+                                top: 0;
+                                right: 50%;
+                                width: 3.25vh;
+                                height: 0;
+                                border: .5vh solid $main-color;
+                                border-right: none;
+                                border-bottom: none;
+
+                                transition-property: width, height;
+                                transition-duration: .15s, .15s;
+                                transition-delay: .15s, 0s;
                             }
 
                             &::after {
                                 content: '';
                                 position: absolute;
-                                bottom: 0;
-                                left: 0;
-                                width: .5vh;
-                                height: .5vh;
-                                opacity: 0;
+                                top: 0;
+                                left: 50%;
+                                width: 3.25vh;
+                                height: 0;
+                                border: .5vh solid $main-color;
+                                border-left: none;
+                                border-bottom: none;
+
+                                transition-property: width, height;
+                                transition-duration: .15s, .15s;
+                                transition-delay: .15s, 0s;
                             }
                         }
 
-                        &::before {
-                            content: '';
-                            position: absolute;
-                            top: 0;
-                            right: 50%;
-                            width: 3.25vh;
-                            height: 0;
-                            border: .5vh solid $main-color;
-                            border-right: none;
-                            border-bottom: none;
+                        &:hover {
 
-                            transition-property: width, height;
-                            transition-duration: .15s, .15s;
-                            transition-delay: .15s, 0s;
-                        }
-
-                        &::after {
-                            content: '';
-                            position: absolute;
-                            top: 0;
-                            left: 50%;
-                            width: 3.25vh;
-                            height: 0;
-                            border: .5vh solid $main-color;
-                            border-left: none;
-                            border-bottom: none;
-
-                            transition-property: width, height;
-                            transition-duration: .15s, .15s;
-                            transition-delay: .15s, 0s;
-                        }
-                    }
-
-                    &:hover {
-
-                        &>span {
                             &>span {
                                 &>span {
-                                    &::after {
-                                        width: 100%;
+                                    &>span {
+                                        &::after {
+                                            width: 100%;
+                                        }
                                     }
                                 }
                             }
@@ -1043,10 +1045,10 @@ html {
                             content: "";
                             position: absolute;
                             top: 50%;
-                            right: 0;
+                            right: 3vh;
                             transform: translate(0, -50%);
                             height: .16vh;
-                            width: 15vw;
+                            width: 38.5vh;
                             background: $black;
                         }
                     }
@@ -2953,14 +2955,14 @@ html {
                                         padding: 0;
                                         height: auto;
                                         width: 100%;
-        
+
                                         .forms__item {
                                             display: flex;
                                             padding: 2.5vh;
                                             width: 100%;
                                             height: fit-content;
                                             min-height: 12vh;
-        
+
                                             .card {
                                                 border: .1vh solid lighten(#34495E, 10%);
                                                 border-radius: 0;
@@ -2970,54 +2972,56 @@ html {
                                                 margin: 0;
                                                 width: 100%;
                                                 height: 100%;
-        
+
                                                 &__content {
                                                     display: flex;
                                                     flex: 1 1 auto;
                                                     flex-direction: column;
-        
+
                                                     ._pane {
                                                         display: flex;
                                                         height: 100%;
                                                         flex-direction: row;
-        
+
                                                         ._content {
                                                             padding: 1.25vh;
                                                             width: 100%;
-        
-                                                            ._account_head, ._accounts_head {
+
+                                                            ._account_head,
+                                                            ._accounts_head {
                                                                 display: flex;
                                                                 flex-direction: column;
                                                                 width: calc(100% - 3.75vh);
                                                                 height: fit-content;
                                                                 margin: 0 auto;
-        
+
                                                                 p {
                                                                     font-size: 2vh;
                                                                 }
                                                             }
-        
+
                                                             .data_container {
                                                                 position: relative;
                                                                 width: calc(100% - 3.75vh);
                                                                 margin: 0 auto;
-        
+
                                                                 ._form {
                                                                     height: 100%;
-        
+
                                                                     .modal-content_user {
                                                                         padding: 1.25vh 0;
                                                                         margin: 0;
                                                                         display: grid;
                                                                         grid-template-rows: 7.5vh 7.5vh 7.5vh;
-        
+
                                                                         .row {
                                                                             margin-right: 0;
                                                                             margin-left: 0;
                                                                             margin-bottom: 0;
+
                                                                             &:last-of-type {
                                                                                 justify-content: flex-end;
-        
+
                                                                                 button {
                                                                                     position: relative;
                                                                                     -webkit-appearance: none;
@@ -3031,7 +3035,7 @@ html {
                                                                                     padding: 0;
                                                                                     outline: none;
                                                                                     z-index: 10;
-                                        
+
                                                                                     span {
                                                                                         display: block;
                                                                                         position: relative;
@@ -3039,16 +3043,16 @@ html {
                                                                                         height: 100%;
                                                                                         cursor: pointer;
                                                                                     }
-                                        
+
                                                                                     &>span {
                                                                                         &>span {
                                                                                             padding-left: 0;
                                                                                             padding-right: 0;
-                                        
+
                                                                                             &>span {
                                                                                                 transition: color .15s ease-out .3s;
                                                                                                 color: transparent;
-                                        
+
                                                                                                 &::after {
                                                                                                     position: absolute;
                                                                                                     top: 0;
@@ -3069,7 +3073,7 @@ html {
                                                                                                     transition: all .2s ease-out;
                                                                                                 }
                                                                                             }
-                                        
+
                                                                                             &::before {
                                                                                                 content: '';
                                                                                                 position: absolute;
@@ -3079,7 +3083,7 @@ html {
                                                                                                 height: .5vh;
                                                                                                 opacity: 0;
                                                                                             }
-                                        
+
                                                                                             &::after {
                                                                                                 content: '';
                                                                                                 position: absolute;
@@ -3090,7 +3094,7 @@ html {
                                                                                                 opacity: 0;
                                                                                             }
                                                                                         }
-                                        
+
                                                                                         &::before {
                                                                                             content: '';
                                                                                             position: absolute;
@@ -3101,12 +3105,12 @@ html {
                                                                                             border: .5vh solid $main-color;
                                                                                             border-right: none;
                                                                                             border-bottom: none;
-                                        
+
                                                                                             transition-property: width, height;
                                                                                             transition-duration: .15s, .15s;
                                                                                             transition-delay: .15s, 0s;
                                                                                         }
-                                        
+
                                                                                         &::after {
                                                                                             content: '';
                                                                                             position: absolute;
@@ -3117,15 +3121,15 @@ html {
                                                                                             border: .5vh solid $main-color;
                                                                                             border-left: none;
                                                                                             border-bottom: none;
-                                        
+
                                                                                             transition-property: width, height;
                                                                                             transition-duration: .15s, .15s;
                                                                                             transition-delay: .15s, 0s;
                                                                                         }
                                                                                     }
-                                        
+
                                                                                     &:hover {
-                                        
+
                                                                                         &>span {
                                                                                             &>span {
                                                                                                 &>span {
@@ -3139,7 +3143,7 @@ html {
                                                                                 }
                                                                             }
                                                                         }
-                                        
+
                                                                         &:hover {
                                                                             button {
                                                                                 &>span {
@@ -3148,13 +3152,13 @@ html {
                                                                                         height: 100% !important;
                                                                                         transition-delay: 0s, .15s !important;
                                                                                     }
-                                        
+
                                                                                     &::before {
                                                                                         width: 50% !important;
                                                                                         height: 100% !important;
                                                                                         transition-delay: 0s, .15s !important;
                                                                                     }
-                                        
+
                                                                                     &>span {
                                                                                         &::after {
                                                                                             opacity: 1 !important;
@@ -3163,7 +3167,7 @@ html {
                                                                                             height: .5vh !important;
                                                                                             transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
                                                                                         }
-                                        
+
                                                                                         &::before {
                                                                                             opacity: 1 !important;
                                                                                             border-bottom: .5vh solid $main-color !important;
@@ -3171,7 +3175,7 @@ html {
                                                                                             height: .5vh !important;
                                                                                             transition: opacity 0s ease-out .29s, width .15s ease-out .3s !important;
                                                                                         }
-                                        
+
                                                                                         &>span {
                                                                                             color: $black !important;
                                                                                         }
@@ -3181,32 +3185,32 @@ html {
                                                                         }
                                                                     }
                                                                 }
-        
+
                                                                 table {
                                                                     border-radius: 0;
                                                                     border-collapse: collapse;
-        
+
                                                                     tr {
                                                                         position: relative;
                                                                         box-shadow: .6vh .6vh .5vh -1.25vh rgba(0, 0, 0, .5);
-        
+
                                                                         &:not(.spacer) {
                                                                             background: white;
                                                                         }
-        
+
                                                                         &.spacer {
                                                                             height: 2.5vh;
                                                                         }
-        
+
                                                                         th {
                                                                             color: rgba($color: $black, $alpha: .25);
                                                                             display: none;
                                                                         }
-        
+
                                                                         td {
                                                                             height: 100%;
                                                                             display: block;
-        
+
                                                                             p {
                                                                                 padding: 1.25vh;
                                                                                 margin: .5vh;
@@ -3218,20 +3222,20 @@ html {
                                                                                 height: fit-content;
                                                                                 width: fit-content;
                                                                             }
-        
+
                                                                             &:before {
                                                                                 content: attr(data-th)": ";
                                                                                 font-weight: bold;
                                                                                 width: 6.5em;
                                                                                 color: rgba($color: $black, $alpha: .25);
                                                                                 display: inline-block;
-        
+
                                                                                 @media (min-width: $breakpoint-alpha) {
                                                                                     display: none;
                                                                                 }
                                                                             }
                                                                         }
-        
+
                                                                         th,
                                                                         td {
                                                                             text-align: left;
@@ -3241,14 +3245,14 @@ html {
                                                                             margin: 0;
                                                                             height: 11.5vh;
                                                                             border: none;
-        
+
                                                                             &:first-of-type {
                                                                                 padding-left: 3.75vh;
                                                                             }
-        
+
                                                                             &.type {
                                                                                 position: relative;
-        
+
                                                                                 &::after {
                                                                                     display: none;
                                                                                     content: 'User Deleted';
@@ -3264,34 +3268,34 @@ html {
                                                                                     background: #eee;
                                                                                     border-radius: .15vh;
                                                                                 }
-        
+
                                                                                 &.user_deleted {
                                                                                     &::after {
                                                                                         display: inline-block;
                                                                                     }
                                                                                 }
                                                                             }
-        
+
                                                                             @media (min-width: $breakpoint-alpha) {
                                                                                 display: table-cell;
                                                                             }
                                                                         }
                                                                     }
                                                                 }
-        
+
                                                                 .accounts_list {
                                                                     position: relative;
-        
+
                                                                     thead {
                                                                         th {
                                                                             color: rgba(0, 0, 0, .5);
                                                                             font-weight: initial;
                                                                             cursor: pointer;
                                                                             position: relative;
-        
+
                                                                             ._arrow {
                                                                                 float: right;
-        
+
                                                                                 i.fa-caret-down,
                                                                                 i.fa-caret-up {
                                                                                     color: $itemBg4;
@@ -3299,25 +3303,25 @@ html {
                                                                             }
                                                                         }
                                                                     }
-        
+
                                                                     tbody {
                                                                         tr.active {
                                                                             td {
                                                                                 background-color: rgba($color: $purple, $alpha: .25);
                                                                             }
                                                                         }
-        
+
                                                                         td {
                                                                             text-align: left;
-        
+
                                                                             span {
                                                                                 cursor: pointer;
-        
+
                                                                                 &.dropdown-toggle::after {
                                                                                     display: none;
                                                                                 }
                                                                             }
-        
+
                                                                             .dropdown-menu {
                                                                                 position: absolute;
                                                                                 transform-origin: right;
@@ -3328,11 +3332,11 @@ html {
                                                                                 right: 0;
                                                                                 min-width: unset;
                                                                                 padding: 0;
-        
+
                                                                                 &.show {
                                                                                     display: flex !important;
                                                                                 }
-        
+
                                                                                 .dropdown-item {
                                                                                     width: 6.5vh;
                                                                                     height: 6.5vh;
@@ -3342,7 +3346,7 @@ html {
                                                                                     align-items: center;
                                                                                 }
                                                                             }
-        
+
                                                                             &.show {
                                                                                 display: table-cell !important;
                                                                             }

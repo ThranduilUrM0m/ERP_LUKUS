@@ -104,4 +104,4 @@ export const VOYAGE_PAGE_LOADED = 'VOYAGE_PAGE_LOADED';
 export const SUBMIT_VOYAGE = 'SUBMIT_VOYAGE';
 export const DELETE_VOYAGE = 'DELETE_VOYAGE';
 export const SET_EDIT_VOYAGE = 'SET_EDIT_VOYAGE';
-export const DIT_VOYAGE = 'DIT_VOYAGE';
+export const EDIT_VOYAGE = 'DIT_VOYAGE';

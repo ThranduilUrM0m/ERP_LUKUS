@@ -33,10 +33,10 @@ class Home extends React.Component {
         // axios operations
     }
     componentDidMount() {
-        
+
     }
     handleClick(href) {
-        $('html,body').animate({scrollTop: $('#'+href).offset().top}, 200, () => {
+        $('html,body').animate({ scrollTop: $('#' + href).offset().top }, 200, () => {
             $('#mail_content').focus();
         });
     }
@@ -46,36 +46,35 @@ class Home extends React.Component {
                 <Slide>
                     <section className="first_section_home">
                         <div className="wrapper_full">
-                            <h1>Transport.</h1>
-                            <div className="text">
-                                <h2>Courtes ou longues distances.</h2>
-                                <h2>Vous amener à destination beaucoup plus rapidement.</h2>
-                            </div>
-                            <h1>LUKUS Transport</h1>
                             <div className="slider">
                                 <ul>
-                                    <li><img src={minibus1}/></li>
-                                    <li><img src={minibus2}/></li>
-                                    <li><img src={minibus3}/></li>
-                                    <li><img src={minibus4}/></li>
-                                    <li><img src={minibus5}/></li>
-                                    <li><img src={minibus6}/></li>
-                                    <li><img src={minibus4}/></li>
-                                    <li><img src={minibus8}/></li>
-                                    <li><img src={minibus9}/></li>
-                                    <li><img src={minibus10}/></li>
-                                    <li><img src={minibus11}/></li>
+                                    <li><img src={minibus1} /></li>
+                                    <li><img src={minibus2} /></li>
+                                    <li><img src={minibus3} /></li>
+                                    <li><img src={minibus4} /></li>
+                                    <li><img src={minibus5} /></li>
+                                    <li><img src={minibus6} /></li>
+                                    <li><img src={minibus4} /></li>
+                                    <li><img src={minibus8} /></li>
+                                    <li><img src={minibus9} /></li>
+                                    <li><img src={minibus10} /></li>
+                                    <li><img src={minibus11} /></li>
                                 </ul>
                             </div>
-                            <button id="reach_out_button" onClick={() => this.handleClick('footer_to')} type="button">
-                                <span>
+                            <div className="text">
+                                <h1>Transport.</h1>
+                                <h1>LUKUS</h1>
+                                <h1>transport</h1>
+                                <button id="reach_out_button" onClick={() => this.handleClick('footer_to')} type="button">
                                     <span>
-                                        <span data-attr-span="Contactez Nous.">
-                                            Contactez Nous.
+                                        <span>
+                                            <span data-attr-span="Contactez Nous.">
+                                                Contactez Nous.
+                                        </span>
                                         </span>
                                     </span>
-                                </span>
-                            </button>
+                                </button>
+                            </div>
                             <div>
                                 <ul className="list-inline">
                                     <li className="list-inline-item">
@@ -138,7 +137,7 @@ class Home extends React.Component {
                     </section>
                 </Slide>
                 <Slide>
-                    <Footer/>
+                    <Footer />
                 </Slide>
             </FullPage>
         )
@@ -146,11 +145,11 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    
+
 });
 
 const mapDispatchToProps = dispatch => ({
-    
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
