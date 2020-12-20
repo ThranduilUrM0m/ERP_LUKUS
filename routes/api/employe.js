@@ -175,6 +175,10 @@ router.patch('/:id', (req, res, next) => {
 		req._employe._employe_situationfamille = body._employe_situationfamille;
 	}
 
+	if (typeof body._employe_nombreenfants !== 'undefined') {
+		req._employe._employe_nombreenfants = body._employe_nombreenfants;
+	}
+
 	if (typeof body._employe_adresse !== 'undefined') {
 		req._employe._employe_adresse = body._employe_adresse;
 	}
@@ -197,6 +201,10 @@ router.patch('/:id', (req, res, next) => {
 
 	if (typeof body.Poste !== 'undefined') {
 		req._employe.Poste = body.Poste;
+	}
+
+	if (typeof body.RevueDePerformance !== 'undefined') {
+		req._employe.RevueDePerformance = body.RevueDePerformance;
 	}
 
 	return req._employe

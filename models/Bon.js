@@ -5,7 +5,7 @@ const Bon = new Schema({
 		type: String
 	},
 	_bon_date: {
-		type: String
+		type: Date
 	},
 	_bon_type: {
 		type: String

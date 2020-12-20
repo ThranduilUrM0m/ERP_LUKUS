@@ -3096,7 +3096,7 @@ class Reservation extends React.Component {
                                                     value={_client_telephone}
                                                     onChange={(value) => this.handleChangePhone(value)}
                                                 />
-                                                <label id="_client_telephoneLabel" htmlFor='_client_telephone' className={_client_telephone ? 'active' : ''}>Telephone (+...)</label>
+                                                <label htmlFor='_client_telephone' className={_client_telephone ? 'active phone_label' : 'phone_label'}>Telephone (+...)</label>
                                                 <div className="form-group-line"></div>
                                             </div>
                                         </div>

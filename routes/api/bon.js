@@ -51,21 +51,18 @@ router.post('/', (req, res, next) => {
 		.then(finalBon => finalBon
 			.populate({
 				path: 'Facture',
-				populate: {
-					path: 'Client',
-				},
-				populate: {
-					path: 'Produit',
-				},
-				populate: {
+				populate: [{ 
+					path: 'Client' 
+				},{ 
+					path: 'Produit' 
+				},{ 
 					path: 'Societe',
 					populate: {
 						path: 'Agence',
 					},
-				},
-				populate: {
-					path: 'Fournisseur',
-				},
+				},{ 
+					path: 'Fournisseur' 
+				}]
 			})
 			.execPopulate())
 		.then(() => {
@@ -77,23 +74,20 @@ router.post('/', (req, res, next) => {
 router.get('/', (req, res, next) => {
 	return Bon.find()
 		.sort({ createdAt: 'descending' })
-		.populate({
-			path: 'Facture',
-			populate: {
-				path: 'Client',
-			},
-			populate: {
-				path: 'Produit',
-			},
-			populate: {
+		.populate({ 
+			path: 'Facture', 
+			populate: [{ 
+				path: 'Client' 
+			},{ 
+				path: 'Produit' 
+			},{ 
 				path: 'Societe',
 				populate: {
 					path: 'Agence',
 				},
-			},
-			populate: {
-				path: 'Fournisseur',
-			},
+			},{ 
+				path: 'Fournisseur' 
+			}]
 		})
 		.then((_bons) => res.json({ _bons: _bons.map(_bon => _bon.toJSON()) }))
 		.catch(next);
@@ -144,21 +138,18 @@ router.patch('/:id', (req, res, next) => {
 		.then(() => req._bon
 			.populate({
 				path: 'Facture',
-				populate: {
-					path: 'Client',
-				},
-				populate: {
-					path: 'Produit',
-				},
-				populate: {
+				populate: [{ 
+					path: 'Client' 
+				},{ 
+					path: 'Produit' 
+				},{ 
 					path: 'Societe',
 					populate: {
 						path: 'Agence',
 					},
-				},
-				populate: {
-					path: 'Fournisseur',
-				},
+				},{ 
+					path: 'Fournisseur' 
+				}]
 			})
 			.execPopulate())
 		.then(() => res.json({ _bon: req._bon.toJSON() }))

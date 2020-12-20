@@ -1,8 +1,10 @@
 import React from "react";
 import axios from 'axios';
 import moment from 'moment';
-import Account from './Account';
+import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-number-input';
 import Autocomplete from 'react-autocomplete';
+import Select from 'react-select';
 import { connect } from 'react-redux';
 import API from "../../utils/API";
 import { FullPage, Slide } from 'react-full-page';
@@ -12,6 +14,7 @@ import jQuery from 'jquery';
 import 'bootstrap';
 import socketIOClient from "socket.io-client";
 import favicon from '../../favicon.svg';
+import update from 'immutability-helper';
 
 const socketURL =
     process.env.NODE_ENV === 'production'
@@ -28,11 +31,174 @@ class Dashboard extends React.Component {
         this.state = {
             modal_msg: '',
 
-            _user: {},
+            _user: {
+                _user_email: '',
+                _user_username: '',
+                _user_password: '',
+                _user_passwordResetToken: '',
+                _user_passwordResetExpires: moment().format('YYYY-MM-DD'),
+                _user_fingerprint: '',
+                _user_isVerified: false,
+                _user_logindate: [null],
+                Employe: {
+                    _employe_prenom: '',
+                    _employe_nom: '',
+                    _employe_telephone: '',
+                    _employe_datenaissance: moment().format('YYYY-MM-DD'),
+                    _employe_CNIE: '',
+                    _employe_situationfamille: '',
+                    _employe_nombreenfants: 0,
+                    _employe_adresse: '',
+                    _employe_CNSS: {
+                        _employe_CNSS_dateimmatriculation: moment().format('YYYY-MM-DD'),
+                        _employe_CNSS_numeroimmatriculation: '',
+                        _employe_CNSS_montant: 0
+                    },
+                    _employe_permis: {
+                        _employe_permis_numero: '',
+                        _employe_permis_categorie: '',
+                        _employe_permis_datedelivrance: moment().format('YYYY-MM-DD'),
+                        _employe_permis_datefinvalidite: moment().format('YYYY-MM-DD'),
+                        _employe_permis_image1: '',
+                        _employe_permis_image2: ''
+                    },
+                    _employe_datembauche: moment().format('YYYY-MM-DD'),
+                    _employe_image: '',
+                    Poste: {
+                        _poste_titre: '',
+                        _poste_salaireinitiale: 0
+                    },
+                    RevueDePerformance: {
+                        _revueDePerformance_date: moment().format('YYYY-MM-DD'),
+                        _revueDePerformance_resultat: ''
+                    }
+                },
+                Permission: [{
+                    _permission_titre: ''
+                }]
+            },
+            _users: [],
 
             _search_value_vehicules: '',
             _search_value_parametres: '',
 
+            _agence_adresse: '',
+            _agence_ville: '',
+            _agence_pays: '',
+            _bon_numero: '',
+            _bon_date: moment().format('YYYY-MM-DD'),
+            _bon_type: '',
+            Facture: null,
+            _client_prenomcontact: '',
+            _client_nomcontact: '',
+            _client_raison: '',
+            _client_adresse: '',
+            _client_telephone: '',
+            _client_email: '',
+            _client_ville: '',
+            _client_pays: '',
+            _client_ICE: '',
+            _client_IF: '',
+            _client_RC: '',
+            _client_patente: '',
+            _client_contrat: '',
+            _devis_numero: '',
+            _devis_date: moment().format('YYYY-MM-DD'),
+            _devis_commentaire: '',
+            _devis_TVA: 0,
+            _devis_image: '',
+            _employe_prenom: '',
+            _employe_nom: '',
+            _employe_telephone: '',
+            _employe_datenaissance: moment().format('YYYY-MM-DD'),
+            _employe_CNIE: '',
+            _employe_situationfamille: '',
+            _employe_nombreenfants: 0,
+            _employe_adresse: '',
+            _employe_CNSS: {
+                _employe_CNSS_dateimmatriculation: moment().format('YYYY-MM-DD'),
+                _employe_CNSS_numeroimmatriculation: '',
+                _employe_CNSS_montant: 0
+            },
+            _employe_permis: {
+                _employe_permis_numero: '',
+                _employe_permis_categorie: '',
+                _employe_permis_datedelivrance: moment().format('YYYY-MM-DD'),
+                _employe_permis_datefinvalidite: moment().format('YYYY-MM-DD'),
+                _employe_permis_image1: '',
+                _employe_permis_image2: ''
+            },
+            _employe_datembauche: moment().format('YYYY-MM-DD'),
+            _employe_image: '',
+            Poste: null,
+            RevueDePerformance: null,
+            _facture_numero: '',
+            _facture_date: moment().format('YYYY-MM-DD'),
+            _facture_commentaire: '',
+            _facture_TVA: 0,
+            _facture_venteachat: '',
+            _facture_ispayed: false,
+            _facture_numeropaiement: 0,
+            _facture_datepaiement: moment().format('YYYY-MM-DD'),
+            _facture_type: '',
+            _facture_image: '',
+            Societe: null,
+            Fournisseur: null,
+            _fournisseur_prenomcontact: '',
+            _fournisseur_nomcontact: '',
+            _fournisseur_raison: '',
+            _fournisseur_adresse: '',
+            _fournisseur_telephone: '',
+            _fournisseur_email: '',
+            _fournisseur_ville: '',
+            _fournisseur_pays: '',
+            _fournisseur_ICE: '',
+            _fournisseur_IF: '',
+            _fournisseur_RC: '',
+            _fournisseur_patente: '',
+            _passager_prenom: '',
+            _passager_nom: '',
+            _passager_telephone: '',
+            _passager_email: '',
+            _passager_adresse: '',
+            _passager_ville: '',
+            _passager_pays: '',
+            _permission_titre: '',
+            _poste_titre: '',
+            _poste_salaireinitiale: 0,
+            _produit_designation: '',
+            _produit_reference: '',
+            _produit_quantite: 0,
+            _produit_prixunitaire: 0,
+            _produit_statut: '',
+            _reservation_nombreadultes: 0,
+            _reservation_nombreenfants: 0,
+            _reservation_datereservation: moment().format('YYYY-MM-DD'),
+            _reservation_commentaire: '',
+            _reservation_status: '',
+            Voyage: null,
+            Client: null,
+            _revueDePerformance_date: moment().format('YYYY-MM-DD'),
+            _revueDePerformance_resultat: '',
+            _societe_raison: '',
+            _societe_siege: '',
+            _societe_numeroTP: '',
+            _societe_IF: '',
+            _societe_telephone: '',
+            _societe_fax: '',
+            _societe_email: '',
+            _societe_ICE: '',
+            _societe_CNSS: '',
+            Agence: null,
+            Produit: null,
+            _user_email: '',
+            _user_username: '',
+            _user_password: '',
+            _user_fingerprint: '',
+            _user_isVerified: false,
+            _user_logindate: moment().format('YYYY-MM-DD'),
+            Employe: null,
+            Permission: null,
             _vehicule_marque: '',
             _vehicule_fabricant: '',
             _vehicule_numerochassis: '',
@@ -40,27 +206,33 @@ class Dashboard extends React.Component {
             _vehicule_model: '',
             _vehicule_datefabrication: moment().format('YYYY-MM-DD'),
             _vehicule_moteur: '',
-            _vehicule_volumereservoir: '',
-            _vehicule_poidsavide: '',
-            _vehicule_kmparvidange: '',
+            _vehicule_volumereservoir: 0,
             _vehicule_image: '',
+            _vehicule_poidsavide: 0,
+            _vehicule_kmparvidange: 0,
             _vehicule_categorie: {
                 _vehicule_categorie_nom: '',
-                _vehicule_categorie_nombrepassagers: '',
+                _vehicule_categorie_nombrepassagers: 0,
                 _vehicule_categorie_bagage: '',
                 _vehicule_categorie_carrosserie: ''
             },
+            _vehicule_recharge: [{
+                _vehicule_recharge_date: moment().format('YYYY-MM-DD'),
+                _vehicule_recharge_litres: 0,
+                _vehicule_recharge_km: 0,
+                _vehicule_recharge_prixlitre: 0,
+                _vehicule_recharge_consommation: 0
+            }],
             _vehicule_consommation: {
-                _vehicule_consommation_ville: '',
-                _vehicule_consommation_route: '',
-                _vehicule_consommation_mixte: ''
+                _vehicule_consommation_ville: 0,
+                _vehicule_consommation_route: 0,
+                _vehicule_consommation_mixte: 0
             },
-
             _vehicule_assurance: {
                 _vehicule_assurance_entrepriseassurance: '',
                 _vehicule_assurance_datedebut: moment().format('YYYY-MM-DD'),
                 _vehicule_assurance_datefin: moment().format('YYYY-MM-DD'),
-                _vehicule_assurance_montant: '',
+                _vehicule_assurance_montant: 0,
                 _vehicule_assurance_image1: '',
                 _vehicule_assurance_image2: ''
             },
@@ -74,9 +246,14 @@ class Dashboard extends React.Component {
                 _vehicule_cartegrise_image1: '',
                 _vehicule_cartegrise_image2: ''
             },
+            _vehicule_vidange: [{
+                _vehicule_vidange_km: 0,
+                _vehicule_vidange_date: moment().format('YYYY-MM-DD'),
+                _vehicule_vidange_type: ''
+            }],
             _vehicule_vignette: {
-                _vehicule_vignette_montant: '',
-                _vehicule_vignette_penalite: '',
+                _vehicule_vignette_montant: 0,
+                _vehicule_vignette_penalite: 0,
                 _vehicule_vignette_migration: '',
                 _vehicule_vignette_tsava: '',
                 _vehicule_vignette_datepaiement: moment().format('YYYY-MM-DD'),
@@ -95,22 +272,102 @@ class Dashboard extends React.Component {
             _vehicule_extincteur: {
                 _vehicule_extincteur_datedebut: moment().format('YYYY-MM-DD'),
                 _vehicule_extincteur_datefin: moment().format('YYYY-MM-DD')
-            }
+            },
+            _vehicule_visitetechnique: [{
+                _vehicule_visitetechnique_datecontrole: moment().format('YYYY-MM-DD'),
+                _vehicule_visitetechnique_naturecontrole: moment().format('YYYY-MM-DD'),
+                _vehicule_visitetechnique_resultat: '',
+                _vehicule_visitetechnique_limitevalidite: '',
+                _vehicule_visitetechnique_numeroproces: 0,
+                _vehicule_visitetechnique_raisonsocialecontrolleur: '',
+                _vehicule_visitetechnique_kmreleve: 0,
+                _vehicule_visitetechnique_image: ''
+            }],
+            _voyage_datedepart: moment().format('YYYY-MM-DD'),
+            _voyage_datearrive: moment().format('YYYY-MM-DD'),
+            _voyage_lieudepart: '',
+            _voyage_lieuarrive: '',
+            _voyage_statut: '',
+            Passager: null,
+            Vehicule: null
         };
 
         this.disconnect = this.disconnect.bind(this);
+        this.get_users = this.get_users.bind(this);
         this.get_user = this.get_user.bind(this);
+        this.set_user = this.set_user.bind(this);
+
+        this.handleDeleteAgence = this.handleDeleteAgence.bind(this);
+        this.handleEditAgence = this.handleEditAgence.bind(this);
+        this.handleSubmitAgence = this.handleSubmitAgence.bind(this);
+
+        this.handleDeleteBon = this.handleDeleteBon.bind(this);
+        this.handleEditBon = this.handleEditBon.bind(this);
+        this.handleSubmitBon = this.handleSubmitBon.bind(this);
+
+        this.handleDeleteClient = this.handleDeleteClient.bind(this);
+        this.handleEditClient = this.handleEditClient.bind(this);
+        this.handleSubmitClient = this.handleSubmitClient.bind(this);
+
+        this.handleDeleteDevis = this.handleDeleteDevis.bind(this);
+        this.handleEditDevis = this.handleEditDevis.bind(this);
+        this.handleSubmitDevis = this.handleSubmitDevis.bind(this);
+
+        this.handleDeleteEmploye = this.handleDeleteEmploye.bind(this);
+        this.handleEditEmploye = this.handleEditEmploye.bind(this);
+        this.handleSubmitEmploye = this.handleSubmitEmploye.bind(this);
+
+        this.handleDeleteFacture = this.handleDeleteFacture.bind(this);
+        this.handleEditFacture = this.handleEditFacture.bind(this);
+        this.handleSubmitFacture = this.handleSubmitFacture.bind(this);
+
+        this.handleDeleteFournisseur = this.handleDeleteFournisseur.bind(this);
+        this.handleEditFournisseur = this.handleEditFournisseur.bind(this);
+        this.handleSubmitFournisseur = this.handleSubmitFournisseur.bind(this);
+
+        this.handleDeletePassager = this.handleDeletePassager.bind(this);
+        this.handleEditPassager = this.handleEditPassager.bind(this);
+        this.handleSubmitPassager = this.handleSubmitPassager.bind(this);
+
+        this.handleDeletePermission = this.handleDeletePermission.bind(this);
+        this.handleEditPermission = this.handleEditPermission.bind(this);
+        this.handleSubmitPermission = this.handleSubmitPermission.bind(this);
+
+        this.handleDeletePoste = this.handleDeletePoste.bind(this);
+        this.handleEditPoste = this.handleEditPoste.bind(this);
+        this.handleSubmitPoste = this.handleSubmitPoste.bind(this);
+
+        this.handleDeleteProduit = this.handleDeleteProduit.bind(this);
+        this.handleEditProduit = this.handleEditProduit.bind(this);
+        this.handleSubmitProduit = this.handleSubmitProduit.bind(this);
+
+        this.handleDeleteReservation = this.handleDeleteReservation.bind(this);
+        this.handleEditReservation = this.handleEditReservation.bind(this);
+        this.handleSubmitReservation = this.handleSubmitReservation.bind(this);
+
+        this.handleDeleteRevueDePerformance = this.handleDeleteRevueDePerformance.bind(this);
+        this.handleEditRevueDePerformance = this.handleEditRevueDePerformance.bind(this);
+        this.handleSubmitRevueDePerformance = this.handleSubmitRevueDePerformance.bind(this);
+
+        this.handleDeleteSociete = this.handleDeleteSociete.bind(this);
+        this.handleEditSociete = this.handleEditSociete.bind(this);
+        this.handleSubmitSociete = this.handleSubmitSociete.bind(this);
+
+        this.handleDeleteStock = this.handleDeleteStock.bind(this);
+        this.handleEditStock = this.handleEditStock.bind(this);
+        this.handleSubmitStock = this.handleSubmitStock.bind(this);
 
         this.handleDeleteVehicule = this.handleDeleteVehicule.bind(this);
         this.handleEditVehicule = this.handleEditVehicule.bind(this);
         this.handleSubmitVehicule = this.handleSubmitVehicule.bind(this);
 
-        this.handleChangeOnlyNumbers = this.handleChangeOnlyNumbers.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleDeleteVoyage = this.handleDeleteVoyage.bind(this);
+        this.handleEditVoyage = this.handleEditVoyage.bind(this);
+        this.handleSubmitVoyage = this.handleSubmitVoyage.bind(this);
+
+        this.handleChangeUser = this.handleChangeUser.bind(this);
         this.handleChangeNested = this.handleChangeNested.bind(this);
-        this.handleChangeNestedOnlyNumbers = this.handleChangeNestedOnlyNumbers.bind(this);
-        this.handleChangeField = this.handleChangeField.bind(this);
-        this.handleChangeFieldUser = this.handleChangeFieldUser.bind(this);
+        this.handleChange = this.handleChange.bind(this);
 
         this._handleClickEvents = this._handleClickEvents.bind(this);
         this.handleNext = this.handleNext.bind(this);
@@ -122,7 +379,146 @@ class Dashboard extends React.Component {
         this.get_user();
         socket.on("USER_UPDATED_GET", data => self.get_user());
 
-        const { onLoadVehicule } = this.props;
+        const {
+            onLoadAgence,
+            onLoadBon,
+            onLoadClient,
+            onLoadDevis,
+            onLoadEmploye,
+            onLoadFacture,
+            onLoadFournisseur,
+            onLoadPassager,
+            onLoadPermission,
+            onLoadPoste,
+            onLoadProduit,
+            onLoadReservation,
+            onLoadRevueDePerformance,
+            onLoadSociete,
+            onLoadStock,
+            onLoadVehicule,
+            onLoadVoyage
+        } = this.props;
+
+        axios('/api/agence')
+            .then((response) => {
+                onLoadAgence(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/bon')
+            .then((response) => {
+                onLoadBon(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/client')
+            .then((response) => {
+                onLoadClient(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/devis')
+            .then((response) => {
+                onLoadDevis(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/employe')
+            .then((response) => {
+                onLoadEmploye(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/facture')
+            .then((response) => {
+                onLoadFacture(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/fournisseur')
+            .then((response) => {
+                onLoadFournisseur(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/passager')
+            .then((response) => {
+                onLoadPassager(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/permission')
+            .then((response) => {
+                onLoadPermission(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/poste')
+            .then((response) => {
+                onLoadPoste(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/produit')
+            .then((response) => {
+                onLoadProduit(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/reservation')
+            .then((response) => {
+                onLoadReservation(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/revueDePerformance')
+            .then((response) => {
+                onLoadRevueDePerformance(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/societe')
+            .then((response) => {
+                onLoadSociete(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
+        axios('/api/stock')
+            .then((response) => {
+                onLoadStock(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
         axios('/api/vehicule')
             .then((response) => {
                 onLoadVehicule(response.data);
@@ -130,6 +526,15 @@ class Dashboard extends React.Component {
             .catch((errors) => {
                 console.log(errors);
             });
+
+        axios('/api/voyage')
+            .then((response) => {
+                onLoadVoyage(response.data);
+            })
+            .catch((errors) => {
+                console.log(errors);
+            });
+
     }
     componentDidMount() {
         //control the tabs
@@ -162,6 +567,185 @@ class Dashboard extends React.Component {
         this._handleClickEvents();
     }
     UNSAFE_componentWillReceiveProps(nextProps) {
+        if (nextProps._agenceToEdit) {
+            this.setState({
+                _agence_adresse: nextProps._agenceToEdit._agence_adresse,
+                _agence_ville: nextProps._agenceToEdit._agence_ville,
+                _agence_pays: nextProps._agenceToEdit._agence_pays
+            });
+        }
+
+        if (nextProps._bonToEdit) {
+            this.setState({
+                _bon_numero: nextProps._bonToEdit._bon_numero,
+                _bon_date: nextProps._bonToEdit._bon_date,
+                _bon_type: nextProps._bonToEdit._bon_type,
+                Facture: nextProps._bonToEdit.Facture
+            });
+        }
+
+        if (nextProps._clientToEdit) {
+            this.setState({
+                _client_prenomcontact: nextProps._clientToEdit._client_prenomcontact,
+                _client_nomcontact: nextProps._clientToEdit._client_nomcontact,
+                _client_raison: nextProps._clientToEdit._client_raison,
+                _client_adresse: nextProps._clientToEdit._client_adresse,
+                _client_telephone: nextProps._clientToEdit._client_telephone,
+                _client_email: nextProps._clientToEdit._client_email,
+                _client_ville: nextProps._clientToEdit._client_ville,
+                _client_pays: nextProps._clientToEdit._client_pays,
+                _client_ICE: nextProps._clientToEdit._client_ICE,
+                _client_IF: nextProps._clientToEdit._client_IF,
+                _client_RC: nextProps._clientToEdit._client_RC,
+                _client_patente: nextProps._clientToEdit._client_patente,
+                _client_contrat: nextProps._clientToEdit._client_contrat
+            });
+        }
+
+        if (nextProps._devisToEdit) {
+            this.setState({
+                _devis_numero: nextProps._devisToEdit._devis_numero,
+                _devis_date: nextProps._devisToEdit._devis_date,
+                _devis_commentaire: nextProps._devisToEdit._devis_commentaire,
+                _devis_TVA: nextProps._devisToEdit._devis_TVA,
+                _devis_image: nextProps._devisToEdit._devis_image,
+                Fournisseur: nextProps._devisToEdit.Fournisseur,
+                Client: nextProps._devisToEdit.Client,
+                Produit: nextProps._devisToEdit.Produit,
+                Societe: nextProps._devisToEdit.Societe
+            });
+        }
+
+        if (nextProps._employeToEdit) {
+            this.setState({
+                _employe_prenom: nextProps._employeToEdit._employe_prenom,
+                _employe_nom: nextProps._employeToEdit._employe_nom,
+                _employe_telephone: nextProps._employeToEdit._employe_telephone,
+                _employe_datenaissance: nextProps._employeToEdit._employe_datenaissance,
+                _employe_CNIE: nextProps._employeToEdit._employe_CNIE,
+                _employe_situationfamille: nextProps._employeToEdit._employe_situationfamille,
+                _employe_nombreenfants: nextProps._employeToEdit._employe_nombreenfants,
+                _employe_adresse: nextProps._employeToEdit._employe_adresse,
+                _employe_CNSS: nextProps._employeToEdit._employe_CNSS,
+                _employe_permis: nextProps._employeToEdit._employe_permis,
+                _employe_datembauche: nextProps._employeToEdit._employe_datembauche,
+                _employe_image: nextProps._employeToEdit._employe_image,
+                Poste: nextProps._employeToEdit.Poste,
+                RevueDePerformance: nextProps._employeToEdit.RevueDePerformance
+            });
+        }
+
+        if (nextProps._factureToEdit) {
+            this.setState({
+                _facture_numero: nextProps._factureToEdit._facture_numero,
+                _facture_date: nextProps._factureToEdit._facture_date,
+                _facture_commentaire: nextProps._factureToEdit._facture_commentaire,
+                _facture_TVA: nextProps._factureToEdit._facture_TVA,
+                _facture_venteachat: nextProps._factureToEdit._facture_venteachat,
+                _facture_ispayed: nextProps._factureToEdit._facture_ispayed,
+                _facture_numeropaiement: nextProps._factureToEdit._facture_numeropaiement,
+                _facture_datepaiement: nextProps._factureToEdit._facture_datepaiement,
+                _facture_type: nextProps._factureToEdit._facture_type,
+                _facture_image: nextProps._factureToEdit._facture_image,
+                Client: nextProps._factureToEdit.Client,
+                Produit: nextProps._factureToEdit.Produit,
+                Societe: nextProps._factureToEdit.Societe,
+                Fournisseur: nextProps._factureToEdit.Fournisseur
+            });
+        }
+
+        if (nextProps._fournisseurToEdit) {
+            this.setState({
+                _fournisseur_prenomcontact: nextProps._fournisseurToEdit._fournisseur_prenomcontact,
+                _fournisseur_nomcontact: nextProps._fournisseurToEdit._fournisseur_nomcontact,
+                _fournisseur_raison: nextProps._fournisseurToEdit._fournisseur_raison,
+                _fournisseur_adresse: nextProps._fournisseurToEdit._fournisseur_adresse,
+                _fournisseur_telephone: nextProps._fournisseurToEdit._fournisseur_telephone,
+                _fournisseur_email: nextProps._fournisseurToEdit._fournisseur_email,
+                _fournisseur_ville: nextProps._fournisseurToEdit._fournisseur_ville,
+                _fournisseur_pays: nextProps._fournisseurToEdit._fournisseur_pays,
+                _fournisseur_ICE: nextProps._fournisseurToEdit._fournisseur_ICE,
+                _fournisseur_IF: nextProps._fournisseurToEdit._fournisseur_IF,
+                _fournisseur_RC: nextProps._fournisseurToEdit._fournisseur_RC,
+                _fournisseur_patente: nextProps._fournisseurToEdit._fournisseur_patente
+            });
+        }
+
+        if (nextProps._passagerToEdit) {
+            this.setState({
+                _passager_prenom: nextProps._passagerToEdit._passager_prenom,
+                _passager_nom: nextProps._passagerToEdit._passager_nom,
+                _passager_telephone: nextProps._passagerToEdit._passager_telephone,
+                _passager_email: nextProps._passagerToEdit._passager_email,
+                _passager_adresse: nextProps._passagerToEdit._passager_adresse,
+                _passager_ville: nextProps._passagerToEdit._passager_ville,
+                _passager_pays: nextProps._passagerToEdit._passager_pays
+            });
+        }
+
+        if (nextProps._permissionToEdit) {
+            this.setState({
+                _permission_titre: nextProps._permissionToEdit._permission_titre
+            });
+        }
+
+        if (nextProps._posteToEdit) {
+            this.setState({
+                _poste_titre: nextProps._posteToEdit._poste_titre,
+                _poste_salaireinitiale: nextProps._posteToEdit._poste_salaireinitiale
+            });
+        }
+
+        if (nextProps._produitToEdit) {
+            this.setState({
+                _produit_designation: nextProps._produitToEdit._produit_designation,
+                _produit_reference: nextProps._produitToEdit._produit_reference,
+                _produit_quantite: nextProps._produitToEdit._produit_quantite,
+                _produit_prixunitaire: nextProps._produitToEdit._produit_prixunitaire,
+                _produit_statut: nextProps._produitToEdit._produit_statut
+            });
+        }
+
+        if (nextProps._reservationToEdit) {
+            this.setState({
+                _reservation_nombreadultes: nextProps._reservationToEdit._reservation_nombreadultes,
+                _reservation_nombreenfants: nextProps._reservationToEdit._reservation_nombreenfants,
+                _reservation_datereservation: nextProps._reservationToEdit._reservation_datereservation,
+                _reservation_commentaire: nextProps._reservationToEdit._reservation_commentaire,
+                _reservation_status: nextProps._reservationToEdit._reservation_status,
+                Voyage: nextProps._reservationToEdit.Voyage,
+                Client: nextProps._reservationToEdit.Client
+            });
+        }
+
+        if (nextProps._revueDePerformanceToEdit) {
+            this.setState({
+                _revueDePerformance_date: nextProps._revueDePerformanceToEdit._revueDePerformance_date,
+                _revueDePerformance_resultat: nextProps._revueDePerformanceToEdit._revueDePerformance_resultat
+            });
+        }
+
+        if (nextProps._societeToEdit) {
+            this.setState({
+                _societe_raison: nextProps._societeToEdit._societe_raison,
+                _societe_siege: nextProps._societeToEdit._societe_siege,
+                _societe_numeroTP: nextProps._societeToEdit._societe_numeroTP,
+                _societe_IF: nextProps._societeToEdit._societe_IF,
+                _societe_telephone: nextProps._societeToEdit._societe_telephone,
+                _societe_fax: nextProps._societeToEdit._societe_fax,
+                _societe_email: nextProps._societeToEdit._societe_email,
+                _societe_ICE: nextProps._societeToEdit._societe_ICE,
+                _societe_CNSS: nextProps._societeToEdit._societe_CNSS,
+                Agence: nextProps._societeToEdit.Agence
+            });
+        }
+
+        if (nextProps._stockToEdit) {
+            this.setState({
+                Produit: nextProps._societeToEdit.Produit
+            });
+        }
+
         if (nextProps._vehiculeToEdit) {
             this.setState({
                 _vehicule_marque: nextProps._vehiculeToEdit._vehicule_marque,
@@ -172,6 +756,7 @@ class Dashboard extends React.Component {
                 _vehicule_datefabrication: nextProps._vehiculeToEdit._vehicule_datefabrication,
                 _vehicule_moteur: nextProps._vehiculeToEdit._vehicule_moteur,
                 _vehicule_volumereservoir: nextProps._vehiculeToEdit._vehicule_volumereservoir,
+                _vehicule_image: nextProps._vehiculeToEdit._vehicule_image,
                 _vehicule_poidsavide: nextProps._vehiculeToEdit._vehicule_poidsavide,
                 _vehicule_kmparvidange: nextProps._vehiculeToEdit._vehicule_kmparvidange,
                 _vehicule_categorie: nextProps._vehiculeToEdit._vehicule_categorie,
@@ -181,8 +766,1303 @@ class Dashboard extends React.Component {
                 _vehicule_vignette: nextProps._vehiculeToEdit._vehicule_vignette,
                 _vehicule_carteautorisation: nextProps._vehiculeToEdit._vehicule_carteautorisation,
                 _vehicule_certificatinstallation: nextProps._vehiculeToEdit._vehicule_certificatinstallation,
-                _vehicule_extincteur: nextProps._vehiculeToEdit._vehicule_extincteur
+                _vehicule_extincteur: nextProps._vehiculeToEdit._vehicule_extincteur,
+                _vehicule_recharge: nextProps._vehiculeToEdit._vehicule_recharge,
+                _vehicule_vidange: nextProps._vehiculeToEdit._vehicule_vidange,
+                _vehicule_visitetechnique: nextProps._vehiculeToEdit._vehicule_visitetechnique
             });
+        }
+
+        if (nextProps._voyageToEdit) {
+            this.setState({
+                _voyage_datedepart: nextProps._voyageToEdit._voyage_datedepart,
+                _voyage_datearrive: nextProps._voyageToEdit._voyage_datearrive,
+                _voyage_lieudepart: nextProps._voyageToEdit._voyage_lieudepart,
+                _voyage_lieuarrive: nextProps._voyageToEdit._voyage_lieuarrive,
+                _voyage_statut: nextProps._voyageToEdit._voyage_statut,
+                Passager: nextProps._voyageToEdit.Passager,
+                Vehicule: nextProps._voyageToEdit.Vehicule
+            });
+        }
+    }
+
+    async get_users() {
+        const self = this;
+        const { _user } = this.state;
+        if (_.includes(_user.Permission, 'Founder')) {
+            await API.get_users()
+                .then((res) => {
+                    self.setState({
+                        _users: res.data.users,
+                    });
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        } else {
+            self.setState(prevState => ({
+                _users: [_user]
+            }));
+        }
+    }
+    async get_user() {
+        const self = this;
+        await API.get_user(localStorage.getItem('_user_email'))
+            .then((res) => {
+                self.setState({
+                    _user: res.data._user,
+                }, () => {
+                    self.get_users();
+                });
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }
+    async set_user() {
+        const {
+            _user,
+            _user_password,
+            _user_password_new,
+            _user_password_new_confirm
+        } = this.state;
+        const { onEditEmploye } = this.props;
+
+        try {
+            await API.set_user({ _user, _user_password, _user_password_new, _user_password_new_confirm })
+                .then((res) => {
+                    return axios.patch(`/api/employe/${_user.Employe._id}`, {
+                        _employe_prenom: _user.Employe._employe_prenom,
+                        _employe_nom: _user.Employe._employe_nom,
+                        _employe_telephone: _user.Employe._employe_telephone,
+                        _employe_datenaissance: _user.Employe._employe_datenaissance,
+                        _employe_CNIE: _user.Employe._employe_CNIE,
+                        _employe_situationfamille: _user.Employe._employe_situationfamille,
+                        _employe_nombreenfants: _user.Employe._employe_nombreenfants,
+                        _employe_adresse: _user.Employe._employe_adresse,
+                        _employe_CNSS: _user.Employe._employe_CNSS,
+                        _employe_permis: _user.Employe._employe_permis,
+                        _employe_datembauche: _user.Employe._employe_datembauche,
+                        _employe_image: _user.Employe._employe_image,
+                        Poste: _user.Employe.Poste,
+                        RevueDePerformance: _user.Employe.RevueDePerformance
+                    })
+                        .then((resE) => {
+                            onEditEmploye(resE.data);
+                            this.get_users();
+                            this.get_user();
+                            socket.emit("USER_UPDATED", res.data.text);
+
+                            this.setState({
+                                modal_msg: 'Vos information ont été modifié et un email a été envoyé à votre adresse email pour vous notifier de ce fait.'
+                            }, () => {
+                                $('#_edit_modal').modal('toggle');
+                            });
+                        });
+                })
+                .catch((error) => {
+                    this.setState({
+                        modal_msg: error.response.data.text
+                    }, () => {
+                        $('#edit_modal').modal('toggle');
+                    });
+                });
+        } catch (error) {
+            this.setState({
+                modal_msg: JSON.stringify(error)
+            }, () => {
+                $('#edit_modal').modal('toggle');
+            });
+        }
+    }
+
+    handleDeleteAgence(id) {
+        const { onDeleteAgence } = this.props;
+        return axios.delete(`/api/agence/${id}`)
+            .then(() => {
+                onDeleteAgence(id);
+            });
+    }
+    handleEditAgence(agence) {
+        const { setEditAgence } = this.props;
+        setEditAgence(agence);
+    }
+    handleSubmitAgence() {
+        const { onSubmitAgence, _agenceToEdit, onEditAgence } = this.props;
+        const {
+            _agence_adresse,
+            _agence_ville,
+            _agence_pays
+        } = this.state;
+
+        if (!_agenceToEdit) {
+            return axios.post('/api/agence', {
+                _agence_adresse,
+                _agence_ville,
+                _agence_pays
+            })
+                .then((res) => {
+                    onSubmitAgence(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _agence_adresse: '',
+                            _agence_ville: '',
+                            _agence_pays: ''
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/agence/${_agenceToEdit._id}`, {
+                _agence_adresse,
+                _agence_ville,
+                _agence_pays
+            })
+                .then((res) => {
+                    onEditAgence(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _agence_adresse: '',
+                        _agence_ville: '',
+                        _agence_pays: ''
+                    })
+                });
+        }
+    }
+
+    handleDeleteBon(id) {
+        const { onDeleteBon } = this.props;
+        return axios.delete(`/api/bon/${id}`)
+            .then(() => {
+                onDeleteBon(id);
+            });
+    }
+    handleEditBon(bon) {
+        const { setEditBon } = this.props;
+        setEditBon(bon);
+    }
+    handleSubmitBon() {
+        const { onSubmitBon, _bonToEdit, onEditBon } = this.props;
+        const {
+            _bon_numero,
+            _bon_date,
+            _bon_type,
+            Facture
+        } = this.state;
+
+        if (!_bonToEdit) {
+            return axios.post('/api/bon', {
+                _bon_numero,
+                _bon_date,
+                _bon_type,
+                Facture
+            })
+                .then((res) => {
+                    onSubmitBon(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _bon_numero: '',
+                            _bon_date: moment().format('YYYY-MM-DD'),
+                            _bon_type: '',
+                            Facture: null
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/bon/${_bonToEdit._id}`, {
+                _bon_numero,
+                _bon_date,
+                _bon_type,
+                Facture
+            })
+                .then((res) => {
+                    onEditBon(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _bon_numero: '',
+                        _bon_date: moment().format('YYYY-MM-DD'),
+                        _bon_type: '',
+                        Facture: null
+                    })
+                });
+        }
+    }
+
+    handleDeleteClient(id) {
+        const { onDeleteClient } = this.props;
+        return axios.delete(`/api/client/${id}`)
+            .then(() => {
+                onDeleteClient(id);
+            });
+    }
+    handleEditClient(client) {
+        const { setEditClient } = this.props;
+        setEditClient(client);
+    }
+    handleSubmitClient() {
+        const { onSubmitClient, _clientToEdit, onEditClient } = this.props;
+        const {
+            _client_prenomcontact,
+            _client_nomcontact,
+            _client_raison,
+            _client_adresse,
+            _client_telephone,
+            _client_email,
+            _client_ville,
+            _client_pays,
+            _client_ICE,
+            _client_IF,
+            _client_RC,
+            _client_patente,
+            _client_contrat
+        } = this.state;
+
+        if (!_clientToEdit) {
+            return axios.post('/api/client', {
+                _client_prenomcontact,
+                _client_nomcontact,
+                _client_raison,
+                _client_adresse,
+                _client_telephone,
+                _client_email,
+                _client_ville,
+                _client_pays,
+                _client_ICE,
+                _client_IF,
+                _client_RC,
+                _client_patente,
+                _client_contrat
+            })
+                .then((res) => {
+                    onSubmitClient(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _client_prenomcontact: '',
+                            _client_nomcontact: '',
+                            _client_raison: '',
+                            _client_adresse: '',
+                            _client_telephone: '',
+                            _client_email: '',
+                            _client_ville: '',
+                            _client_pays: '',
+                            _client_ICE: '',
+                            _client_IF: '',
+                            _client_RC: '',
+                            _client_patente: '',
+                            _client_contrat: ''
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/client/${_clientToEdit._id}`, {
+                _client_prenomcontact,
+                _client_nomcontact,
+                _client_raison,
+                _client_adresse,
+                _client_telephone,
+                _client_email,
+                _client_ville,
+                _client_pays,
+                _client_ICE,
+                _client_IF,
+                _client_RC,
+                _client_patente,
+                _client_contrat
+            })
+                .then((res) => {
+                    onEditClient(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _client_prenomcontact: '',
+                        _client_nomcontact: '',
+                        _client_raison: '',
+                        _client_adresse: '',
+                        _client_telephone: '',
+                        _client_email: '',
+                        _client_ville: '',
+                        _client_pays: '',
+                        _client_ICE: '',
+                        _client_IF: '',
+                        _client_RC: '',
+                        _client_patente: '',
+                        _client_contrat: ''
+                    })
+                });
+        }
+    }
+
+    handleDeleteDevis(id) {
+        const { onDeleteDevis } = this.props;
+        return axios.delete(`/api/devis/${id}`)
+            .then(() => {
+                onDeleteDevis(id);
+            });
+    }
+    handleEditDevis(devis) {
+        const { setEditDevis } = this.props;
+        setEditDevis(devis);
+    }
+    handleSubmitDevis() {
+        const { onSubmitDevis, _devisToEdit, onEditDevis } = this.props;
+        const {
+            _devis_numero,
+            _devis_date,
+            _devis_commentaire,
+            _devis_TVA,
+            _devis_image,
+            Fournisseur,
+            Client,
+            Produit,
+            Societe
+        } = this.state;
+
+        if (!_devisToEdit) {
+            return axios.post('/api/devis', {
+                _devis_numero,
+                _devis_date,
+                _devis_commentaire,
+                _devis_TVA,
+                _devis_image,
+                Fournisseur,
+                Client,
+                Produit,
+                Societe
+            })
+                .then((res) => {
+                    onSubmitDevis(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _devis_numero: '',
+                            _devis_date: moment().format('YYYY-MM-DD'),
+                            _devis_commentaire: '',
+                            _devis_TVA: 0,
+                            _devis_image: '',
+                            Fournisseur: null,
+                            Client: null,
+                            Produit: null,
+                            Societe: null
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/devis/${_devisToEdit._id}`, {
+                _devis_numero,
+                _devis_date,
+                _devis_commentaire,
+                _devis_TVA,
+                _devis_image,
+                Fournisseur,
+                Client,
+                Produit,
+                Societe
+            })
+                .then((res) => {
+                    onEditDevis(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _devis_numero: '',
+                        _devis_date: moment().format('YYYY-MM-DD'),
+                        _devis_commentaire: '',
+                        _devis_TVA: 0,
+                        _devis_image: '',
+                        Fournisseur: null,
+                        Client: null,
+                        Produit: null,
+                        Societe: null
+                    })
+                });
+        }
+    }
+
+    handleDeleteEmploye(id) {
+        const { onDeleteEmploye } = this.props;
+        return axios.delete(`/api/employe/${id}`)
+            .then(() => {
+                onDeleteEmploye(id);
+            });
+    }
+    handleEditEmploye(employe) {
+        const { setEditEmploye } = this.props;
+        setEditEmploye(employe);
+    }
+    handleSubmitEmploye() {
+        const { onSubmitEmploye, _employeToEdit, onEditEmploye } = this.props;
+        const {
+            _employe_prenom,
+            _employe_nom,
+            _employe_telephone,
+            _employe_datenaissance,
+            _employe_CNIE,
+            _employe_situationfamille,
+            _employe_nombreenfants,
+            _employe_adresse,
+            _employe_CNSS: {
+                _employe_CNSS_dateimmatriculation,
+                _employe_CNSS_numeroimmatriculation,
+                _employe_CNSS_montant
+            },
+            _employe_permis: {
+                _employe_permis_numero,
+                _employe_permis_categorie,
+                _employe_permis_datedelivrance,
+                _employe_permis_datefinvalidite,
+                _employe_permis_image1,
+                _employe_permis_image2
+            },
+            _employe_datembauche,
+            _employe_image,
+            Poste,
+            RevueDePerformance
+        } = this.state;
+
+        if (!_employeToEdit) {
+            return axios.post('/api/employe', {
+                _employe_prenom,
+                _employe_nom,
+                _employe_telephone,
+                _employe_datenaissance,
+                _employe_CNIE,
+                _employe_situationfamille,
+                _employe_nombreenfants,
+                _employe_adresse,
+                _employe_CNSS: {
+                    _employe_CNSS_dateimmatriculation,
+                    _employe_CNSS_numeroimmatriculation,
+                    _employe_CNSS_montant
+                },
+                _employe_permis: {
+                    _employe_permis_numero,
+                    _employe_permis_categorie,
+                    _employe_permis_datedelivrance,
+                    _employe_permis_datefinvalidite,
+                    _employe_permis_image1,
+                    _employe_permis_image2
+                },
+                _employe_datembauche,
+                _employe_image,
+                Poste,
+                RevueDePerformance
+            })
+                .then((res) => {
+                    onSubmitEmploye(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _employe_prenom: '',
+                            _employe_nom: '',
+                            _employe_telephone: '',
+                            _employe_datenaissance: moment().format('YYYY-MM-DD'),
+                            _employe_CNIE: '',
+                            _employe_situationfamille: '',
+                            _employe_nombreenfants: 0,
+                            _employe_adresse: '',
+                            _employe_CNSS: {
+                                _employe_CNSS_dateimmatriculation: moment().format('YYYY-MM-DD'),
+                                _employe_CNSS_numeroimmatriculation: '',
+                                _employe_CNSS_montant: 0
+                            },
+                            _employe_permis: {
+                                _employe_permis_numero: '',
+                                _employe_permis_categorie: '',
+                                _employe_permis_datedelivrance: moment().format('YYYY-MM-DD'),
+                                _employe_permis_datefinvalidite: moment().format('YYYY-MM-DD'),
+                                _employe_permis_image1: '',
+                                _employe_permis_image2: ''
+                            },
+                            _employe_datembauche: moment().format('YYYY-MM-DD'),
+                            _employe_image: '',
+                            Poste: null,
+                            RevueDePerformance: null
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/employe/${_employeToEdit._id}`, {
+                _employe_prenom,
+                _employe_nom,
+                _employe_telephone,
+                _employe_datenaissance,
+                _employe_CNIE,
+                _employe_situationfamille,
+                _employe_nombreenfants,
+                _employe_adresse,
+                _employe_CNSS: {
+                    _employe_CNSS_dateimmatriculation,
+                    _employe_CNSS_numeroimmatriculation,
+                    _employe_CNSS_montant
+                },
+                _employe_permis: {
+                    _employe_permis_numero,
+                    _employe_permis_categorie,
+                    _employe_permis_datedelivrance,
+                    _employe_permis_datefinvalidite,
+                    _employe_permis_image1,
+                    _employe_permis_image2
+                },
+                _employe_datembauche,
+                _employe_image,
+                Poste,
+                RevueDePerformance
+            })
+                .then((res) => {
+                    onEditEmploye(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _employe_prenom: '',
+                        _employe_nom: '',
+                        _employe_telephone: '',
+                        _employe_datenaissance: moment().format('YYYY-MM-DD'),
+                        _employe_CNIE: '',
+                        _employe_situationfamille: '',
+                        _employe_nombreenfants: 0,
+                        _employe_adresse: '',
+                        _employe_CNSS: {
+                            _employe_CNSS_dateimmatriculation: moment().format('YYYY-MM-DD'),
+                            _employe_CNSS_numeroimmatriculation: '',
+                            _employe_CNSS_montant: 0
+                        },
+                        _employe_permis: {
+                            _employe_permis_numero: '',
+                            _employe_permis_categorie: '',
+                            _employe_permis_datedelivrance: moment().format('YYYY-MM-DD'),
+                            _employe_permis_datefinvalidite: moment().format('YYYY-MM-DD'),
+                            _employe_permis_image1: '',
+                            _employe_permis_image2: ''
+                        },
+                        _employe_datembauche: moment().format('YYYY-MM-DD'),
+                        _employe_image: '',
+                        Poste: null,
+                        RevueDePerformance: null
+                    })
+                });
+        }
+    }
+
+    handleDeleteFacture(id) {
+        const { onDeleteFacture } = this.props;
+        return axios.delete(`/api/facture/${id}`)
+            .then(() => {
+                onDeleteFacture(id);
+            });
+    }
+    handleEditFacture(facture) {
+        const { setEditFacture } = this.props;
+        setEditFacture(facture);
+    }
+    handleSubmitFacture() {
+        const { onSubmitFacture, _factureToEdit, onEditFacture } = this.props;
+        const {
+            _facture_numero,
+            _facture_date,
+            _facture_commentaire,
+            _facture_TVA,
+            _facture_venteachat,
+            _facture_ispayed,
+            _facture_numeropaiement,
+            _facture_datepaiement,
+            _facture_type,
+            _facture_image,
+            Client,
+            Produit,
+            Societe,
+            Fournisseur
+        } = this.state;
+
+        if (!_factureToEdit) {
+            return axios.post('/api/facture', {
+                _facture_numero,
+                _facture_date,
+                _facture_commentaire,
+                _facture_TVA,
+                _facture_venteachat,
+                _facture_ispayed,
+                _facture_numeropaiement,
+                _facture_datepaiement,
+                _facture_type,
+                _facture_image,
+                Client,
+                Produit,
+                Societe,
+                Fournisseur
+            })
+                .then((res) => {
+                    onSubmitFacture(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _facture_numero: '',
+                            _facture_date: moment().format('YYYY-MM-DD'),
+                            _facture_commentaire: '',
+                            _facture_TVA: 0,
+                            _facture_venteachat: '',
+                            _facture_ispayed: false,
+                            _facture_numeropaiement: 0,
+                            _facture_datepaiement: moment().format('YYYY-MM-DD'),
+                            _facture_type: '',
+                            _facture_image: '',
+                            Client: null,
+                            Produit: null,
+                            Societe: null,
+                            Fournisseur: null
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/facture/${_factureToEdit._id}`, {
+                _facture_numero,
+                _facture_date,
+                _facture_commentaire,
+                _facture_TVA,
+                _facture_venteachat,
+                _facture_ispayed,
+                _facture_numeropaiement,
+                _facture_datepaiement,
+                _facture_type,
+                _facture_image,
+                Client,
+                Produit,
+                Societe,
+                Fournisseur
+            })
+                .then((res) => {
+                    onEditFacture(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _facture_numero: '',
+                        _facture_date: moment().format('YYYY-MM-DD'),
+                        _facture_commentaire: '',
+                        _facture_TVA: 0,
+                        _facture_venteachat: '',
+                        _facture_ispayed: false,
+                        _facture_numeropaiement: 0,
+                        _facture_datepaiement: moment().format('YYYY-MM-DD'),
+                        _facture_type: '',
+                        _facture_image: '',
+                        Client: null,
+                        Produit: null,
+                        Societe: null,
+                        Fournisseur: null
+                    })
+                });
+        }
+    }
+
+    handleDeleteFournisseur(id) {
+        const { onDeleteFournisseur } = this.props;
+        return axios.delete(`/api/fournisseur/${id}`)
+            .then(() => {
+                onDeleteFournisseur(id);
+            });
+    }
+    handleEditFournisseur(fournisseur) {
+        const { setEditFournisseur } = this.props;
+        setEditFournisseur(fournisseur);
+    }
+    handleSubmitFournisseur() {
+        const { onSubmitFournisseur, _fournisseurToEdit, onEditFournisseur } = this.props;
+        const {
+            _fournisseur_prenomcontact,
+            _fournisseur_nomcontact,
+            _fournisseur_raison,
+            _fournisseur_adresse,
+            _fournisseur_telephone,
+            _fournisseur_email,
+            _fournisseur_ville,
+            _fournisseur_pays,
+            _fournisseur_ICE,
+            _fournisseur_IF,
+            _fournisseur_RC,
+            _fournisseur_patente
+        } = this.state;
+
+        if (!_fournisseurToEdit) {
+            return axios.post('/api/fournisseur', {
+                _fournisseur_prenomcontact,
+                _fournisseur_nomcontact,
+                _fournisseur_raison,
+                _fournisseur_adresse,
+                _fournisseur_telephone,
+                _fournisseur_email,
+                _fournisseur_ville,
+                _fournisseur_pays,
+                _fournisseur_ICE,
+                _fournisseur_IF,
+                _fournisseur_RC,
+                _fournisseur_patente
+            })
+                .then((res) => {
+                    onSubmitFournisseur(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _fournisseur_prenomcontact: '',
+                            _fournisseur_nomcontact: '',
+                            _fournisseur_raison: '',
+                            _fournisseur_adresse: '',
+                            _fournisseur_telephone: '',
+                            _fournisseur_email: '',
+                            _fournisseur_ville: '',
+                            _fournisseur_pays: '',
+                            _fournisseur_ICE: '',
+                            _fournisseur_IF: '',
+                            _fournisseur_RC: '',
+                            _fournisseur_patente: ''
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/fournisseur/${_fournisseurToEdit._id}`, {
+                _fournisseur_prenomcontact,
+                _fournisseur_nomcontact,
+                _fournisseur_raison,
+                _fournisseur_adresse,
+                _fournisseur_telephone,
+                _fournisseur_email,
+                _fournisseur_ville,
+                _fournisseur_pays,
+                _fournisseur_ICE,
+                _fournisseur_IF,
+                _fournisseur_RC,
+                _fournisseur_patente
+            })
+                .then((res) => {
+                    onEditFournisseur(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _fournisseur_prenomcontact: '',
+                        _fournisseur_nomcontact: '',
+                        _fournisseur_raison: '',
+                        _fournisseur_adresse: '',
+                        _fournisseur_telephone: '',
+                        _fournisseur_email: '',
+                        _fournisseur_ville: '',
+                        _fournisseur_pays: '',
+                        _fournisseur_ICE: '',
+                        _fournisseur_IF: '',
+                        _fournisseur_RC: '',
+                        _fournisseur_patente: ''
+                    })
+                });
+        }
+    }
+
+    handleDeletePassager(id) {
+        const { onDeletePassager } = this.props;
+        return axios.delete(`/api/passager/${id}`)
+            .then(() => {
+                onDeletePassager(id);
+            });
+    }
+    handleEditPassager(passager) {
+        const { setEditPassager } = this.props;
+        setEditPassager(passager);
+    }
+    handleSubmitPassager() {
+        const { onSubmitPassager, _passagerToEdit, onEditPassager } = this.props;
+        const {
+            _passager_prenom,
+            _passager_nom,
+            _passager_telephone,
+            _passager_email,
+            _passager_adresse,
+            _passager_ville,
+            _passager_pays
+        } = this.state;
+
+        if (!_passagerToEdit) {
+            return axios.post('/api/passager', {
+                _passager_prenom,
+                _passager_nom,
+                _passager_telephone,
+                _passager_email,
+                _passager_adresse,
+                _passager_ville,
+                _passager_pays
+            })
+                .then((res) => {
+                    onSubmitPassager(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _passager_prenom: '',
+                            _passager_nom: '',
+                            _passager_telephone: '',
+                            _passager_email: '',
+                            _passager_adresse: '',
+                            _passager_ville: '',
+                            _passager_pays: ''
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/passager/${_passagerToEdit._id}`, {
+                _passager_prenom,
+                _passager_nom,
+                _passager_telephone,
+                _passager_email,
+                _passager_adresse,
+                _passager_ville,
+                _passager_pays
+            })
+                .then((res) => {
+                    onEditPassager(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _passager_prenom: '',
+                        _passager_nom: '',
+                        _passager_telephone: '',
+                        _passager_email: '',
+                        _passager_adresse: '',
+                        _passager_ville: '',
+                        _passager_pays: ''
+                    })
+                });
+        }
+    }
+
+    handleDeletePermission(id) {
+        const { onDeletePermission } = this.props;
+        return axios.delete(`/api/permission/${id}`)
+            .then(() => {
+                onDeletePermission(id);
+            });
+    }
+    handleEditPermission(permission) {
+        const { setEditPermission } = this.props;
+        setEditPermission(permission);
+    }
+    handleSubmitPermission() {
+        const { onSubmitPermission, _permissionToEdit, onEditPermission } = this.props;
+        const {
+            _permission_titre
+        } = this.state;
+
+        if (!_permissionToEdit) {
+            return axios.post('/api/permission', {
+                _permission_titre
+            })
+                .then((res) => {
+                    onSubmitPermission(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _permission_titre: ''
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/permission/${_permissionToEdit._id}`, {
+                _permission_titre
+            })
+                .then((res) => {
+                    onEditPermission(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _permission_titre: ''
+                    })
+                });
+        }
+    }
+
+    handleDeletePoste(id) {
+        const { onDeletePoste } = this.props;
+        return axios.delete(`/api/poste/${id}`)
+            .then(() => {
+                onDeletePoste(id);
+            });
+    }
+    handleEditPoste(poste) {
+        const { setEditPoste } = this.props;
+        setEditPoste(poste);
+    }
+    handleSubmitPoste() {
+        const { onSubmitPoste, _posteToEdit, onEditPoste } = this.props;
+        const {
+            _poste_titre,
+            _poste_salaireinitiale
+        } = this.state;
+
+        if (!_posteToEdit) {
+            return axios.post('/api/poste', {
+                _poste_titre,
+                _poste_salaireinitiale
+            })
+                .then((res) => {
+                    onSubmitPoste(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _poste_titre: '',
+                            _poste_salaireinitiale: 0
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/poste/${_posteToEdit._id}`, {
+                _poste_titre,
+                _poste_salaireinitiale
+            })
+                .then((res) => {
+                    onEditPoste(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _poste_titre: '',
+                        _poste_salaireinitiale: 0
+                    })
+                });
+        }
+    }
+
+    handleDeleteProduit(id) {
+        const { onDeleteProduit } = this.props;
+        return axios.delete(`/api/produit/${id}`)
+            .then(() => {
+                onDeleteProduit(id);
+            });
+    }
+    handleEditProduit(produit) {
+        const { setEditProduit } = this.props;
+        setEditProduit(produit);
+    }
+    handleSubmitProduit() {
+        const { onSubmitProduit, _produitToEdit, onEditProduit } = this.props;
+        const {
+            _produit_designation,
+            _produit_reference,
+            _produit_quantite,
+            _produit_prixunitaire,
+            _produit_statut
+        } = this.state;
+
+        if (!_produitToEdit) {
+            return axios.post('/api/produit', {
+                _produit_designation,
+                _produit_reference,
+                _produit_quantite,
+                _produit_prixunitaire,
+                _produit_statut
+            })
+                .then((res) => {
+                    onSubmitProduit(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _produit_designation: '',
+                            _produit_reference: '',
+                            _produit_quantite: 0,
+                            _produit_prixunitaire: 0,
+                            _produit_statut: ''
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/produit/${_produitToEdit._id}`, {
+                _produit_designation,
+                _produit_reference,
+                _produit_quantite,
+                _produit_prixunitaire,
+                _produit_statut
+            })
+                .then((res) => {
+                    onEditProduit(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _produit_designation: '',
+                        _produit_reference: '',
+                        _produit_quantite: 0,
+                        _produit_prixunitaire: 0,
+                        _produit_statut: ''
+                    })
+                });
+        }
+    }
+
+    handleDeleteReservation(id) {
+        const { onDeleteReservation } = this.props;
+        return axios.delete(`/api/reservation/${id}`)
+            .then(() => {
+                onDeleteReservation(id);
+            });
+    }
+    handleEditReservation(reservation) {
+        const { setEditReservation } = this.props;
+        setEditReservation(reservation);
+    }
+    handleSubmitReservation() {
+        const { onSubmitReservation, _reservationToEdit, onEditReservation } = this.props;
+        const {
+            _reservation_nombreadultes,
+            _reservation_nombreenfants,
+            _reservation_datereservation,
+            _reservation_commentaire,
+            _reservation_status,
+            Voyage,
+            Client
+        } = this.state;
+
+        if (!_reservationToEdit) {
+            return axios.post('/api/reservation', {
+                _reservation_nombreadultes,
+                _reservation_nombreenfants,
+                _reservation_datereservation,
+                _reservation_commentaire,
+                _reservation_status,
+                Voyage,
+                Client
+            })
+                .then((res) => {
+                    onSubmitReservation(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _reservation_nombreadultes: 0,
+                            _reservation_nombreenfants: 0,
+                            _reservation_datereservation: moment().format('YYYY-MM-DD'),
+                            _reservation_commentaire: '',
+                            _reservation_status: '',
+                            Voyage: null,
+                            Client: null
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/reservation/${_reservationToEdit._id}`, {
+                _reservation_nombreadultes,
+                _reservation_nombreenfants,
+                _reservation_datereservation,
+                _reservation_commentaire,
+                _reservation_status,
+                Voyage,
+                Client
+            })
+                .then((res) => {
+                    onEditReservation(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _reservation_nombreadultes: 0,
+                        _reservation_nombreenfants: 0,
+                        _reservation_datereservation: moment().format('YYYY-MM-DD'),
+                        _reservation_commentaire: '',
+                        _reservation_status: '',
+                        Voyage: null,
+                        Client: null
+                    })
+                });
+        }
+    }
+
+    handleDeleteRevueDePerformance(id) {
+        const { onDeleteRevueDePerformance } = this.props;
+        return axios.delete(`/api/revueDePerformance/${id}`)
+            .then(() => {
+                onDeleteRevueDePerformance(id);
+            });
+    }
+    handleEditRevueDePerformance(revueDePerformance) {
+        const { setEditRevueDePerformance } = this.props;
+        setEditRevueDePerformance(revueDePerformance);
+    }
+    handleSubmitRevueDePerformance() {
+        const { onSubmitRevueDePerformance, _revueDePerformanceToEdit, onEditRevueDePerformance } = this.props;
+        const {
+            _revueDePerformance_date,
+            _revueDePerformance_resultat
+        } = this.state;
+
+        if (!_revueDePerformanceToEdit) {
+            return axios.post('/api/revueDePerformance', {
+                _revueDePerformance_date,
+                _revueDePerformance_resultat
+            })
+                .then((res) => {
+                    onSubmitRevueDePerformance(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _revueDePerformance_date: moment().format('YYYY-MM-DD'),
+                            _revueDePerformance_resultat: ''
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/revueDePerformance/${_revueDePerformanceToEdit._id}`, {
+                _revueDePerformance_date,
+                _revueDePerformance_resultat
+            })
+                .then((res) => {
+                    onEditRevueDePerformance(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _revueDePerformance_date: moment().format('YYYY-MM-DD'),
+                        _revueDePerformance_resultat: ''
+                    })
+                });
+        }
+    }
+
+    handleDeleteSociete(id) {
+        const { onDeleteSociete } = this.props;
+        return axios.delete(`/api/societe/${id}`)
+            .then(() => {
+                onDeleteSociete(id);
+            });
+    }
+    handleEditSociete(societe) {
+        const { setEditSociete } = this.props;
+        setEditSociete(societe);
+    }
+    handleSubmitSociete() {
+        const { onSubmitSociete, _societeToEdit, onEditSociete } = this.props;
+        const {
+            _societe_raison,
+            _societe_siege,
+            _societe_numeroTP,
+            _societe_IF,
+            _societe_telephone,
+            _societe_fax,
+            _societe_email,
+            _societe_ICE,
+            _societe_CNSS,
+            Agence
+        } = this.state;
+
+        if (!_societeToEdit) {
+            return axios.post('/api/societe', {
+                _societe_raison,
+                _societe_siege,
+                _societe_numeroTP,
+                _societe_IF,
+                _societe_telephone,
+                _societe_fax,
+                _societe_email,
+                _societe_ICE,
+                _societe_CNSS,
+                Agence
+            })
+                .then((res) => {
+                    onSubmitSociete(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _societe_raison: '',
+                            _societe_siege: '',
+                            _societe_numeroTP: '',
+                            _societe_IF: '',
+                            _societe_telephone: '',
+                            _societe_fax: '',
+                            _societe_email: '',
+                            _societe_ICE: '',
+                            _societe_CNSS: '',
+                            Agence: null
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/societe/${_societeToEdit._id}`, {
+                _societe_raison,
+                _societe_siege,
+                _societe_numeroTP,
+                _societe_IF,
+                _societe_telephone,
+                _societe_fax,
+                _societe_email,
+                _societe_ICE,
+                _societe_CNSS,
+                Agence
+            })
+                .then((res) => {
+                    onEditSociete(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        _societe_raison: '',
+                        _societe_siege: '',
+                        _societe_numeroTP: '',
+                        _societe_IF: '',
+                        _societe_telephone: '',
+                        _societe_fax: '',
+                        _societe_email: '',
+                        _societe_ICE: '',
+                        _societe_CNSS: '',
+                        Agence: null
+                    })
+                });
+        }
+    }
+
+    handleDeleteStock(id) {
+        const { onDeleteStock } = this.props;
+        return axios.delete(`/api/stock/${id}`)
+            .then(() => {
+                onDeleteStock(id);
+            });
+    }
+    handleEditStock(stock) {
+        const { setEditStock } = this.props;
+        setEditStock(stock);
+    }
+    handleSubmitStock() {
+        const { onSubmitStock, _stockToEdit, onEditStock } = this.props;
+        const {
+            Produit
+        } = this.state;
+
+        if (!_stockToEdit) {
+            return axios.post('/api/stock', {
+                Produit
+            })
+                .then((res) => {
+                    onSubmitStock(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            Produit: null
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/stock/${_stockToEdit._id}`, {
+                Produit
+            })
+                .then((res) => {
+                    onEditStock(res.data);
+                })
+                .then(() => {
+                    this.setState({
+                        Produit: null
+                    })
+                });
         }
     }
 
@@ -208,18 +2088,82 @@ class Dashboard extends React.Component {
             _vehicule_datefabrication,
             _vehicule_moteur,
             _vehicule_volumereservoir,
+            _vehicule_image,
             _vehicule_poidsavide,
             _vehicule_kmparvidange,
-            _vehicule_image,
-
-            _vehicule_assurance,
-            _vehicule_cartegrise,
-            _vehicule_carteautorisation,
-            _vehicule_categorie,
-            _vehicule_vignette,
-            _vehicule_certificatinstallation,
-            _vehicule_consommation,
-            _vehicule_extincteur,
+            _vehicule_categorie: {
+                _vehicule_categorie_nom,
+                _vehicule_categorie_nombrepassagers,
+                _vehicule_categorie_bagage,
+                _vehicule_categorie_carrosserie
+            },
+            _vehicule_recharge: [{
+                _vehicule_recharge_date,
+                _vehicule_recharge_litres,
+                _vehicule_recharge_km,
+                _vehicule_recharge_prixlitre,
+                _vehicule_recharge_consommation
+            }],
+            _vehicule_consommation: {
+                _vehicule_consommation_ville,
+                _vehicule_consommation_route,
+                _vehicule_consommation_mixte
+            },
+            _vehicule_assurance: {
+                _vehicule_assurance_entrepriseassurance,
+                _vehicule_assurance_datedebut,
+                _vehicule_assurance_datefin,
+                _vehicule_assurance_montant,
+                _vehicule_assurance_image1,
+                _vehicule_assurance_image2
+            },
+            _vehicule_cartegrise: {
+                _vehicule_cartegrise_immatriculation,
+                _vehicule_cartegrise_immatriculationanterieur,
+                _vehicule_cartegrise_miseencriculation,
+                _vehicule_cartegrise_miseencirculationmaroc,
+                _vehicule_cartegrise_mutation,
+                _vehicule_cartegrise_debutdevalidite,
+                _vehicule_cartegrise_image1,
+                _vehicule_cartegrise_image2
+            },
+            _vehicule_vidange: [{
+                _vehicule_vidange_km,
+                _vehicule_vidange_date,
+                _vehicule_vidange_type
+            }],
+            _vehicule_vignette: {
+                _vehicule_vignette_montant,
+                _vehicule_vignette_penalite,
+                _vehicule_vignette_migration,
+                _vehicule_vignette_tsava,
+                _vehicule_vignette_datepaiement,
+                _vehicule_vignette_image
+            },
+            _vehicule_carteautorisation: {
+                _vehicule_carteautorisation_dateetablie,
+                _vehicule_carteautorisation_datefinvalidite,
+                _vehicule_autorisation_image
+            },
+            _vehicule_certificatinstallation: {
+                _vehicule_certificatinstallation_datedebut,
+                _vehicule_certificatinstallation_datefin,
+                _vehicule_certificatinstallation_image
+            },
+            _vehicule_extincteur: {
+                _vehicule_extincteur_datedebut,
+                _vehicule_extincteur_datefin
+            },
+            _vehicule_visitetechnique: [{
+                _vehicule_visitetechnique_datecontrole,
+                _vehicule_visitetechnique_naturecontrole,
+                _vehicule_visitetechnique_resultat,
+                _vehicule_visitetechnique_limitevalidite,
+                _vehicule_visitetechnique_numeroproces,
+                _vehicule_visitetechnique_raisonsocialecontrolleur,
+                _vehicule_visitetechnique_kmreleve,
+                _vehicule_visitetechnique_image
+            }]
         } = this.state;
 
         if (!_vehiculeToEdit) {
@@ -232,17 +2176,82 @@ class Dashboard extends React.Component {
                 _vehicule_datefabrication,
                 _vehicule_moteur,
                 _vehicule_volumereservoir,
+                _vehicule_image,
                 _vehicule_poidsavide,
                 _vehicule_kmparvidange,
-                _vehicule_image,
-                _vehicule_assurance,
-                _vehicule_cartegrise,
-                _vehicule_carteautorisation,
-                _vehicule_categorie,
-                _vehicule_vignette,
-                _vehicule_certificatinstallation,
-                _vehicule_consommation,
-                _vehicule_extincteur,
+                _vehicule_categorie: {
+                    _vehicule_categorie_nom,
+                    _vehicule_categorie_nombrepassagers,
+                    _vehicule_categorie_bagage,
+                    _vehicule_categorie_carrosserie
+                },
+                _vehicule_recharge: [{
+                    _vehicule_recharge_date,
+                    _vehicule_recharge_litres,
+                    _vehicule_recharge_km,
+                    _vehicule_recharge_prixlitre,
+                    _vehicule_recharge_consommation
+                }],
+                _vehicule_consommation: {
+                    _vehicule_consommation_ville,
+                    _vehicule_consommation_route,
+                    _vehicule_consommation_mixte
+                },
+                _vehicule_assurance: {
+                    _vehicule_assurance_entrepriseassurance,
+                    _vehicule_assurance_datedebut,
+                    _vehicule_assurance_datefin,
+                    _vehicule_assurance_montant,
+                    _vehicule_assurance_image1,
+                    _vehicule_assurance_image2
+                },
+                _vehicule_cartegrise: {
+                    _vehicule_cartegrise_immatriculation,
+                    _vehicule_cartegrise_immatriculationanterieur,
+                    _vehicule_cartegrise_miseencriculation,
+                    _vehicule_cartegrise_miseencirculationmaroc,
+                    _vehicule_cartegrise_mutation,
+                    _vehicule_cartegrise_debutdevalidite,
+                    _vehicule_cartegrise_image1,
+                    _vehicule_cartegrise_image2
+                },
+                _vehicule_vidange: [{
+                    _vehicule_vidange_km,
+                    _vehicule_vidange_date,
+                    _vehicule_vidange_type
+                }],
+                _vehicule_vignette: {
+                    _vehicule_vignette_montant,
+                    _vehicule_vignette_penalite,
+                    _vehicule_vignette_migration,
+                    _vehicule_vignette_tsava,
+                    _vehicule_vignette_datepaiement,
+                    _vehicule_vignette_image
+                },
+                _vehicule_carteautorisation: {
+                    _vehicule_carteautorisation_dateetablie,
+                    _vehicule_carteautorisation_datefinvalidite,
+                    _vehicule_autorisation_image
+                },
+                _vehicule_certificatinstallation: {
+                    _vehicule_certificatinstallation_datedebut,
+                    _vehicule_certificatinstallation_datefin,
+                    _vehicule_certificatinstallation_image
+                },
+                _vehicule_extincteur: {
+                    _vehicule_extincteur_datedebut,
+                    _vehicule_extincteur_datefin
+                },
+                _vehicule_visitetechnique: [{
+                    _vehicule_visitetechnique_datecontrole,
+                    _vehicule_visitetechnique_naturecontrole,
+                    _vehicule_visitetechnique_resultat,
+                    _vehicule_visitetechnique_limitevalidite,
+                    _vehicule_visitetechnique_numeroproces,
+                    _vehicule_visitetechnique_raisonsocialecontrolleur,
+                    _vehicule_visitetechnique_kmreleve,
+                    _vehicule_visitetechnique_image
+                }]
             })
                 .then((res) => {
                     onSubmitVehicule(res.data);
@@ -257,26 +2266,33 @@ class Dashboard extends React.Component {
                             _vehicule_model: '',
                             _vehicule_datefabrication: moment().format('YYYY-MM-DD'),
                             _vehicule_moteur: '',
-                            _vehicule_volumereservoir: '',
-                            _vehicule_poidsavide: '',
-                            _vehicule_kmparvidange: '',
+                            _vehicule_volumereservoir: 0,
                             _vehicule_image: '',
+                            _vehicule_poidsavide: 0,
+                            _vehicule_kmparvidange: 0,
                             _vehicule_categorie: {
                                 _vehicule_categorie_nom: '',
-                                _vehicule_categorie_nombrepassagers: '',
+                                _vehicule_categorie_nombrepassagers: 0,
                                 _vehicule_categorie_bagage: '',
                                 _vehicule_categorie_carrosserie: ''
                             },
+                            _vehicule_recharge: [{
+                                _vehicule_recharge_date: moment().format('YYYY-MM-DD'),
+                                _vehicule_recharge_litres: 0,
+                                _vehicule_recharge_km: 0,
+                                _vehicule_recharge_prixlitre: 0,
+                                _vehicule_recharge_consommation: 0
+                            }],
                             _vehicule_consommation: {
-                                _vehicule_consommation_ville: '',
-                                _vehicule_consommation_route: '',
-                                _vehicule_consommation_mixte: ''
+                                _vehicule_consommation_ville: 0,
+                                _vehicule_consommation_route: 0,
+                                _vehicule_consommation_mixte: 0
                             },
                             _vehicule_assurance: {
                                 _vehicule_assurance_entrepriseassurance: '',
                                 _vehicule_assurance_datedebut: moment().format('YYYY-MM-DD'),
                                 _vehicule_assurance_datefin: moment().format('YYYY-MM-DD'),
-                                _vehicule_assurance_montant: '',
+                                _vehicule_assurance_montant: 0,
                                 _vehicule_assurance_image1: '',
                                 _vehicule_assurance_image2: ''
                             },
@@ -290,13 +2306,18 @@ class Dashboard extends React.Component {
                                 _vehicule_cartegrise_image1: '',
                                 _vehicule_cartegrise_image2: ''
                             },
+                            _vehicule_vidange: [{
+                                _vehicule_vidange_km: 0,
+                                _vehicule_vidange_date: moment().format('YYYY-MM-DD'),
+                                _vehicule_vidange_type: ''
+                            }],
                             _vehicule_vignette: {
-                                _vehicule_vignette_montant: '',
-                                _vehicule_vignette_penalite: '',
+                                _vehicule_vignette_montant: 0,
+                                _vehicule_vignette_penalite: 0,
                                 _vehicule_vignette_migration: '',
                                 _vehicule_vignette_tsava: '',
                                 _vehicule_vignette_datepaiement: moment().format('YYYY-MM-DD'),
-                                _vehicule_vignette_image: ''
+                                _vehicule_vignette_image
                             },
                             _vehicule_carteautorisation: {
                                 _vehicule_carteautorisation_dateetablie: moment().format('YYYY-MM-DD'),
@@ -312,6 +2333,16 @@ class Dashboard extends React.Component {
                                 _vehicule_extincteur_datedebut: moment().format('YYYY-MM-DD'),
                                 _vehicule_extincteur_datefin: moment().format('YYYY-MM-DD')
                             },
+                            _vehicule_visitetechnique: [{
+                                _vehicule_visitetechnique_datecontrole: moment().format('YYYY-MM-DD'),
+                                _vehicule_visitetechnique_naturecontrole: moment().format('YYYY-MM-DD'),
+                                _vehicule_visitetechnique_resultat: '',
+                                _vehicule_visitetechnique_limitevalidite: '',
+                                _vehicule_visitetechnique_numeroproces: 0,
+                                _vehicule_visitetechnique_raisonsocialecontrolleur: '',
+                                _vehicule_visitetechnique_kmreleve: 0,
+                                _vehicule_visitetechnique_image: ''
+                            }]
                         }, () => {
                             var first_fs, last_fs;
                             var left, opacity, scale;
@@ -328,7 +2359,7 @@ class Dashboard extends React.Component {
                             $('.progressbar li').eq($('.fieldset').index(last_fs)).removeClass('active');
                             $('.progressbar li').eq($('.fieldset').index(first_fs)).addClass('active');
 
-                            last_fs.animate({ opacity: 0 }, {
+                            last_fs.animate({ opacity }, {
                                 step: (now, mx) => {
                                     scale = 0.8 + (1 - now) * 0.2;
                                     left = ((1 - now) * 50) + '%';
@@ -346,12 +2377,12 @@ class Dashboard extends React.Component {
                                 complete: () => {
                                     last_fs.hide();
                                     first_fs.css({
-                                        'display': 'grid',
+                                        'display': 'grid'
                                     });
                                     animating = false;
                                 }
                             });
-                        })
+                        });
                 });
         } else {
             return axios.patch(`/api/vehicule/${_vehiculeToEdit._id}`, {
@@ -363,133 +2394,383 @@ class Dashboard extends React.Component {
                 _vehicule_datefabrication,
                 _vehicule_moteur,
                 _vehicule_volumereservoir,
+                _vehicule_image,
                 _vehicule_poidsavide,
                 _vehicule_kmparvidange,
-                _vehicule_image,
-                _vehicule_assurance,
-                _vehicule_cartegrise,
-                _vehicule_carteautorisation,
-                _vehicule_categorie,
-                _vehicule_vignette,
-                _vehicule_certificatinstallation,
-                _vehicule_consommation,
-                _vehicule_extincteur,
+                _vehicule_categorie: {
+                    _vehicule_categorie_nom,
+                    _vehicule_categorie_nombrepassagers,
+                    _vehicule_categorie_bagage,
+                    _vehicule_categorie_carrosserie
+                },
+                _vehicule_recharge: [{
+                    _vehicule_recharge_date,
+                    _vehicule_recharge_litres,
+                    _vehicule_recharge_km,
+                    _vehicule_recharge_prixlitre,
+                    _vehicule_recharge_consommation
+                }],
+                _vehicule_consommation: {
+                    _vehicule_consommation_ville,
+                    _vehicule_consommation_route,
+                    _vehicule_consommation_mixte
+                },
+                _vehicule_assurance: {
+                    _vehicule_assurance_entrepriseassurance,
+                    _vehicule_assurance_datedebut,
+                    _vehicule_assurance_datefin,
+                    _vehicule_assurance_montant,
+                    _vehicule_assurance_image1,
+                    _vehicule_assurance_image2
+                },
+                _vehicule_cartegrise: {
+                    _vehicule_cartegrise_immatriculation,
+                    _vehicule_cartegrise_immatriculationanterieur,
+                    _vehicule_cartegrise_miseencriculation,
+                    _vehicule_cartegrise_miseencirculationmaroc,
+                    _vehicule_cartegrise_mutation,
+                    _vehicule_cartegrise_debutdevalidite,
+                    _vehicule_cartegrise_image1,
+                    _vehicule_cartegrise_image2
+                },
+                _vehicule_vidange: [{
+                    _vehicule_vidange_km,
+                    _vehicule_vidange_date,
+                    _vehicule_vidange_type
+                }],
+                _vehicule_vignette: {
+                    _vehicule_vignette_montant,
+                    _vehicule_vignette_penalite,
+                    _vehicule_vignette_migration,
+                    _vehicule_vignette_tsava,
+                    _vehicule_vignette_datepaiement,
+                    _vehicule_vignette_image
+                },
+                _vehicule_carteautorisation: {
+                    _vehicule_carteautorisation_dateetablie,
+                    _vehicule_carteautorisation_datefinvalidite,
+                    _vehicule_autorisation_image
+                },
+                _vehicule_certificatinstallation: {
+                    _vehicule_certificatinstallation_datedebut,
+                    _vehicule_certificatinstallation_datefin,
+                    _vehicule_certificatinstallation_image
+                },
+                _vehicule_extincteur: {
+                    _vehicule_extincteur_datedebut,
+                    _vehicule_extincteur_datefin
+                },
+                _vehicule_visitetechnique: [{
+                    _vehicule_visitetechnique_datecontrole,
+                    _vehicule_visitetechnique_naturecontrole,
+                    _vehicule_visitetechnique_resultat,
+                    _vehicule_visitetechnique_limitevalidite,
+                    _vehicule_visitetechnique_numeroproces,
+                    _vehicule_visitetechnique_raisonsocialecontrolleur,
+                    _vehicule_visitetechnique_kmreleve,
+                    _vehicule_visitetechnique_image
+                }]
             })
                 .then((res) => {
                     onEditVehicule(res.data);
                 })
                 .then(() => {
+                    this.setState(
+                        {
+                            _vehicule_marque: '',
+                            _vehicule_fabricant: '',
+                            _vehicule_numerochassis: '',
+                            _vehicule_numeroregistration: '',
+                            _vehicule_model: '',
+                            _vehicule_datefabrication: moment().format('YYYY-MM-DD'),
+                            _vehicule_moteur: '',
+                            _vehicule_volumereservoir: 0,
+                            _vehicule_image: '',
+                            _vehicule_poidsavide: 0,
+                            _vehicule_kmparvidange: 0,
+                            _vehicule_categorie: {
+                                _vehicule_categorie_nom: '',
+                                _vehicule_categorie_nombrepassagers: 0,
+                                _vehicule_categorie_bagage: '',
+                                _vehicule_categorie_carrosserie: ''
+                            },
+                            _vehicule_recharge: [{
+                                _vehicule_recharge_date: moment().format('YYYY-MM-DD'),
+                                _vehicule_recharge_litres: 0,
+                                _vehicule_recharge_km: 0,
+                                _vehicule_recharge_prixlitre: 0,
+                                _vehicule_recharge_consommation: 0
+                            }],
+                            _vehicule_consommation: {
+                                _vehicule_consommation_ville: 0,
+                                _vehicule_consommation_route: 0,
+                                _vehicule_consommation_mixte: 0
+                            },
+                            _vehicule_assurance: {
+                                _vehicule_assurance_entrepriseassurance: '',
+                                _vehicule_assurance_datedebut: moment().format('YYYY-MM-DD'),
+                                _vehicule_assurance_datefin: moment().format('YYYY-MM-DD'),
+                                _vehicule_assurance_montant: 0,
+                                _vehicule_assurance_image1: '',
+                                _vehicule_assurance_image2: ''
+                            },
+                            _vehicule_cartegrise: {
+                                _vehicule_cartegrise_immatriculation: '',
+                                _vehicule_cartegrise_immatriculationanterieur: '',
+                                _vehicule_cartegrise_miseencriculation: moment().format('YYYY-MM-DD'),
+                                _vehicule_cartegrise_miseencirculationmaroc: moment().format('YYYY-MM-DD'),
+                                _vehicule_cartegrise_mutation: '',
+                                _vehicule_cartegrise_debutdevalidite: moment().format('YYYY-MM-DD'),
+                                _vehicule_cartegrise_image1: '',
+                                _vehicule_cartegrise_image2: ''
+                            },
+                            _vehicule_vidange: [{
+                                _vehicule_vidange_km: 0,
+                                _vehicule_vidange_date: moment().format('YYYY-MM-DD'),
+                                _vehicule_vidange_type: ''
+                            }],
+                            _vehicule_vignette: {
+                                _vehicule_vignette_montant: 0,
+                                _vehicule_vignette_penalite: 0,
+                                _vehicule_vignette_migration: '',
+                                _vehicule_vignette_tsava: '',
+                                _vehicule_vignette_datepaiement: moment().format('YYYY-MM-DD'),
+                                _vehicule_vignette_image
+                            },
+                            _vehicule_carteautorisation: {
+                                _vehicule_carteautorisation_dateetablie: moment().format('YYYY-MM-DD'),
+                                _vehicule_carteautorisation_datefinvalidite: moment().format('YYYY-MM-DD'),
+                                _vehicule_autorisation_image: ''
+                            },
+                            _vehicule_certificatinstallation: {
+                                _vehicule_certificatinstallation_datedebut: moment().format('YYYY-MM-DD'),
+                                _vehicule_certificatinstallation_datefin: moment().format('YYYY-MM-DD'),
+                                _vehicule_certificatinstallation_image: ''
+                            },
+                            _vehicule_extincteur: {
+                                _vehicule_extincteur_datedebut: moment().format('YYYY-MM-DD'),
+                                _vehicule_extincteur_datefin: moment().format('YYYY-MM-DD')
+                            },
+                            _vehicule_visitetechnique: [{
+                                _vehicule_visitetechnique_datecontrole: moment().format('YYYY-MM-DD'),
+                                _vehicule_visitetechnique_naturecontrole: moment().format('YYYY-MM-DD'),
+                                _vehicule_visitetechnique_resultat: '',
+                                _vehicule_visitetechnique_limitevalidite: '',
+                                _vehicule_visitetechnique_numeroproces: 0,
+                                _vehicule_visitetechnique_raisonsocialecontrolleur: '',
+                                _vehicule_visitetechnique_kmreleve: 0,
+                                _vehicule_visitetechnique_image: ''
+                            }]
+                        }, () => {
+                            var first_fs, last_fs;
+                            var left, opacity, scale;
+                            var animating;
+
+                            if (animating)
+                                return false;
+
+                            animating = true;
+
+                            first_fs = $('.first-of-type');
+                            last_fs = $('.last-of-type');
+
+                            $('.progressbar li').eq($('.fieldset').index(last_fs)).removeClass('active');
+                            $('.progressbar li').eq($('.fieldset').index(first_fs)).addClass('active');
+
+                            last_fs.animate({ opacity }, {
+                                step: (now, mx) => {
+                                    scale = 0.8 + (1 - now) * 0.2;
+                                    left = ((1 - now) * 50) + '%';
+                                    opacity = 1 - now;
+
+                                    last_fs.css({
+                                        'left': left
+                                    });
+                                    first_fs.css({
+                                        'transform': 'scale(' + scale + ')',
+                                        'opacity': opacity
+                                    });
+                                },
+                                duration: 400,
+                                complete: () => {
+                                    last_fs.hide();
+                                    first_fs.css({
+                                        'display': 'grid'
+                                    });
+                                    animating = false;
+                                }
+                            });
+                        });
+                });
+        }
+    }
+
+    handleDeleteVoyage(id) {
+        const { onDeleteVoyage } = this.props;
+        return axios.delete(`/api/voyage/${id}`)
+            .then(() => {
+                onDeleteVoyage(id);
+            });
+    }
+    handleEditVoyage(voyage) {
+        const { setEditVoyage } = this.props;
+        setEditVoyage(voyage);
+    }
+    handleSubmitVoyage() {
+        const { onSubmitVoyage, _voyageToEdit, onEditVoyage } = this.props;
+        const {
+            _voyage_datedepart,
+            _voyage_datearrive,
+            _voyage_lieudepart,
+            _voyage_lieuarrive,
+            _voyage_statut,
+            Passager,
+            Vehicule
+        } = this.state;
+
+        if (!_voyageToEdit) {
+            return axios.post('/api/voyage', {
+                _voyage_datedepart,
+                _voyage_datearrive,
+                _voyage_lieudepart,
+                _voyage_lieuarrive,
+                _voyage_statut,
+                Passager,
+                Vehicule
+            })
+                .then((res) => {
+                    onSubmitVoyage(res.data);
+                })
+                .then(() => {
+                    this.setState(
+                        {
+                            _voyage_datedepart: moment().format('YYYY-MM-DD'),
+                            _voyage_datearrive: moment().format('YYYY-MM-DD'),
+                            _voyage_lieudepart: '',
+                            _voyage_lieuarrive: '',
+                            _voyage_statut: '',
+                            Passager: null,
+                            Vehicule: null
+                        }
+                    )
+                });
+        } else {
+            return axios.patch(`/api/voyage/${_voyageToEdit._id}`, {
+                _voyage_datedepart,
+                _voyage_datearrive,
+                _voyage_lieudepart,
+                _voyage_lieuarrive,
+                _voyage_statut,
+                Passager,
+                Vehicule
+            })
+                .then((res) => {
+                    onEditVoyage(res.data);
+                })
+                .then(() => {
                     this.setState({
-                        _vehicule_marque: '',
-                        _vehicule_fabricant: '',
-                        _vehicule_numerochassis: '',
-                        _vehicule_numeroregistration: '',
-                        _vehicule_model: '',
-                        _vehicule_datefabrication: moment().format('YYYY-MM-DD'),
-                        _vehicule_moteur: '',
-                        _vehicule_volumereservoir: '',
-                        _vehicule_poidsavide: '',
-                        _vehicule_kmparvidange: '',
-                        _vehicule_image: '',
-                        _vehicule_categorie: {
-                            _vehicule_categorie_nom: '',
-                            _vehicule_categorie_nombrepassagers: '',
-                            _vehicule_categorie_bagage: '',
-                            _vehicule_categorie_carrosserie: ''
-                        },
-                        _vehicule_consommation: {
-                            _vehicule_consommation_ville: '',
-                            _vehicule_consommation_route: '',
-                            _vehicule_consommation_mixte: ''
-                        },
-                        _vehicule_assurance: {
-                            _vehicule_assurance_entrepriseassurance: '',
-                            _vehicule_assurance_datedebut: moment().format('YYYY-MM-DD'),
-                            _vehicule_assurance_datefin: moment().format('YYYY-MM-DD'),
-                            _vehicule_assurance_montant: '',
-                            _vehicule_assurance_image1: '',
-                            _vehicule_assurance_image2: ''
-                        },
-                        _vehicule_cartegrise: {
-                            _vehicule_cartegrise_immatriculation: '',
-                            _vehicule_cartegrise_immatriculationanterieur: '',
-                            _vehicule_cartegrise_miseencriculation: moment().format('YYYY-MM-DD'),
-                            _vehicule_cartegrise_miseencirculationmaroc: moment().format('YYYY-MM-DD'),
-                            _vehicule_cartegrise_mutation: '',
-                            _vehicule_cartegrise_debutdevalidite: moment().format('YYYY-MM-DD'),
-                            _vehicule_cartegrise_image1: '',
-                            _vehicule_cartegrise_image2: ''
-                        },
-                        _vehicule_vignette: {
-                            _vehicule_vignette_montant: '',
-                            _vehicule_vignette_penalite: '',
-                            _vehicule_vignette_migration: '',
-                            _vehicule_vignette_tsava: '',
-                            _vehicule_vignette_datepaiement: moment().format('YYYY-MM-DD'),
-                            _vehicule_vignette_image: ''
-                        },
-                        _vehicule_carteautorisation: {
-                            _vehicule_carteautorisation_dateetablie: moment().format('YYYY-MM-DD'),
-                            _vehicule_carteautorisation_datefinvalidite: moment().format('YYYY-MM-DD'),
-                            _vehicule_autorisation_image: ''
-                        },
-                        _vehicule_certificatinstallation: {
-                            _vehicule_certificatinstallation_datedebut: moment().format('YYYY-MM-DD'),
-                            _vehicule_certificatinstallation_datefin: moment().format('YYYY-MM-DD'),
-                            _vehicule_certificatinstallation_image: ''
-                        },
-                        _vehicule_extincteur: {
-                            _vehicule_extincteur_datedebut: moment().format('YYYY-MM-DD'),
-                            _vehicule_extincteur_datefin: moment().format('YYYY-MM-DD')
-                        },
+                        _voyage_datedepart: moment().format('YYYY-MM-DD'),
+                        _voyage_datearrive: moment().format('YYYY-MM-DD'),
+                        _voyage_lieudepart: '',
+                        _voyage_lieuarrive: '',
+                        _voyage_statut: '',
+                        Passager: null,
+                        Vehicule: null
                     })
                 });
         }
     }
 
-    handleChangeOnlyNumbers(event) {
+    handleChangeUser(parentObject, childObject, value) {
         const reg = /^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$/;
-        // if value is not blank, then test the regex
-        if (event.target.value === '' || reg.test(event.target.value)) {
+        const childObject_Parent = _.join(_.take(_.split(childObject, '_'), 3), '_');
+
+        if (_.startsWith(childObject, '_employe_CNSS') || _.startsWith(childObject, '_employe_permis') || _.startsWith(childObject, '_employe_permis'))
+            if (['_employe_CNSS_montant'].indexOf(childObject) + 1) {
+                if (reg.test(value))
+                    this.setState({
+                        _user: update(this.state._user, {
+                            [parentObject]: {
+                                [childObject_Parent]: {
+                                    [childObject]: {
+                                        $set: value
+                                    }
+                                }
+                            }
+                        })
+                    });
+            } else {
+                this.setState({
+                    _user: update(this.state._user, {
+                        [parentObject]: {
+                            [childObject_Parent]: {
+                                [childObject]: {
+                                    $set: value
+                                }
+                            }
+                        }
+                    })
+                });
+            }
+        else
+            if (['_employe_nombreenfants'].indexOf(childObject) + 1) {
+                if (reg.test(value))
+                    this.setState({
+                        _user: update(this.state._user, {
+                            [parentObject]: {
+                                [childObject]: {
+                                    $set: value
+                                }
+                            }
+                        })
+                    });
+            } else {
+                this.setState({
+                    _user: update(this.state._user, {
+                        [parentObject]: {
+                            [childObject]: {
+                                $set: value
+                            }
+                        }
+                    })
+                });
+            }
+    }
+    handleChangeNested(parentObject, childObject, value) {
+        const reg = /^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$/;
+
+        if (['_vehicule_categorie_nombrepassagers', '_vehicule_categorie_bagage', '_vehicule_consommation_ville', '_vehicule_consommation_route', '_vehicule_consommation_mixte', '_vehicule_vignette_montant', '_vehicule_vignette_penalite', '_vehicule_vignette_tsava'].indexOf(childObject) + 1) {
+            if (reg.test(value))
+                this.setState({
+                    [parentObject]: update(this.state[parentObject], {
+                        [childObject]: {
+                            $set: value
+                        }
+                    })
+                });
+        } else {
             this.setState({
-                [event.target.id]: event.target.value
+                [parentObject]: update(this.state[parentObject], {
+                    [childObject]: {
+                        $set: value
+                    }
+                })
             });
         }
     }
     handleChange(event) {
-        this.setState({
-            [event.target.id]: event.target.value
-        });
-    }
-    handleChangeNested(parentObject, childObject, value) {
-        this.setState(prevState => ({
-            ...prevState,
-            [parentObject]: {
-                ...prevState[parentObject],
-                [childObject]: value
-            }
-        }));
-    }
-    handleChangeNestedOnlyNumbers(parentObject, childObject, value) {
         const reg = /^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$/;
-        // if value is not blank, then test the regex
-        if (value === '' || reg.test(value)) {
-            this.setState(prevState => ({
-                ...prevState,
-                [parentObject]: {
-                    ...prevState[parentObject],
-                    [childObject]: value
-                }
-            }));
+
+        if (['_vehicule_volumereservoir', '_vehicule_poidsavide', '_vehicule_kmparvidange'].indexOf(event.target.id) + 1) {
+            if (reg.test(event.target.value))
+                this.setState({
+                    [event.target.id]: event.target.value
+                });
+        } else {
+            this.setState({
+                [event.target.id]: event.target.value
+            });
         }
-    }
-    handleChangeField(key, event) {
-        this.setState({ [key]: event.target.value });
-    }
-    handleChangeFieldUser(key, event) {
-        this.setState({
-            [key]: [event.target.value],
-        });
     }
 
     handleNext(parent) {
@@ -514,7 +2795,7 @@ class Dashboard extends React.Component {
                 left = (now * 50) + '%';
                 opacity = 1 - now;
                 current_fs.css({
-                    'transform': 'scale(' + scale + ')',
+                    'transform': 'scale(' + scale + ')'
                 });
                 next_fs.css({
                     'left': left,
@@ -525,7 +2806,7 @@ class Dashboard extends React.Component {
             complete: () => {
                 current_fs.hide();
                 next_fs.css({
-                    'display': 'grid',
+                    'display': 'grid'
                 });
                 animating = false;
             }
@@ -565,7 +2846,7 @@ class Dashboard extends React.Component {
             complete: () => {
                 current_fs.hide();
                 previous_fs.css({
-                    'display': 'grid',
+                    'display': 'grid'
                 });
                 animating = false;
             }
@@ -607,32 +2888,129 @@ class Dashboard extends React.Component {
 
     }
 
-    async get_user() {
-        const self = this;
-
-        await API.get_user(localStorage.getItem('_user_email'))
-            .then((res) => {
-                self.setState({
-                    _user: res.data.user,
-                }, () => {
-
-                });
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    }
-
     disconnect() {
         API.logout();
         window.location = "/login";
     }
+
     render() {
         const {
             modal_msg,
+
             _user,
+            _users,
+
             _search_value_vehicules,
             _search_value_parametres,
+
+            _agence_adresse,
+            _agence_ville,
+            _agence_pays,
+            _bon_numero,
+            _bon_date,
+            _bon_type,
+            Facture,
+            _client_prenomcontact,
+            _client_nomcontact,
+            _client_raison,
+            _client_adresse,
+            _client_telephone,
+            _client_email,
+            _client_ville,
+            _client_pays,
+            _client_ICE,
+            _client_IF,
+            _client_RC,
+            _client_patente,
+            _client_contrat,
+            _devis_numero,
+            _devis_date,
+            _devis_commentaire,
+            _devis_TVA,
+            _devis_image,
+            _employe_prenom,
+            _employe_nom,
+            _employe_telephone,
+            _employe_datenaissance,
+            _employe_CNIE,
+            _employe_situationfamille,
+            _employe_nombreenfants,
+            _employe_adresse,
+            _employe_CNSS,
+            _employe_permis,
+            _employe_datembauche,
+            _employe_image,
+            Poste,
+            RevueDePerformance,
+            _facture_numero,
+            _facture_date,
+            _facture_commentaire,
+            _facture_TVA,
+            _facture_venteachat,
+            _facture_ispayed,
+            _facture_numeropaiement,
+            _facture_datepaiement,
+            _facture_type,
+            _facture_image,
+            Societe,
+            Fournisseur,
+            _fournisseur_prenomcontact,
+            _fournisseur_nomcontact,
+            _fournisseur_raison,
+            _fournisseur_adresse,
+            _fournisseur_telephone,
+            _fournisseur_email,
+            _fournisseur_ville,
+            _fournisseur_pays,
+            _fournisseur_ICE,
+            _fournisseur_IF,
+            _fournisseur_RC,
+            _fournisseur_patente,
+            _passager_prenom,
+            _passager_nom,
+            _passager_telephone,
+            _passager_email,
+            _passager_adresse,
+            _passager_ville,
+            _passager_pays,
+            _permission_titre,
+            _poste_titre,
+            _poste_salaireinitiale,
+            _produit_designation,
+            _produit_reference,
+            _produit_quantite,
+            _produit_prixunitaire,
+            _produit_statut,
+            _reservation_nombreadultes,
+            _reservation_nombreenfants,
+            _reservation_datereservation,
+            _reservation_commentaire,
+            _reservation_status,
+            Voyage,
+            Client,
+            _revueDePerformance_date,
+            _revueDePerformance_resultat,
+            _societe_raison,
+            _societe_siege,
+            _societe_numeroTP,
+            _societe_IF,
+            _societe_telephone,
+            _societe_fax,
+            _societe_email,
+            _societe_ICE,
+            _societe_CNSS,
+            Agence,
+            Produit,
+            _user_email,
+            _user_username,
+            _user_password,
+            _user_password_new,
+            _user_password_new_confirm,
+            _user_fingerprint,
+            _user_isVerified,
+            _user_logindate,
+            Employe,
+            Permission,
             _vehicule_marque,
             _vehicule_fabricant,
             _vehicule_numerochassis,
@@ -641,17 +3019,27 @@ class Dashboard extends React.Component {
             _vehicule_datefabrication,
             _vehicule_moteur,
             _vehicule_volumereservoir,
+            _vehicule_image,
             _vehicule_poidsavide,
             _vehicule_kmparvidange,
-            _vehicule_image,
+            _vehicule_categorie,
+            _vehicule_recharge,
+            _vehicule_consommation,
             _vehicule_assurance,
             _vehicule_cartegrise,
+            _vehicule_vidange,
             _vehicule_vignette,
             _vehicule_carteautorisation,
-            _vehicule_categorie,
             _vehicule_certificatinstallation,
-            _vehicule_consommation,
             _vehicule_extincteur,
+            _vehicule_visitetechnique,
+            _voyage_datedepart,
+            _voyage_datearrive,
+            _voyage_lieudepart,
+            _voyage_lieuarrive,
+            _voyage_statut,
+            Passager,
+            Vehicule
         } = this.state;
         const {
             _agences,
@@ -837,92 +3225,417 @@ class Dashboard extends React.Component {
                                             </form>
                                         </div>
                                         <div className="_parametres_content">
-                                            <ul className="forms">
-                                                <li className="forms__item">
-                                                    <div className="card">
-                                                        <div className="card__content">
-                                                            <div className="_account_pane _pane">
-                                                                <div className="_account_content _content">
-                                                                    <div className="_account_head">
-                                                                        <h4>Account Settings.</h4>
-                                                                        <p className="text-muted">Here you can change the email address you use and password</p>
-                                                                    </div>
-                                                                    <div className="_account_data data_container">
-                                                                        <Account />
+                                            <div className="forms__item">
+                                                <div className="card">
+                                                    <div className="card__content">
+                                                        <div className="_account_pane _pane">
+                                                            <div className="_account_content _content">
+                                                                <div className="_account_head">
+                                                                    <h4>Parametres General.</h4>
+                                                                    <p className="text-muted">Changez votre profil et parametres</p>
+                                                                </div>
+                                                                <div className="_account_data data_container">
+                                                                    <div className="fieldset">
+                                                                        <div className='row'>
+                                                                            <div className='input-field col'>
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_prenom"
+                                                                                    id="_employe_prenom"
+                                                                                    type="text"
+                                                                                    name="_employe_prenom"
+                                                                                    value={_user.Employe._employe_prenom}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_prenom', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_prenom' className={_user.Employe._employe_prenom ? 'active' : ''}>Prénom</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className='input-field col'>
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_nom"
+                                                                                    id="_employe_nom"
+                                                                                    type="text"
+                                                                                    name="_employe_nom"
+                                                                                    value={_user.Employe._employe_nom}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_nom', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_nom' className={_user.Employe._employe_nom ? 'active' : ''}>Nom</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className='input-field col'>
+                                                                                <PhoneInput
+                                                                                    className="validate form-group-input _employe_telephone"
+                                                                                    id="_employe_telephone"
+                                                                                    name="_employe_telephone"
+                                                                                    value={_user.Employe._employe_telephone}
+                                                                                    onChange={(value) => this.handleChangeUser('Employe', '_employe_telephone', value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_telephone' className={_user.Employe._employe_telephone ? 'active phone_label' : 'phone_label'}>Telephone</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className='input-field col'>
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_datenaissance"
+                                                                                    id="_employe_datenaissance"
+                                                                                    type="date"
+                                                                                    name="_employe_datenaissance"
+                                                                                    value={moment(_user.Employe._employe_datenaissance).format('YYYY-MM-DD')}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_datenaissance', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_datenaissance' className={_user.Employe._employe_datenaissance ? 'active' : ''}>Date de naissance</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='row'>
+                                                                            <div className='input-field col'>
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_CNIE"
+                                                                                    id="_employe_CNIE"
+                                                                                    type="text"
+                                                                                    name="_employe_CNIE"
+                                                                                    value={_user.Employe._employe_CNIE}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_CNIE', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_CNIE' className={_user.Employe._employe_CNIE ? 'active' : ''}>CNIE</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className='input-field col'>
+                                                                                <select
+                                                                                    name="_employe_situationfamille"
+                                                                                    className="validate form-group-input _employe_situationfamille"
+                                                                                    value={_user.Employe._employe_situationfamille}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_situationfamille', event.target.value)}
+                                                                                    id="_employe_situationfamille"
+                                                                                >
+                                                                                    <option value=""></option>
+                                                                                    <option value="Marié">Marié</option>
+                                                                                    <option value="Pacsé">Pacsé</option>
+                                                                                    <option value="Divorcé">Divorcé</option>
+                                                                                    <option value="Séparé">Séparé</option>
+                                                                                    <option value="Célibataire">Célibataire</option>
+                                                                                    <option value="Veuf">Veuf</option>
+                                                                                </select>
+                                                                                <label htmlFor='_employe_situationfamille' className={_user.Employe._employe_situationfamille ? 'active' : ''}>Situation familiale</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className='input-field col'>
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_nombreenfants"
+                                                                                    id="_employe_nombreenfants"
+                                                                                    type="text"
+                                                                                    name="_employe_nombreenfants"
+                                                                                    value={_user.Employe._employe_nombreenfants}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_nombreenfants', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_nombreenfants' className={(_user.Employe._employe_nombreenfants === 0 ? true : _user.Employe._employe_nombreenfants) ? 'active' : ''}>Nombre d'enfants</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className='input-field col'>
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_adresse"
+                                                                                    id="_employe_adresse"
+                                                                                    type="text"
+                                                                                    name="_employe_adresse"
+                                                                                    value={_user.Employe._employe_adresse}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_adresse', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_adresse' className={_user.Employe._employe_adresse ? 'active' : ''}>Adresse</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <legend>CNSS</legend>
+                                                                        <div className="row">
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_CNSS_dateimmatriculation"
+                                                                                    id="_employe_CNSS_dateimmatriculation"
+                                                                                    type="date"
+                                                                                    name="_employe_CNSS_dateimmatriculation"
+                                                                                    value={moment(_user.Employe._employe_CNSS._employe_CNSS_dateimmatriculation).format('YYYY-MM-DD')}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_CNSS_dateimmatriculation', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_CNSS_dateimmatriculation' className={_user.Employe._employe_CNSS._employe_CNSS_dateimmatriculation ? 'active' : ''}>Date d'immatriculation</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_CNSS_numeroimmatriculation"
+                                                                                    id="_employe_CNSS_numeroimmatriculation"
+                                                                                    type="text"
+                                                                                    name="_employe_CNSS_numeroimmatriculation"
+                                                                                    value={_user.Employe._employe_CNSS._employe_CNSS_numeroimmatriculation}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_CNSS_numeroimmatriculation', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_CNSS_numeroimmatriculation' className={_user.Employe._employe_CNSS._employe_CNSS_numeroimmatriculation ? 'active' : ''}>Numero d'Immatriculation</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_CNSS_montant"
+                                                                                    id="_employe_CNSS_montant"
+                                                                                    type="text"
+                                                                                    name="_employe_CNSS_montant"
+                                                                                    value={_user.Employe._employe_CNSS._employe_CNSS_montant}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_CNSS_montant', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_CNSS_montant' className={(_user.Employe._employe_CNSS._employe_CNSS_montant === 0 ? true : _user.Employe._employe_CNSS._employe_CNSS_montant) ? 'active' : ''}>Montant</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col"></div>
+                                                                        </div>
+                                                                        <legend>Permis</legend>
+                                                                        <div className="row">
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_permis_numero"
+                                                                                    id="_employe_permis_numero"
+                                                                                    type="text"
+                                                                                    name="_employe_permis_numero"
+                                                                                    value={_user.Employe._employe_permis._employe_permis_numero}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_permis_numero', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_permis_numero' className={_user.Employe._employe_permis._employe_permis_numero ? 'active' : ''}>Numero de Permis</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_permis_categorie"
+                                                                                    id="_employe_permis_categorie"
+                                                                                    type="text"
+                                                                                    name="_employe_permis_categorie"
+                                                                                    value={_user.Employe._employe_permis._employe_permis_categorie}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_permis_categorie', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_permis_categorie' className={_user.Employe._employe_permis._employe_permis_categorie ? 'active' : ''}>Categorie de Permis</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_permis_datedelivrance"
+                                                                                    id="_employe_permis_datedelivrance"
+                                                                                    type="date"
+                                                                                    name="_employe_permis_datedelivrance"
+                                                                                    value={moment(_user.Employe._employe_permis._employe_permis_datedelivrance).format('YYYY-MM-DD')}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_permis_datedelivrance', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_permis_datedelivrance' className={_user.Employe._employe_permis._employe_permis_datedelivrance ? 'active' : ''}>Date de livrance</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col"></div>
+                                                                        </div>
+                                                                        <div className="row">
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_permis_image1"
+                                                                                    id="_employe_permis_image1"
+                                                                                    type="text"
+                                                                                    name="_employe_permis_image1"
+                                                                                    value={_user.Employe._employe_permis._employe_permis_image1}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_permis_image1', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_permis_image1' className={_user.Employe._employe_permis._employe_permis_image1 ? 'active' : ''}>1e Face de la Carte</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_permis_image2"
+                                                                                    id="_employe_permis_image2"
+                                                                                    type="text"
+                                                                                    name="_employe_permis_image2"
+                                                                                    value={_user.Employe._employe_permis._employe_permis_image2}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_permis_image2', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_permis_image2' className={_user.Employe._employe_permis._employe_permis_image2 ? 'active' : ''}>2e Face de la Carte</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col"></div>
+                                                                            <div className="input-field col"></div>
+                                                                        </div>
+                                                                        <legend>Poste</legend>
+                                                                        <div className="row">
+                                                                            <div className='input-field col'>
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_datembauche"
+                                                                                    id="_employe_datembauche"
+                                                                                    type="date"
+                                                                                    name="_employe_datembauche"
+                                                                                    value={moment(_user.Employe._employe_datembauche).format('YYYY-MM-DD')}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_datembauche', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_datembauche' className={_user.Employe._employe_datembauche ? 'active' : ''}>Date d'embauche</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className='input-field col'>
+                                                                                <input
+                                                                                    className="validate form-group-input _employe_image"
+                                                                                    id="_employe_image"
+                                                                                    type="text"
+                                                                                    name="_employe_image"
+                                                                                    value={_user.Employe._employe_image}
+                                                                                    onChange={(event) => this.handleChangeUser('Employe', '_employe_image', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_employe_image' className={_user.Employe._employe_image ? 'active' : ''}>Image</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col">
+                                                                                <Select
+                                                                                    id="Poste"
+                                                                                    className="validate form-group-input Poste"
+                                                                                    classNamePrefix="select"
+                                                                                    defaultValue={{}}
+                                                                                    isClearable="true"
+                                                                                    isSearchable="true"
+                                                                                    name="Poste"
+                                                                                    value={_user.Employe.Poste}
+                                                                                    getOptionLabel={(option) => option._poste_titre}
+                                                                                    getOptionValue={(option) => option}
+                                                                                    onChange={(value) => this.handleChangeUser('Employe', 'Poste', value)}
+                                                                                    onChange={(value) => this.handleChangeUser('Employe', 'Poste', value)}
+                                                                                    options={_postes}
+                                                                                    width='100%'
+                                                                                />
+                                                                                <label htmlFor='Poste' className={_user.Employe.Poste ? 'active' : ''}>Poste</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col"></div>
+                                                                        </div>
+                                                                        <legend>Parametres de Compte</legend>
+                                                                        <div className="row">
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _user_email"
+                                                                                    id="_user_email"
+                                                                                    type="text"
+                                                                                    name="_user_email"
+                                                                                    value={_user._user_email}
+                                                                                    onChange={(event) => this.handleChangeUser('_user', '_user_email', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_user_email' className={_user._user_email ? 'active' : ''}>Email</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _user_username"
+                                                                                    id="_user_username"
+                                                                                    type="text"
+                                                                                    name="_user_username"
+                                                                                    value={_user._user_username}
+                                                                                    onChange={(event) => this.handleChangeUser('_user', '_user_username', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor='_user_username' className={_user._user_username ? 'active' : ''}>Username</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col">
+                                                                                <Select
+                                                                                    id="Permission"
+                                                                                    className="validate form-group-input Permission"
+                                                                                    classNamePrefix="select"
+                                                                                    isMulti
+                                                                                    defaultValue={{}}
+                                                                                    isClearable="true"
+                                                                                    isSearchable="true"
+                                                                                    name="Permission"
+                                                                                    value={_user.Permission}
+                                                                                    getOptionLabel={(option) => option._permission_titre}
+                                                                                    getOptionValue={(option) => option}
+                                                                                    onChange={(value) => this.handleChangeUser('_user', 'Permission', value)}
+                                                                                    onChange={(value) => this.handleChangeUser('_user', 'Permission', value)}
+                                                                                    options={_permissions}
+                                                                                    width='100%'
+                                                                                />
+                                                                                <label htmlFor='Permission' className={_user.Permission ? 'active' : ''}>Permissions</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col"></div>
+                                                                        </div>
+                                                                        <div className="row">
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _user_password"
+                                                                                    id="_user_password"
+                                                                                    type="text"
+                                                                                    name="_user_password"
+                                                                                    value={_user_password}
+                                                                                    onChange={(event) => this.handleChange(event)}
+                                                                                />
+                                                                                <label htmlFor='_user_password' className={_user_password ? 'active' : ''}>Current Password</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _user_password_new"
+                                                                                    id="_user_password_new"
+                                                                                    type="text"
+                                                                                    name="_user_password_new"
+                                                                                    value={_user_password_new}
+                                                                                    onChange={(event) => this.handleChange(event)}
+                                                                                />
+                                                                                <label htmlFor='_user_password' className={_user_password_new ? 'active' : ''}>New Password</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col">
+                                                                                <input
+                                                                                    className="validate form-group-input _user_password_new_confirm"
+                                                                                    id="_user_password_new_confirm"
+                                                                                    type="text"
+                                                                                    name="_user_password_new_confirm"
+                                                                                    value={_user_password_new_confirm}
+                                                                                    onChange={(event) => this.handleChange(event)}
+                                                                                />
+                                                                                <label htmlFor='_user_password_new_confirm' className={_user_password_new_confirm ? 'active' : ''}>Confirm Password</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col"></div>
+                                                                        </div>
+                                                                        <div className="row button_row">
+                                                                            <div className="input-field col">
+
+                                                                            </div>
+                                                                            <div className="input-field col">
+
+                                                                            </div>
+                                                                            <div className="input-field col">
+
+                                                                            </div>
+                                                                            <div className="input-field col">
+                                                                                <button
+                                                                                    className="pull-right"
+                                                                                    type="submit"
+                                                                                    onClick={this.set_user}
+                                                                                >
+                                                                                    <span>
+                                                                                        <span>
+                                                                                            <span data-attr-span='Modifier.'>
+                                                                                                Modifier.
+                                                                                            </span>
+                                                                                        </span>
+                                                                                    </span>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </li>
-                                                <li className="forms__item">
-                                                    <div className="card">
-                                                        <div className="card__content">
-                                                            <div className="_accoutns_pane _pane">
-                                                                <div className="_accounts_content _content">
-                                                                    <div className="_accounts_head">
-                                                                        <h4>Accounts.</h4>
-                                                                    </div>
-                                                                    <div className="_accounts_data data_container">
-                                                                        <table className="accounts_list table table-striped">
-                                                                            <thead>
-                                                                                <tr className="accounts_list_header">
-                                                                                    <th>Username</th>
-                                                                                    <th>Email</th>
-                                                                                    <th>Fingerprint</th>
-                                                                                    <th>Created At</th>
-                                                                                    <th>Roles</th>
-                                                                                    <th>Verified</th>
-                                                                                    <th className="_empty"></th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                {
-                                                                                    /* _.orderBy(_users, ['createdAt'], ['desc']).map((_u, index) => {
-                                                                                        return (
-                                                                                            <>
-                                                                                                <tr className="spacer"></tr>
-                                                                                                <tr key={index} className={`user_card user_anchor ${_u._id === _user._id ? 'active' : ''}`}>
-                                                                                                    <td data-th="Username">{_u.username}</td>
-                                                                                                    <td data-th="Email">{_u.email}</td>
-                                                                                                    <td data-th="Fingerprint">{_u.fingerprint}</td>
-                                                                                                    <td data-th="Created">{moment(_u.createdAt).format('dddd, MMM Do YYYY')}</td>
-                                                                                                    <td data-th="Roles">{_.isEmpty(_u.roles) ? 'Reader' : _.map(_u.roles, (r) => { return <p key={r}>{r}</p>; })}</td>
-                                                                                                    <td data-th="Verified">{_u.isVerified ? 'Verified' : 'Not Verified'}</td>
-                                                                                                    <td className="dropdown">
-                                                                                                        <span className="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                                            <i className="fas fa-ellipsis-h"></i>
-                                                                                                        </span>
-                                                                                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                                                            {(() => {
-                                                                                                                if (_.includes(_user.roles, 'admin')) {
-                                                                                                                    return (
-                                                                                                                        <a className="dropdown-item" href="# " data-toggle="modal" data-target="#_user_modal" onClick={() => this.handleEditUser(_u)}><i className="fas fa-edit"></i></a>
-                                                                                                                    )
-                                                                                                                }
-                                                                                                            })()}
-                                                                                                            <a className="dropdown-item" href="# " onClick={() => this.handleDeleteUser(_u)}><i className="far fa-trash-alt"></i></a>
-                                                                                                        </div>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            </>
-                                                                                        )
-                                                                                    }) */
-                                                                                }
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
+                            <div className="_edit_modal modal fade" id="_edit_modal" tabIndex="-1" role="dialog" aria-labelledby="_edit_modalLabel" aria-hidden="true">
+                                <div className="modal-dialog" role="document">
+                                    <div className="modal-content">
+                                        <div className="modal-body">
+                                            <a href="# " title="Close" className="modal-close" data-dismiss="modal">Close</a>
+                                            <h5 className="modal-title" id="edit_modalLabel">Hey!</h5>
+                                            <div className="modal-body">{modal_msg}</div>
+                                            <div><small>Thanks {_user._user_username}</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="_vehicules_modal modal fade" id="_vehicule_modal" tabIndex="-1" role="dialog" aria-labelledby="_vehicule_modalLabel" aria-hidden="true">
                                 <div className="modal-dialog" role="document">
                                     <div className="modal-content">
@@ -1071,7 +3784,7 @@ class Dashboard extends React.Component {
                                                                 type="text"
                                                                 name="_vehicule_volumereservoir"
                                                                 value={_vehicule_volumereservoir}
-                                                                onChange={this.handleChangeOnlyNumbers}
+                                                                onChange={this.handleChange}
                                                             />
                                                             <label htmlFor='_vehicule_volumereservoir' className={_vehicule_volumereservoir ? 'active' : ''}>Volume de reservoir (litres)</label>
                                                             <div className="form-group-line"></div>
@@ -1085,7 +3798,7 @@ class Dashboard extends React.Component {
                                                                 type="text"
                                                                 name="_vehicule_poidsavide"
                                                                 value={_vehicule_poidsavide}
-                                                                onChange={this.handleChangeOnlyNumbers}
+                                                                onChange={this.handleChange}
                                                             />
                                                             <label htmlFor='_vehicule_poidsavide' className={_vehicule_poidsavide ? 'active' : ''}>Poids à vide (kg)</label>
                                                             <div className="form-group-line"></div>
@@ -1097,7 +3810,7 @@ class Dashboard extends React.Component {
                                                                 type="text"
                                                                 name="_vehicule_kmparvidange"
                                                                 value={_vehicule_kmparvidange}
-                                                                onChange={this.handleChangeOnlyNumbers}
+                                                                onChange={this.handleChange}
                                                             />
                                                             <label htmlFor='_vehicule_kmparvidange' className={_vehicule_kmparvidange ? 'active' : ''}>Km par vidange</label>
                                                             <div className="form-group-line"></div>
@@ -1129,7 +3842,7 @@ class Dashboard extends React.Component {
                                                                 type="text"
                                                                 name="_vehicule_categorie_nombrepassagers"
                                                                 value={_vehicule_categorie._vehicule_categorie_nombrepassagers}
-                                                                onChange={(event) => this.handleChangeNestedOnlyNumbers('_vehicule_categorie', '_vehicule_categorie_nombrepassagers', event.target.value)}
+                                                                onChange={(event) => this.handleChangeNested('_vehicule_categorie', '_vehicule_categorie_nombrepassagers', event.target.value)}
                                                             />
                                                             <label htmlFor='_vehicule_categorie_nombrepassagers' className={_vehicule_categorie._vehicule_categorie_nombrepassagers ? 'active' : ''}>Nombre de passagers</label>
                                                             <div className="form-group-line"></div>
@@ -1143,7 +3856,7 @@ class Dashboard extends React.Component {
                                                                 type="text"
                                                                 name="_vehicule_categorie_bagage"
                                                                 value={_vehicule_categorie._vehicule_categorie_bagage}
-                                                                onChange={(event) => this.handleChangeNestedOnlyNumbers('_vehicule_categorie', '_vehicule_categorie_bagage', event.target.value)}
+                                                                onChange={(event) => this.handleChangeNested('_vehicule_categorie', '_vehicule_categorie_bagage', event.target.value)}
                                                             />
                                                             <label htmlFor='_vehicule_categorie_bagage' className={_vehicule_categorie._vehicule_categorie_bagage ? 'active' : ''}>Bagage (litres)</label>
                                                             <div className="form-group-line"></div>
@@ -1175,7 +3888,7 @@ class Dashboard extends React.Component {
                                                                 type="text"
                                                                 name="_vehicule_consommation_ville"
                                                                 value={_vehicule_consommation._vehicule_consommation_ville}
-                                                                onChange={(event) => this.handleChangeNestedOnlyNumbers('_vehicule_consommation', '_vehicule_consommation_ville', event.target.value)}
+                                                                onChange={(event) => this.handleChangeNested('_vehicule_consommation', '_vehicule_consommation_ville', event.target.value)}
                                                             />
                                                             <label htmlFor='_vehicule_consommation_ville' className={_vehicule_consommation._vehicule_consommation_ville ? 'active' : ''}>Consommation ville (/100 km)</label>
                                                             <div className="form-group-line"></div>
@@ -1187,7 +3900,7 @@ class Dashboard extends React.Component {
                                                                 type="text"
                                                                 name="_vehicule_consommation_route"
                                                                 value={_vehicule_consommation._vehicule_consommation_route}
-                                                                onChange={(event) => this.handleChangeNestedOnlyNumbers('_vehicule_consommation', '_vehicule_consommation_route', event.target.value)}
+                                                                onChange={(event) => this.handleChangeNested('_vehicule_consommation', '_vehicule_consommation_route', event.target.value)}
                                                             />
                                                             <label htmlFor='_vehicule_consommation_route' className={_vehicule_consommation._vehicule_consommation_route ? 'active' : ''}>Consommation route (/100 km)</label>
                                                             <div className="form-group-line"></div>
@@ -1199,7 +3912,7 @@ class Dashboard extends React.Component {
                                                                 type="text"
                                                                 name="_vehicule_consommation_mixte"
                                                                 value={_vehicule_consommation._vehicule_consommation_mixte}
-                                                                onChange={(event) => this.handleChangeNestedOnlyNumbers('_vehicule_consommation', '_vehicule_consommation_mixte', event.target.value)}
+                                                                onChange={(event) => this.handleChangeNested('_vehicule_consommation', '_vehicule_consommation_mixte', event.target.value)}
                                                             />
                                                             <label htmlFor='_vehicule_consommation_mixte' className={_vehicule_consommation._vehicule_consommation_mixte ? 'active' : ''}>Consommation mixte (/100 km)</label>
                                                             <div className="form-group-line"></div>
@@ -1495,7 +4208,7 @@ class Dashboard extends React.Component {
                                                                 type="text"
                                                                 name="_vehicule_vignette_montant"
                                                                 value={_vehicule_vignette._vehicule_vignette_montant}
-                                                                onChange={(event) => this.handleChangeNestedOnlyNumbers('_vehicule_vignette', '_vehicule_vignette_montant', event.target.value)}
+                                                                onChange={(event) => this.handleChangeNested('_vehicule_vignette', '_vehicule_vignette_montant', event.target.value)}
                                                             />
                                                             <label htmlFor='_vehicule_vignette_montant' className={_vehicule_vignette._vehicule_vignette_montant ? 'active' : ''}>Montant</label>
                                                             <div className="form-group-line"></div>
@@ -1507,7 +4220,7 @@ class Dashboard extends React.Component {
                                                                 type="text"
                                                                 name="_vehicule_vignette_penalite"
                                                                 value={_vehicule_vignette._vehicule_vignette_penalite}
-                                                                onChange={(event) => this.handleChangeNestedOnlyNumbers('_vehicule_vignette', '_vehicule_vignette_penalite', event.target.value)}
+                                                                onChange={(event) => this.handleChangeNested('_vehicule_vignette', '_vehicule_vignette_penalite', event.target.value)}
                                                             />
                                                             <label htmlFor='_vehicule_vignette_penalite' className={_vehicule_vignette._vehicule_vignette_penalite ? 'active' : ''}>Penalite</label>
                                                             <div className="form-group-line"></div>
@@ -1533,7 +4246,7 @@ class Dashboard extends React.Component {
                                                                 type="text"
                                                                 name="_vehicule_vignette_tsava"
                                                                 value={_vehicule_vignette._vehicule_vignette_tsava}
-                                                                onChange={(event) => this.handleChangeNestedOnlyNumbers('_vehicule_vignette', '_vehicule_vignette_tsava', event.target.value)}
+                                                                onChange={(event) => this.handleChangeNested('_vehicule_vignette', '_vehicule_vignette_tsava', event.target.value)}
                                                             />
                                                             <label htmlFor='_vehicule_vignette_tsava' className={_vehicule_vignette._vehicule_vignette_tsava ? 'active' : ''}>TSAVA</label>
                                                             <div className="form-group-line"></div>
@@ -1755,18 +4468,147 @@ class Dashboard extends React.Component {
 const mapStateToProps = state => ({
     userToEdit: state.home.userToEdit,
 
-    _vehiculeToEdit: state.home._vehiculeToEdit,
+    _agences: state.home._agences,
+    _bons: state.home._bons,
+    _clients: state.home._clients,
+    _deviss: state.home._deviss,
+    _employes: state.home._employes,
+    _factures: state.home._factures,
+    _fournisseurs: state.home._fournisseurs,
+    _passagers: state.home._passagers,
+    _permissions: state.home._permissions,
+    _postes: state.home._postes,
+    _produits: state.home._produits,
+    _reservations: state.home._reservations,
+    _revueDePerformances: state.home._revueDePerformances,
+    _societes: state.home._societes,
+    _stocks: state.home._stocks,
     _vehicules: state.home._vehicules,
+    _voyages: state.home._voyages,
+
+    _agenceToEdit: state.home._agenceToEdit,
+    _bonToEdit: state.home._bonToEdit,
+    _clientToEdit: state.home._clientToEdit,
+    _devisToEdit: state.home._devisToEdit,
+    _employeToEdit: state.home._employeToEdit,
+    _factureToEdit: state.home._factureToEdit,
+    _fournisseurToEdit: state.home._fournisseurToEdit,
+    _passagerToEdit: state.home._passagerToEdit,
+    _permissionToEdit: state.home._permissionToEdit,
+    _posteToEdit: state.home._posteToEdit,
+    _produitToEdit: state.home._produitToEdit,
+    _reservationToEdit: state.home._reservationToEdit,
+    _revueDePerformanceToEdit: state.home._revueDePerformanceToEdit,
+    _societeToEdit: state.home._societeToEdit,
+    _stockToEdit: state.home._stockToEdit,
+    _vehiculeToEdit: state.home._vehiculeToEdit,
+    _voyageToEdit: state.home._voyageToEdit
 });
 
 const mapDispatchToProps = dispatch => ({
     setEditUser: user => dispatch({ type: 'SET_EDIT_USER', user }),
+
+    onSubmitAgence: data => dispatch({ type: 'SUBMIT_AGENCE', data }),
+    onEditAgence: data => dispatch({ type: 'EDIT_AGENCE', data }),
+    onLoadAgence: data => dispatch({ type: 'AGENCE_PAGE_LOADED', data }),
+    onDeleteAgence: id => dispatch({ type: 'DELETE_AGENCE', id }),
+    setEditAgence: _agence => dispatch({ type: 'SET_EDIT_AGENCE', _agence }),
+
+    onSubmitBon: data => dispatch({ type: 'SUBMIT_BON', data }),
+    onEditBon: data => dispatch({ type: 'EDIT_BON', data }),
+    onLoadBon: data => dispatch({ type: 'BON_PAGE_LOADED', data }),
+    onDeleteBon: id => dispatch({ type: 'DELETE_BON', id }),
+    setEditBon: _bon => dispatch({ type: 'SET_EDIT_BON', _bon }),
+
+    onSubmitClient: data => dispatch({ type: 'SUBMIT_CLIENT', data }),
+    onEditClient: data => dispatch({ type: 'EDIT_CLIENT', data }),
+    onLoadClient: data => dispatch({ type: 'CLIENT_PAGE_LOADED', data }),
+    onDeleteClient: id => dispatch({ type: 'DELETE_CLIENT', id }),
+    setEditClient: _client => dispatch({ type: 'SET_EDIT_CLIENT', _client }),
+
+    onSubmitDevis: data => dispatch({ type: 'SUBMIT_DEVIS', data }),
+    onEditDevis: data => dispatch({ type: 'EDIT_DEVIS', data }),
+    onLoadDevis: data => dispatch({ type: 'DEVIS_PAGE_LOADED', data }),
+    onDeleteDevis: id => dispatch({ type: 'DELETE_DEVIS', id }),
+    setEditDevis: _devis => dispatch({ type: 'SET_EDIT_DEVIS', _devis }),
+
+    onSubmitEmploye: data => dispatch({ type: 'SUBMIT_EMPLOYE', data }),
+    onEditEmploye: data => dispatch({ type: 'EDIT_EMPLOYE', data }),
+    onLoadEmploye: data => dispatch({ type: 'EMPLOYE_PAGE_LOADED', data }),
+    onDeleteEmploye: id => dispatch({ type: 'DELETE_EMPLOYE', id }),
+    setEditEmploye: _employe => dispatch({ type: 'SET_EDIT_EMPLOYE', _employe }),
+
+    onSubmitFacture: data => dispatch({ type: 'SUBMIT_FACTURE', data }),
+    onEditFacture: data => dispatch({ type: 'EDIT_FACTURE', data }),
+    onLoadFacture: data => dispatch({ type: 'FACTURE_PAGE_LOADED', data }),
+    onDeleteFacture: id => dispatch({ type: 'DELETE_FACTURE', id }),
+    setEditFacture: _facture => dispatch({ type: 'SET_EDIT_FACTURE', _facture }),
+
+    onSubmitFournisseur: data => dispatch({ type: 'SUBMIT_FOURNISSEUR', data }),
+    onEditFournisseur: data => dispatch({ type: 'EDIT_FOURNISSEUR', data }),
+    onLoadFournisseur: data => dispatch({ type: 'FOURNISSEUR_PAGE_LOADED', data }),
+    onDeleteFournisseur: id => dispatch({ type: 'DELETE_FOURNISSEUR', id }),
+    setEditFournisseur: _fournisseur => dispatch({ type: 'SET_EDIT_FOURNISSEUR', _fournisseur }),
+
+    onSubmitPassager: data => dispatch({ type: 'SUBMIT_PASSAGER', data }),
+    onEditPassager: data => dispatch({ type: 'EDIT_PASSAGER', data }),
+    onLoadPassager: data => dispatch({ type: 'PASSAGER_PAGE_LOADED', data }),
+    onDeletePassager: id => dispatch({ type: 'DELETE_PASSAGER', id }),
+    setEditPassager: _passager => dispatch({ type: 'SET_EDIT_PASSAGER', _passager }),
+
+    onSubmitPermission: data => dispatch({ type: 'SUBMIT_PERMISSION', data }),
+    onEditPermission: data => dispatch({ type: 'EDIT_PERMISSION', data }),
+    onLoadPermission: data => dispatch({ type: 'PERMISSION_PAGE_LOADED', data }),
+    onDeletePermission: id => dispatch({ type: 'DELETE_PERMISSION', id }),
+    setEditPermission: _permission => dispatch({ type: 'SET_EDIT_PERMISSION', _permission }),
+
+    onSubmitPoste: data => dispatch({ type: 'SUBMIT_POSTE', data }),
+    onEditPoste: data => dispatch({ type: 'EDIT_POSTE', data }),
+    onLoadPoste: data => dispatch({ type: 'POSTE_PAGE_LOADED', data }),
+    onDeletePoste: id => dispatch({ type: 'DELETE_POSTE', id }),
+    setEditPoste: _poste => dispatch({ type: 'SET_EDIT_POSTE', _poste }),
+
+    onSubmitProduit: data => dispatch({ type: 'SUBMIT_PRODUIT', data }),
+    onEditProduit: data => dispatch({ type: 'EDIT_PRODUIT', data }),
+    onLoadProduit: data => dispatch({ type: 'PRODUIT_PAGE_LOADED', data }),
+    onDeleteProduit: id => dispatch({ type: 'DELETE_PRODUIT', id }),
+    setEditProduit: _produit => dispatch({ type: 'SET_EDIT_PRODUIT', _produit }),
+
+    onSubmitReservation: data => dispatch({ type: 'SUBMIT_RESERVATION', data }),
+    onEditReservation: data => dispatch({ type: 'EDIT_RESERVATION', data }),
+    onLoadReservation: data => dispatch({ type: 'RESERVATION_PAGE_LOADED', data }),
+    onDeleteReservation: id => dispatch({ type: 'DELETE_RESERVATION', id }),
+    setEditReservation: _reservation => dispatch({ type: 'SET_EDIT_RESERVATION', _reservation }),
+
+    onSubmitRevueDePerformance: data => dispatch({ type: 'SUBMIT_REVUEDEPERFORMANCE', data }),
+    onEditRevueDePerformance: data => dispatch({ type: 'EDIT_REVUEDEPERFORMANCE', data }),
+    onLoadRevueDePerformance: data => dispatch({ type: 'REVUEDEPERFORMANCE_PAGE_LOADED', data }),
+    onDeleteRevueDePerformance: id => dispatch({ type: 'DELETE_REVUEDEPERFORMANCE', id }),
+    setEditRevueDePerformance: _revueDePerformance => dispatch({ type: 'SET_EDIT_REVUEDEPERFORMANCE', _revueDePerformance }),
+
+    onSubmitSociete: data => dispatch({ type: 'SUBMIT_SOCIETE', data }),
+    onEditSociete: data => dispatch({ type: 'EDIT_SOCIETE', data }),
+    onLoadSociete: data => dispatch({ type: 'SOCIETE_PAGE_LOADED', data }),
+    onDeleteSociete: id => dispatch({ type: 'DELETE_SOCIETE', id }),
+    setEditSociete: _societe => dispatch({ type: 'SET_EDIT_SOCIETE', _societe }),
+
+    onSubmitStock: data => dispatch({ type: 'SUBMIT_STOCK', data }),
+    onEditStock: data => dispatch({ type: 'EDIT_STOCK', data }),
+    onLoadStock: data => dispatch({ type: 'STOCK_PAGE_LOADED', data }),
+    onDeleteStock: id => dispatch({ type: 'DELETE_STOCK', id }),
+    setEditStock: _stock => dispatch({ type: 'SET_EDIT_STOCK', _stock }),
 
     onSubmitVehicule: data => dispatch({ type: 'SUBMIT_VEHICULE', data }),
     onEditVehicule: data => dispatch({ type: 'EDIT_VEHICULE', data }),
     onLoadVehicule: data => dispatch({ type: 'VEHICULE_PAGE_LOADED', data }),
     onDeleteVehicule: id => dispatch({ type: 'DELETE_VEHICULE', id }),
     setEditVehicule: _vehicule => dispatch({ type: 'SET_EDIT_VEHICULE', _vehicule }),
+
+    onSubmitVoyage: data => dispatch({ type: 'SUBMIT_VOYAGE', data }),
+    onEditVoyage: data => dispatch({ type: 'EDIT_VOYAGE', data }),
+    onLoadVoyage: data => dispatch({ type: 'VOYAGE_PAGE_LOADED', data }),
+    onDeleteVoyage: id => dispatch({ type: 'DELETE_VOYAGE', id }),
+    setEditVoyage: _voyage => dispatch({ type: 'SET_EDIT_VOYAGE', _voyage })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

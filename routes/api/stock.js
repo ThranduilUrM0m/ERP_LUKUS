@@ -8,7 +8,7 @@ router.post('/', (req, res, next) => {
 	if (!body.Produit) {
 		return res.status(422).json({
 			errors: {
-				Produitj: 'is required',
+				Produit: 'is required',
 			},
 		});
 	}
