@@ -81,8 +81,11 @@ class Dashboard extends React.Component {
             },
             _users: [],
 
-            _user_email_valid: true,
+            _client_email_valid: true,
+            _fournisseur_email_valid: true,
+            _passager_email_valid: true,
             _societe_email_valid: true,
+            _user_email_valid: true,
 
             _search_value_vehicules: '',
             _search_value_parametres: '',
@@ -153,7 +156,7 @@ class Dashboard extends React.Component {
             _fournisseur_prenomcontact: '',
             _fournisseur_nomcontact: '',
             _fournisseur_raison: '',
-            _fournisseur_adresse: '',
+            _fournisseur_siege: '',
             _fournisseur_telephone: '',
             _fournisseur_email: '',
             _fournisseur_ville: '',
@@ -412,6 +415,17 @@ class Dashboard extends React.Component {
         axios('/api/agence')
             .then((response) => {
                 onLoadAgence(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .agences_slider_wrapper_cards_item", () => {
+                    this._handleDrag('agences_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -420,6 +434,17 @@ class Dashboard extends React.Component {
         axios('/api/bon')
             .then((response) => {
                 onLoadBon(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .bons_slider_wrapper_cards_item", () => {
+                    this._handleDrag('bons_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -428,6 +453,17 @@ class Dashboard extends React.Component {
         axios('/api/client')
             .then((response) => {
                 onLoadClient(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .clients_slider_wrapper_cards_item", () => {
+                    this._handleDrag('clients_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -455,6 +491,17 @@ class Dashboard extends React.Component {
         axios('/api/employe')
             .then((response) => {
                 onLoadEmploye(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .employes_slider_wrapper_cards_item", () => {
+                    this._handleDrag('employes_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -482,6 +529,17 @@ class Dashboard extends React.Component {
         axios('/api/fournisseur')
             .then((response) => {
                 onLoadFournisseur(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .fournisseurs_slider_wrapper_cards_item", () => {
+                    this._handleDrag('fournisseurs_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -490,6 +548,17 @@ class Dashboard extends React.Component {
         axios('/api/passager')
             .then((response) => {
                 onLoadPassager(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .passagers_slider_wrapper_cards_item", () => {
+                    this._handleDrag('passagers_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -498,6 +567,17 @@ class Dashboard extends React.Component {
         axios('/api/permission')
             .then((response) => {
                 onLoadPermission(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .permissions_slider_wrapper_cards_item", () => {
+                    this._handleDrag('permissions_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -506,6 +586,17 @@ class Dashboard extends React.Component {
         axios('/api/poste')
             .then((response) => {
                 onLoadPoste(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .postes_slider_wrapper_cards_item", () => {
+                    this._handleDrag('postes_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -514,6 +605,17 @@ class Dashboard extends React.Component {
         axios('/api/produit')
             .then((response) => {
                 onLoadProduit(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .produits_slider_wrapper_cards_item", () => {
+                    this._handleDrag('produits_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -522,6 +624,17 @@ class Dashboard extends React.Component {
         axios('/api/reservation')
             .then((response) => {
                 onLoadReservation(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .reservations_slider_wrapper_cards_item", () => {
+                    this._handleDrag('reservation_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -530,6 +643,17 @@ class Dashboard extends React.Component {
         axios('/api/revueDePerformance')
             .then((response) => {
                 onLoadRevueDePerformance(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .revueDePerformances_slider_wrapper_cards_item", () => {
+                    this._handleDrag('revueDePerformances_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -538,6 +662,17 @@ class Dashboard extends React.Component {
         axios('/api/societe')
             .then((response) => {
                 onLoadSociete(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .societes_slider_wrapper_cards_item", () => {
+                    this._handleDrag('societes_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -546,6 +681,17 @@ class Dashboard extends React.Component {
         axios('/api/stock')
             .then((response) => {
                 onLoadStock(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .stocks_slider_wrapper_cards_item", () => {
+                    this._handleDrag('stocks_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -554,6 +700,17 @@ class Dashboard extends React.Component {
         axios('/api/vehicule')
             .then((response) => {
                 onLoadVehicule(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .vehicules_slider_wrapper_cards_item", () => {
+                    this._handleDrag('vehicules_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -562,6 +719,17 @@ class Dashboard extends React.Component {
         axios('/api/voyage')
             .then((response) => {
                 onLoadVoyage(response.data);
+                function runAfterElementExists(jquery_selector, callback) {
+                    var checker = window.setInterval(function () {
+                        if ($(jquery_selector).length) {
+                            clearInterval(checker);
+                            callback();
+                        }
+                    }, 200);
+                }
+                runAfterElementExists(".first_section_dashboard .voyages_slider_wrapper_cards_item", () => {
+                    this._handleDrag('voyages_slider_wrapper');
+                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -691,7 +859,7 @@ class Dashboard extends React.Component {
                 _fournisseur_prenomcontact: nextProps._fournisseurToEdit._fournisseur_prenomcontact,
                 _fournisseur_nomcontact: nextProps._fournisseurToEdit._fournisseur_nomcontact,
                 _fournisseur_raison: nextProps._fournisseurToEdit._fournisseur_raison,
-                _fournisseur_adresse: nextProps._fournisseurToEdit._fournisseur_adresse,
+                _fournisseur_siege: nextProps._fournisseurToEdit._fournisseur_siege,
                 _fournisseur_telephone: nextProps._fournisseurToEdit._fournisseur_telephone,
                 _fournisseur_email: nextProps._fournisseurToEdit._fournisseur_email,
                 _fournisseur_ville: nextProps._fournisseurToEdit._fournisseur_ville,
@@ -759,6 +927,7 @@ class Dashboard extends React.Component {
 
         if (nextProps._societeToEdit) {
             this.setState({
+                Societe: nextProps._societeToEdit,
                 _societe_raison: nextProps._societeToEdit._societe_raison,
                 _societe_siege: nextProps._societeToEdit._societe_siege,
                 _societe_numeroTP: nextProps._societeToEdit._societe_numeroTP,
@@ -926,7 +1095,9 @@ class Dashboard extends React.Component {
         const {
             _agence_adresse,
             _agence_ville,
-            _agence_pays
+            _agence_pays,
+            Societe,
+            Agence
         } = this.state;
 
         if (!_agenceToEdit) {
@@ -937,13 +1108,28 @@ class Dashboard extends React.Component {
             })
                 .then((res) => {
                     onSubmitAgence(res.data);
+                    this.handleEditSociete(Societe);
+
+                    if (Agence)
+                        this.setState({
+                            Agence: [...Agence, res.data._agence]
+                        }, () => {
+                            this.handleSubmitSociete();
+                        });
+                    else
+                        this.setState({
+                            Agence: [res.data._agence]
+                        }, () => {
+                            this.handleSubmitSociete();
+                        });
                 })
                 .then(() => {
                     this.setState(
                         {
                             _agence_adresse: '',
                             _agence_ville: '',
-                            _agence_pays: ''
+                            _agence_pays: '',
+                            Societe: null
                         }
                     )
                 });
@@ -955,12 +1141,27 @@ class Dashboard extends React.Component {
             })
                 .then((res) => {
                     onEditAgence(res.data);
+                    this.handleEditSociete(Societe);
+
+                    if (Agence)
+                        this.setState({
+                            Agence: [...Agence, res.data._agence]
+                        }, () => {
+                            this.handleSubmitSociete();
+                        });
+                    else
+                        this.setState({
+                            Agence: [res.data._agence]
+                        }, () => {
+                            this.handleSubmitSociete();
+                        });
                 })
                 .then(() => {
                     this.setState({
                         _agence_adresse: '',
                         _agence_ville: '',
-                        _agence_pays: ''
+                        _agence_pays: '',
+                        Societe: null
                     })
                 });
         }
@@ -1513,7 +1714,7 @@ class Dashboard extends React.Component {
             _fournisseur_prenomcontact,
             _fournisseur_nomcontact,
             _fournisseur_raison,
-            _fournisseur_adresse,
+            _fournisseur_siege,
             _fournisseur_telephone,
             _fournisseur_email,
             _fournisseur_ville,
@@ -1529,7 +1730,7 @@ class Dashboard extends React.Component {
                 _fournisseur_prenomcontact,
                 _fournisseur_nomcontact,
                 _fournisseur_raison,
-                _fournisseur_adresse,
+                _fournisseur_siege,
                 _fournisseur_telephone,
                 _fournisseur_email,
                 _fournisseur_ville,
@@ -1548,7 +1749,7 @@ class Dashboard extends React.Component {
                             _fournisseur_prenomcontact: '',
                             _fournisseur_nomcontact: '',
                             _fournisseur_raison: '',
-                            _fournisseur_adresse: '',
+                            _fournisseur_siege: '',
                             _fournisseur_telephone: '',
                             _fournisseur_email: '',
                             _fournisseur_ville: '',
@@ -1565,7 +1766,7 @@ class Dashboard extends React.Component {
                 _fournisseur_prenomcontact,
                 _fournisseur_nomcontact,
                 _fournisseur_raison,
-                _fournisseur_adresse,
+                _fournisseur_siege,
                 _fournisseur_telephone,
                 _fournisseur_email,
                 _fournisseur_ville,
@@ -1583,7 +1784,7 @@ class Dashboard extends React.Component {
                         _fournisseur_prenomcontact: '',
                         _fournisseur_nomcontact: '',
                         _fournisseur_raison: '',
-                        _fournisseur_adresse: '',
+                        _fournisseur_siege: '',
                         _fournisseur_telephone: '',
                         _fournisseur_email: '',
                         _fournisseur_ville: '',
@@ -2816,7 +3017,7 @@ class Dashboard extends React.Component {
                     [event.target.id]: event.target.value
                 });
         } else {
-            if (['_societe_email'].indexOf(event.target.id) + 1)
+            if (['_client_email', '_fournisseur_email', '_societe_email', '_passager_email'].indexOf(event.target.id) + 1)
                 this.setState({
                     [event.target.id]: event.target.value,
                     _societe_email_valid: validator.isEmail(this.state._societe_email)
@@ -2827,7 +3028,7 @@ class Dashboard extends React.Component {
                 });
         }
     }
-    handleChangePhone(parentObject, value) {
+    handleChangePhoneAutocomplete(parentObject, value) {
         this.setState({
             [parentObject]: value
         });
@@ -3007,8 +3208,11 @@ class Dashboard extends React.Component {
             _user,
             _users,
 
-            _user_email_valid,
+            _client_email_valid,
+            _fournisseur_email_valid,
+            _passager_email_valid,
             _societe_email_valid,
+            _user_email_valid,
 
             _search_value_vehicules,
             _search_value_parametres,
@@ -3068,7 +3272,7 @@ class Dashboard extends React.Component {
             _fournisseur_prenomcontact,
             _fournisseur_nomcontact,
             _fournisseur_raison,
-            _fournisseur_adresse,
+            _fournisseur_siege,
             _fournisseur_telephone,
             _fournisseur_email,
             _fournisseur_ville,
@@ -3314,7 +3518,7 @@ class Dashboard extends React.Component {
                                                                                                                         <i className="fas fa-ellipsis-h"></i>
                                                                                                                     </span>
                                                                                                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_agences">
-                                                                                                                        <a href="# " className="dropdown-item edit" data-toggle="modal" data-target="#_agence_modal" onClick={() => this.handleEditAgence(_agence)}><i className="fas fa-edit"></i></a>
+                                                                                                                        <a href="# " className="dropdown-item edit" data-toggle="modal" data-target="#_agence_modal" onClick={() => { this.handleEditAgence(_agence); this.handleEditSociete(_.find(_societes, (_s) => { return _.find(_s.Agence, { _id: _agence._id }) })); }}><i className="fas fa-edit"></i></a>
                                                                                                                         <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteAgence(_agence._id)}><i className="far fa-trash-alt"></i></a>
                                                                                                                     </div>
                                                                                                                 </div>
@@ -3487,7 +3691,79 @@ class Dashboard extends React.Component {
 
                                 </div>
                                 <div className="fournisseurs_pane tab-pane" id="5a">
+                                    <div className="_fournisseurs_pane">
+                                        <div className="_fournisseurs_header">
 
+                                        </div>
+                                        <div className="_fournisseurs_content">
+                                            <ul className="cards">
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item fournisseurs__item">
+                                                    <div className="card">
+                                                        <div className="card__content">
+                                                            <div className="_fournisseurs_pane _pane">
+                                                                <div className="_fournisseurs_content _content">
+                                                                    <div className="_fournisseurs_head _head">
+                                                                        <h6>Les Fournisseurs</h6>
+                                                                        <button id="_add_fournisseur" type="button" data-toggle="modal" data-target="#_fournisseur_modal">
+                                                                            <span className="icon" aria-hidden="true">
+                                                                                <i className="fas fa-minus"></i>
+                                                                            </span>
+                                                                            <span className="button-text">Ajouter Fournisseur.</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div className="_fournisseurs_data _data">
+                                                                        <div className="fournisseurs_slider_wrapper swiper-container">
+                                                                            <div className="fournisseurs_slider_wrapper_cards swiper-wrapper">
+                                                                                {
+                                                                                    _fournisseurs.map((_fournisseur, index) => {
+                                                                                        return (
+                                                                                            <div className="fournisseurs_slider_wrapper_cards_item swiper-slide" id="fournisseurs_slider_wrapper_cards_item" key={index}>
+                                                                                                <div className={`fournisseur_item swiper-slide_item`}>
+                                                                                                    <div className={"col card card_fournisseurs card_" + index} data-title={_.snakeCase(_fournisseur._fournisseur_raison)} data-index={_.add(index, 1)}>
+                                                                                                        <div className="card-body">
+                                                                                                            <div className="_heads_up">
+                                                                                                                <div className="dropdown">
+                                                                                                                    <span className="dropdown-toggle" id="dropdownMenuButton_fournisseurs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                                        <i className="fas fa-ellipsis-h"></i>
+                                                                                                                    </span>
+                                                                                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_fournisseurs">
+                                                                                                                        <a href="# " className="dropdown-item edit" data-toggle="modal" data-target="#_fournisseur_modal" onClick={() => this.handleEditFournisseur(_fournisseur)}><i className="fas fa-edit"></i></a>
+                                                                                                                        <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteFournisseur(_fournisseur._id)}><i className="far fa-trash-alt"></i></a>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div className="_fournisseur_body">
+                                                                                                                <h6>{_fournisseur._fournisseur_raison}</h6>
+                                                                                                            </div>
+                                                                                                            <div className="_siege">
+                                                                                                                <p className="text-muted _siege"><b>{_fournisseur._fournisseur_siege}</b><i className="fas fa-map-marker-alt"></i></p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        )
+                                                                                    })
+                                                                                }
+                                                                            </div>
+                                                                            <div className="fournisseurs_slider_scrollbar swiper-scrollbar"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li className="cards__item"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="vehicules_pane tab-pane" id="6a">
                                     <div className="_vehicules_pane">
@@ -3861,7 +4137,7 @@ class Dashboard extends React.Component {
                                                                                     getOptionLabel={(option) => option._poste_titre}
                                                                                     getOptionValue={(option) => option}
                                                                                     onChange={(value) => this.handleChangeUser('Employe', 'Poste', value)}
-                                                                                    onChange={(value) => this.handleChangeUser('Employe', 'Poste', value)}
+                                                                                    onSelect={(value) => this.handleChangeUser('Employe', 'Poste', value)}
                                                                                     options={_postes}
                                                                                     width='100%'
                                                                                 />
@@ -4051,7 +4327,7 @@ class Dashboard extends React.Component {
                                                                 id="_societe_telephone"
                                                                 name="_societe_telephone"
                                                                 value={_societe_telephone}
-                                                                onChange={(value) => this.handleChangePhone("_societe_telephone", value)}
+                                                                onChange={(value) => this.handleChangePhoneAutocomplete("_societe_telephone", value)}
                                                             />
                                                             <label htmlFor='_societe_telephone' className={_societe_telephone ? 'active phone_label' : 'phone_label'}>_societe_telephone</label>
                                                             <div className="form-group-line"></div>
@@ -4062,7 +4338,7 @@ class Dashboard extends React.Component {
                                                                 id="_societe_fax"
                                                                 name="_societe_fax"
                                                                 value={_societe_fax}
-                                                                onChange={(value) => this.handleChangePhone("_societe_fax", value)}
+                                                                onChange={(value) => this.handleChangePhoneAutocomplete("_societe_fax", value)}
                                                             />
                                                             <label htmlFor='_societe_fax' className={_societe_fax ? 'active phone_label' : 'phone_label'}>_societe_fax</label>
                                                             <div className="form-group-line"></div>
@@ -4192,6 +4468,26 @@ class Dashboard extends React.Component {
                                                                 onChange={this.handleChange}
                                                             />
                                                             <label htmlFor='_agence_adresse' className={_agence_adresse ? 'active' : ''}>_agence_adresse</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <Select
+                                                                id="Societe"
+                                                                className="validate form-group-input Societe"
+                                                                classNamePrefix="select"
+                                                                defaultValue={Societe}
+                                                                isClearable="true"
+                                                                isSearchable="true"
+                                                                name="Societe"
+                                                                value={Societe}
+                                                                getOptionLabel={(option) => option._societe_raison}
+                                                                getOptionValue={(option) => option}
+                                                                onChange={(value) => this.handleChangePhoneAutocomplete('Societe', value)}
+                                                                onSelect={(value) => this.handleChangePhoneAutocomplete('Societe', value)}
+                                                                options={_societes}
+                                                                width='100%'
+                                                            />
+                                                            <label htmlFor='Societe' className={Societe ? 'active' : ''}>Societe</label>
                                                             <div className="form-group-line"></div>
                                                         </div>
                                                     </div>
@@ -4500,7 +4796,6 @@ class Dashboard extends React.Component {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="_deviss_modal modal fade" id="_devis_modal" tabIndex="-1" role="dialog" aria-labelledby="_devis_modalLabel" aria-hidden="true">
                                 <div className="modal-dialog" role="document">
                                     <div className="modal-content">
@@ -4695,6 +4990,451 @@ class Dashboard extends React.Component {
                                     </div>
                                 </div>
                             </div>
+                            <div className="_fournisseurs_modal modal fade" id="_fournisseur_modal" tabIndex="-1" role="dialog" aria-labelledby="_fournisseur_modalLabel" aria-hidden="true">
+                                <div className="modal-dialog" role="document">
+                                    <div className="modal-content">
+                                        <div className="modal-body">
+                                            <a href="# " title="Close" className="modal-close" data-dismiss="modal">Close</a>
+                                            <div className="mail_form card">
+                                                <div className="fieldset fournisseurs_fieldset">
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _fournisseur_raison"
+                                                                id="_fournisseur_raison"
+                                                                type="text"
+                                                                name="_fournisseur_raison"
+                                                                value={_fournisseur_raison}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_fournisseur_raison' className={_fournisseur_raison ? 'active' : ''}>_fournisseur_raison</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _fournisseur_siege"
+                                                                id="_fournisseur_siege"
+                                                                type="text"
+                                                                name="_fournisseur_siege"
+                                                                value={_fournisseur_siege}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_fournisseur_siege' className={_fournisseur_siege ? 'active' : ''}>_fournisseur_siege</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6 _autocomplete">
+                                                            <Autocomplete
+                                                                items={["Afghanistan",
+                                                                    "Albania",
+                                                                    "Algeria",
+                                                                    "American Samoa",
+                                                                    "Andorra",
+                                                                    "Angola",
+                                                                    "Anguilla",
+                                                                    "Antarctica",
+                                                                    "Antigua and Barbuda",
+                                                                    "Argentina",
+                                                                    "Armenia",
+                                                                    "Aruba",
+                                                                    "Australia",
+                                                                    "Austria",
+                                                                    "Azerbaijan",
+                                                                    "Bahamas (the)",
+                                                                    "Bahrain",
+                                                                    "Bangladesh",
+                                                                    "Barbados",
+                                                                    "Belarus",
+                                                                    "Belgium",
+                                                                    "Belize",
+                                                                    "Benin",
+                                                                    "Bermuda",
+                                                                    "Bhutan",
+                                                                    "Bolivia (Plurinational State of)",
+                                                                    "Bonaire, Sint Eustatius and Saba",
+                                                                    "Bosnia and Herzegovina",
+                                                                    "Botswana",
+                                                                    "Bouvet Island",
+                                                                    "Brazil",
+                                                                    "British Indian Ocean Territory (the)",
+                                                                    "Brunei Darussalam",
+                                                                    "Bulgaria",
+                                                                    "Burkina Faso",
+                                                                    "Burundi",
+                                                                    "Cabo Verde",
+                                                                    "Cambodia",
+                                                                    "Cameroon",
+                                                                    "Canada",
+                                                                    "Cayman Islands (the)",
+                                                                    "Central African Republic (the)",
+                                                                    "Chad",
+                                                                    "Chile",
+                                                                    "China",
+                                                                    "Christmas Island",
+                                                                    "Cocos (Keeling) Islands (the)",
+                                                                    "Colombia",
+                                                                    "Comoros (the)",
+                                                                    "Congo (the Democratic Republic of the)",
+                                                                    "Congo (the)",
+                                                                    "Cook Islands (the)",
+                                                                    "Costa Rica",
+                                                                    "Croatia",
+                                                                    "Cuba",
+                                                                    "Curaçao",
+                                                                    "Cyprus",
+                                                                    "Czechia",
+                                                                    "Côte d'Ivoire",
+                                                                    "Denmark",
+                                                                    "Djibouti",
+                                                                    "Dominica",
+                                                                    "Dominican Republic (the)",
+                                                                    "Ecuador",
+                                                                    "Egypt",
+                                                                    "El Salvador",
+                                                                    "Equatorial Guinea",
+                                                                    "Eritrea",
+                                                                    "Estonia",
+                                                                    "Eswatini",
+                                                                    "Ethiopia",
+                                                                    "Falkland Islands (the) [Malvinas]",
+                                                                    "Faroe Islands (the)",
+                                                                    "Fiji",
+                                                                    "Finland",
+                                                                    "France",
+                                                                    "French Guiana",
+                                                                    "French Polynesia",
+                                                                    "French Southern Territories (the)",
+                                                                    "Gabon",
+                                                                    "Gambia (the)",
+                                                                    "Georgia",
+                                                                    "Germany",
+                                                                    "Ghana",
+                                                                    "Gibraltar",
+                                                                    "Greece",
+                                                                    "Greenland",
+                                                                    "Grenada",
+                                                                    "Guadeloupe",
+                                                                    "Guam",
+                                                                    "Guatemala",
+                                                                    "Guernsey",
+                                                                    "Guinea",
+                                                                    "Guinea-Bissau",
+                                                                    "Guyana",
+                                                                    "Haiti",
+                                                                    "Heard Island and McDonald Islands",
+                                                                    "Holy See (the)",
+                                                                    "Honduras",
+                                                                    "Hong Kong",
+                                                                    "Hungary",
+                                                                    "Iceland",
+                                                                    "India",
+                                                                    "Indonesia",
+                                                                    "Iran (Islamic Republic of)",
+                                                                    "Iraq",
+                                                                    "Ireland",
+                                                                    "Isle of Man",
+                                                                    "Israel",
+                                                                    "Italy",
+                                                                    "Jamaica",
+                                                                    "Japan",
+                                                                    "Jersey",
+                                                                    "Jordan",
+                                                                    "Kazakhstan",
+                                                                    "Kenya",
+                                                                    "Kiribati",
+                                                                    "Korea (the Democratic People's Republic of)",
+                                                                    "Korea (the Republic of)",
+                                                                    "Kuwait",
+                                                                    "Kyrgyzstan",
+                                                                    "Lao People's Democratic Republic (the)",
+                                                                    "Latvia",
+                                                                    "Lebanon",
+                                                                    "Lesotho",
+                                                                    "Liberia",
+                                                                    "Libya",
+                                                                    "Liechtenstein",
+                                                                    "Lithuania",
+                                                                    "Luxembourg",
+                                                                    "Macao",
+                                                                    "Madagascar",
+                                                                    "Malawi",
+                                                                    "Malaysia",
+                                                                    "Maldives",
+                                                                    "Mali",
+                                                                    "Malta",
+                                                                    "Marshall Islands (the)",
+                                                                    "Martinique",
+                                                                    "Mauritania",
+                                                                    "Mauritius",
+                                                                    "Mayotte",
+                                                                    "Mexico",
+                                                                    "Micronesia (Federated States of)",
+                                                                    "Moldova (the Republic of)",
+                                                                    "Monaco",
+                                                                    "Mongolia",
+                                                                    "Montenegro",
+                                                                    "Montserrat",
+                                                                    "Morocco",
+                                                                    "Mozambique",
+                                                                    "Myanmar",
+                                                                    "Namibia",
+                                                                    "Nauru",
+                                                                    "Nepal",
+                                                                    "Netherlands (the)",
+                                                                    "New Caledonia",
+                                                                    "New Zealand",
+                                                                    "Nicaragua",
+                                                                    "Niger (the)",
+                                                                    "Nigeria",
+                                                                    "Niue",
+                                                                    "Norfolk Island",
+                                                                    "Northern Mariana Islands (the)",
+                                                                    "Norway",
+                                                                    "Oman",
+                                                                    "Pakistan",
+                                                                    "Palau",
+                                                                    "Palestine, State of",
+                                                                    "Panama",
+                                                                    "Papua New Guinea",
+                                                                    "Paraguay",
+                                                                    "Peru",
+                                                                    "Philippines (the)",
+                                                                    "Pitcairn",
+                                                                    "Poland",
+                                                                    "Portugal",
+                                                                    "Puerto Rico",
+                                                                    "Qatar",
+                                                                    "Republic of North Macedonia",
+                                                                    "Romania",
+                                                                    "Russian Federation (the)",
+                                                                    "Rwanda",
+                                                                    "Réunion",
+                                                                    "Saint Barthélemy",
+                                                                    "Saint Helena, Ascension and Tristan da Cunha",
+                                                                    "Saint Kitts and Nevis",
+                                                                    "Saint Lucia",
+                                                                    "Saint Martin (French part)",
+                                                                    "Saint Pierre and Miquelon",
+                                                                    "Saint Vincent and the Grenadines",
+                                                                    "Samoa",
+                                                                    "San Marino",
+                                                                    "Sao Tome and Principe",
+                                                                    "Saudi Arabia",
+                                                                    "Senegal",
+                                                                    "Serbia",
+                                                                    "Seychelles",
+                                                                    "Sierra Leone",
+                                                                    "Singapore",
+                                                                    "Sint Maarten (Dutch part)",
+                                                                    "Slovakia",
+                                                                    "Slovenia",
+                                                                    "Solomon Islands",
+                                                                    "Somalia",
+                                                                    "South Africa",
+                                                                    "South Georgia and the South Sandwich Islands",
+                                                                    "South Sudan",
+                                                                    "Spain",
+                                                                    "Sri Lanka",
+                                                                    "Sudan (the)",
+                                                                    "Suriname",
+                                                                    "Svalbard and Jan Mayen",
+                                                                    "Sweden",
+                                                                    "Switzerland",
+                                                                    "Syrian Arab Republic",
+                                                                    "Taiwan",
+                                                                    "Tajikistan",
+                                                                    "Tanzania, United Republic of",
+                                                                    "Thailand",
+                                                                    "Timor-Leste",
+                                                                    "Togo",
+                                                                    "Tokelau",
+                                                                    "Tonga",
+                                                                    "Trinidad and Tobago",
+                                                                    "Tunisia",
+                                                                    "Turkey",
+                                                                    "Turkmenistan",
+                                                                    "Turks and Caicos Islands (the)",
+                                                                    "Tuvalu",
+                                                                    "Uganda",
+                                                                    "Ukraine",
+                                                                    "United Arab Emirates (the)",
+                                                                    "United Kingdom of Great Britain and Northern Ireland (the)",
+                                                                    "United States Minor Outlying Islands (the)",
+                                                                    "United States of America (the)",
+                                                                    "Uruguay",
+                                                                    "Uzbekistan",
+                                                                    "Vanuatu",
+                                                                    "Venezuela (Bolivarian Republic of)",
+                                                                    "Viet Nam",
+                                                                    "Virgin Islands (British)",
+                                                                    "Virgin Islands (U.S.)",
+                                                                    "Wallis and Futuna",
+                                                                    "Western Sahara",
+                                                                    "Yemen",
+                                                                    "Zambia",
+                                                                    "Zimbabwe",
+                                                                    "Åland Islands"]}
+                                                                getItemValue={(item) => item}
+                                                                inputProps={{ id: '_fournisseur_pays', className: 'validate form-group-input _fournisseur_pays', name: '_fournisseur_pays', autoComplete: "off" }}
+                                                                shouldItemRender={(item, _fournisseur_pays) => item.toLowerCase().indexOf(_fournisseur_pays.toLowerCase()) > -1}
+                                                                renderItem={(item, isHighlighted) =>
+                                                                    <div className={`item ${isHighlighted ? 'item-highlighted' : ''}`}>
+                                                                        {item}
+                                                                    </div>
+                                                                }
+                                                                value={_fournisseur_pays}
+                                                                onChange={this.handleChange}
+                                                                onSelect={(_fournisseur_pays) => this.setState({ _fournisseur_pays })}
+                                                            />
+                                                            <label htmlFor='_fournisseur_pays' className={_fournisseur_pays ? 'active' : ''}>_fournisseur_pays</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _fournisseur_ville"
+                                                                id="_fournisseur_ville"
+                                                                type="text"
+                                                                name="_fournisseur_ville"
+                                                                value={_fournisseur_ville}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_fournisseur_ville' className={_fournisseur_ville ? 'active' : ''}>_fournisseur_ville</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _fournisseur_prenomcontact"
+                                                                id="_fournisseur_prenomcontact"
+                                                                type="text"
+                                                                name="_fournisseur_prenomcontact"
+                                                                value={_fournisseur_prenomcontact}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_fournisseur_prenomcontact' className={_fournisseur_prenomcontact ? 'active' : ''}>_fournisseur_prenomcontact</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _fournisseur_nomcontact"
+                                                                id="_fournisseur_nomcontact"
+                                                                type="text"
+                                                                name="_fournisseur_nomcontact"
+                                                                value={_fournisseur_nomcontact}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_fournisseur_nomcontact' className={_fournisseur_nomcontact ? 'active' : ''}>_fournisseur_nomcontact</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _fournisseur_email"
+                                                                id="_fournisseur_email"
+                                                                type="text"
+                                                                name="_fournisseur_email"
+                                                                value={_fournisseur_email}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_fournisseur_email' className={_fournisseur_email ? 'active' : ''}>_fournisseur_email</label>
+                                                            <div className="form-group-line"></div>
+                                                            <small id="emailHelp" className={_fournisseur_email_valid ? 'text-danger' : 'text-danger active'}>
+                                                                Veuillez fournir une adresse mail valide.
+                                                            </small>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <PhoneInput
+                                                                className="validate form-group-input _fournisseur_telephone"
+                                                                id="_fournisseur_telephone"
+                                                                name="_fournisseur_telephone"
+                                                                value={_fournisseur_telephone}
+                                                                onChange={(value) => this.handleChangePhoneAutocomplete("_fournisseur_telephone", value)}
+                                                            />
+                                                            <label htmlFor='_fournisseur_telephone' className={_fournisseur_telephone ? 'active phone_label' : 'phone_label'}>_fournisseur_telephone</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _fournisseur_patente"
+                                                                id="_fournisseur_patente"
+                                                                type="text"
+                                                                name="_fournisseur_patente"
+                                                                value={_fournisseur_patente}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_fournisseur_patente' className={_fournisseur_patente ? 'active' : ''}>_fournisseur_patente</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _fournisseur_IF"
+                                                                id="_fournisseur_IF"
+                                                                type="text"
+                                                                name="_fournisseur_IF"
+                                                                value={_fournisseur_IF}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_fournisseur_IF' className={_fournisseur_IF ? 'active' : ''}>_fournisseur_IF</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _fournisseur_RC"
+                                                                id="_fournisseur_RC"
+                                                                type="text"
+                                                                name="_fournisseur_RC"
+                                                                value={_fournisseur_RC}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_fournisseur_RC' className={_fournisseur_RC ? 'active' : ''}>_fournisseur_RC</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _fournisseur_ICE"
+                                                                id="_fournisseur_ICE"
+                                                                type="text"
+                                                                name="_fournisseur_ICE"
+                                                                value={_fournisseur_ICE}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_fournisseur_ICE' className={_fournisseur_ICE ? 'active' : ''}>_fournisseur_ICE</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6"></div>
+                                                        <div className="input-field col s6">
+                                                            <button
+                                                                className="pull-right"
+                                                                type="submit"
+                                                                name='btn_login'
+                                                                onClick={this.handleSubmitFournisseur}
+                                                            >
+                                                                <span>
+                                                                    <span>
+                                                                        <span data-attr-span={_fournisseurToEdit ? 'Update.' : 'Submit.'}>
+                                                                            {_fournisseurToEdit ? 'Update' : 'Submit'}.
+                                                                        </span>
+                                                                    </span>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div className="_vehicules_modal modal fade" id="_vehicule_modal" tabIndex="-1" role="dialog" aria-labelledby="_vehicule_modalLabel" aria-hidden="true">
                                 <div className="modal-dialog" role="document">
                                     <div className="modal-content">

@@ -10,7 +10,7 @@ const Fournisseur = new Schema({
 	_fournisseur_raison: {
 		type: String
 	},
-	_fournisseur_adresse: {
+	_fournisseur_siege: {
 		type: String
 	},
 	_fournisseur_telephone: {

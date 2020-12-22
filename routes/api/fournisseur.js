@@ -5,6 +5,7 @@ const Fournisseur = mongoose.model('Fournisseur');
 router.post('/', (req, res, next) => {
 	const { body } = req;
 
+	console.log('i');
 	if (!body._fournisseur_prenomcontact) {
 		return res.status(422).json({
 			errors: {
@@ -13,6 +14,7 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
+	console.log('i');
 	if (!body._fournisseur_nomcontact) {
 		return res.status(422).json({
 			errors: {
@@ -21,6 +23,7 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
+	console.log('i');
 	if (!body._fournisseur_raison) {
 		return res.status(422).json({
 			errors: {
@@ -29,14 +32,16 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
-	if (!body._fournisseur_adresse) {
+	console.log('i');
+	if (!body._fournisseur_siege) {
 		return res.status(422).json({
 			errors: {
-				_fournisseur_adresse: 'is required',
+				_fournisseur_siege: 'is required',
 			},
 		});
 	}
 
+	console.log('i');
 	if (!body._fournisseur_telephone) {
 		return res.status(422).json({
 			errors: {
@@ -45,6 +50,7 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
+	console.log('i');
 	if (!body._fournisseur_email) {
 		return res.status(422).json({
 			errors: {
@@ -53,6 +59,7 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
+	console.log('i');
 	if (!body._fournisseur_ville) {
 		return res.status(422).json({
 			errors: {
@@ -61,6 +68,7 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
+	console.log('i');
 	if (!body._fournisseur_pays) {
 		return res.status(422).json({
 			errors: {
@@ -69,6 +77,7 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
+	console.log('i');
 	if (!body._fournisseur_ICE) {
 		return res.status(422).json({
 			errors: {
@@ -77,6 +86,7 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
+	console.log('i');
 	if (!body._fournisseur_IF) {
 		return res.status(422).json({
 			errors: {
@@ -85,6 +95,7 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
+	console.log('i');
 	if (!body._fournisseur_RC) {
 		return res.status(422).json({
 			errors: {
@@ -93,6 +104,7 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
+	console.log('i');
 	if (!body._fournisseur_patente) {
 		return res.status(422).json({
 			errors: {
@@ -148,8 +160,8 @@ router.patch('/:id', (req, res, next) => {
 		req._fournisseur._fournisseur_raison = body._fournisseur_raison;
 	}
 
-	if (typeof body._fournisseur_adresse !== 'undefined') {
-		req._fournisseur._fournisseur_adresse = body._fournisseur_adresse;
+	if (typeof body._fournisseur_siege !== 'undefined') {
+		req._fournisseur._fournisseur_siege = body._fournisseur_siege;
 	}
 
 	if (typeof body._fournisseur_telephone !== 'undefined') {

@@ -2224,7 +2224,7 @@ html {
                         height: 100%;
 
                         &.home_pane {
-                            ._home_pane {
+                            &>._home_pane {
                                 background: $white;
                                 height: 100%;
                                 box-shadow: 0vh 0vh 5vh -2.5vh rgba(0, 0, 0, 0.25);
@@ -2602,7 +2602,7 @@ html {
                         }
 
                         &.finances_pane {
-                            ._finances_pane {
+                            &>._finances_pane {
                                 background: $white;
                                 height: 100%;
                                 box-shadow: 0vh 0vh 5vh -2.5vh rgba(0, 0, 0, 0.25);
@@ -2869,7 +2869,7 @@ html {
                                                                         flex: 1;
                                                                         align-items: center;
 
-                                                                        .swiper-slide:not(.deviss_slider_wrapper_cards_item) {
+                                                                        .swiper-slide:not(.fournisseurs_slider_wrapper_cards_item) {
                                                                             height: 100% !important;
 
                                                                             .card {
@@ -2887,7 +2887,7 @@ html {
                                                                         .swiper-slide {
                                                                             min-width: 14.5vw;
 
-                                                                            &.deviss_slider_wrapper_cards_item {
+                                                                            &.fournisseurs_slider_wrapper_cards_item {
                                                                                 box-shadow: 0px 5px 10px -10px rgba(0, 0, 0, 0.25);
                                                                             }
 
@@ -2899,7 +2899,7 @@ html {
                                                                                 height: 100%;
                                                                                 transition: all .2s ease-out;
 
-                                                                                .card:not(.card_deviss) {
+                                                                                .card:not(.card_fournisseurs) {
                                                                                     background-color: #485461;
                                                                                     background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
 
@@ -3147,8 +3147,386 @@ html {
                             }
                         }
 
+                        &.fournisseurs_pane {
+                            &>._fournisseurs_pane {
+                                background: $white;
+                                height: 100%;
+                                box-shadow: 0vh 0vh 5vh -2.5vh rgba(0, 0, 0, 0.25);
+                                overflow-y: scroll;
+
+                                display: grid;
+                                grid-template-rows: auto 1fr;
+                                justify-content: stretch;
+                                align-content: stretch;
+                                justify-items: stretch;
+                                align-items: stretch;
+
+                                ._fournisseurs_header {
+                                    display: flex;
+                                    padding: 1.25vh;
+
+                                    .progressbar {
+                                        color: #aaa;
+                                        font-size: 80%;
+                                        text-decoration: none;
+
+                                        display: grid;
+                                        grid-template-columns: repeat(2, auto);
+                                        justify-content: flex-end;
+                                        align-content: flex-end;
+                                        grid-gap: 2.5vh;
+
+                                        height: 100%;
+                                        width: 100%;
+                                        padding: 0;
+                                        margin: 0;
+                                        list-style: none;
+
+                                        li {
+                                            position: relative;
+                                            height: 100%;
+                                            margin: 0;
+                                            padding: 0;
+                                            transition: all .3s ease-out;
+
+                                            display: flex;
+                                            align-items: center;
+
+                                            .item {
+                                                display: block;
+                                            }
+
+                                            &.active {
+                                                &::after {
+                                                    width: 100%;
+                                                    height: .5vh;
+                                                    bottom: -1.28vh;
+                                                    background: $main-color;
+                                                    opacity: .8;
+                                                    -ms-filter: none;
+                                                    filter: none;
+                                                    transform: translateX(0);
+                                                }
+                                            }
+
+                                            &::after {
+                                                display: block;
+                                                content: '';
+                                                width: 100%;
+                                                height: .25vh;
+                                                background: $main-color;
+                                                position: absolute;
+                                                bottom: -1.28vh;
+                                                opacity: 0;
+                                                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+                                                filter: alpha(opacity=0);
+                                                transform: translateX(100%);
+                                                transition: all .2s ease-out;
+                                            }
+
+                                            &:hover {
+                                                &:not(.active) {
+                                                    &::after {
+                                                        opacity: .8;
+                                                        filter: none;
+                                                        transform: translateX(0);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                ._fournisseurs_content {
+                                    .cards {
+                                        position: relative;
+                                        height: 100%;
+                                        width: 100%;
+                                        padding: 1.25vh;
+                                        margin: 0;
+
+                                        display: grid;
+                                        grid-template-columns: repeat(16, 1fr);
+                                        grid-template-rows: auto 1fr 1fr;
+                                        grid-template-areas: "One One One One Two Two Two Two Three Three Three Three Four Four Four Four"
+                                            "Five Five Five Five Five Five Five Five Six Six Six Six Six Six Six Six"
+                                            "Seven Seven Seven Seven Seven Seven Seven Seven Eight Eight Eight Eight Eight Eight Eight Eight";
+                                        grid-gap: 2.5vh;
+
+                                        &__item {
+                                            position: relative;
+                                            min-width: 0;
+                                            min-height: 0;
+
+                                            &:nth-child(1) {
+                                                grid-area: One;
+                                            }
+
+                                            &:nth-child(2) {
+                                                grid-area: Two;
+                                            }
+
+                                            &:nth-child(3) {
+                                                grid-area: Three;
+                                            }
+
+                                            &:nth-child(4) {
+                                                grid-area: Four;
+                                            }
+
+                                            &:nth-child(5) {
+                                                grid-area: Five;
+                                            }
+
+                                            &:nth-child(6) {
+                                                grid-area: Six;
+                                            }
+
+                                            &:nth-child(7) {
+                                                grid-area: Seven;
+                                            }
+
+                                            &:nth-child(8) {
+                                                grid-area: Eight;
+                                            }
+
+                                            .card {
+                                                position: relative;
+                                                overflow: hidden;
+                                                width: 100%;
+                                                height: 100%;
+                                                border-radius: 0;
+                                                margin: 0;
+
+                                                background: $white;
+                                                box-shadow: 3px 6px 8px -5px rgba(0, 0, 0, 0.5);
+
+                                                &__content {
+                                                    position: relative;
+                                                    width: 100%;
+                                                    height: 100%;
+
+                                                    ._pane {
+                                                        height: 100%;
+
+                                                        ._content {
+                                                            position: relative;
+                                                            padding: 0;
+                                                            width: 100%;
+                                                            height: 100%;
+                                                            display: grid;
+                                                            grid-template-rows: auto 1fr;
+
+                                                            ._head {
+                                                                display: flex;
+                                                                justify-content: space-between;
+                                                                align-items: center;
+                                                                width: calc(100% - 3.75vh);
+                                                                height: 6.5vh;
+                                                                margin: 0 auto;
+
+                                                                h6 {
+                                                                    margin: 0;
+                                                                }
+
+                                                                button {
+                                                                    position: relative;
+                                                                    display: inline-block;
+                                                                    cursor: pointer;
+                                                                    outline: none;
+                                                                    border: 0;
+                                                                    vertical-align: middle;
+                                                                    text-decoration: none;
+                                                                    background: transparent;
+                                                                    padding: 0;
+                                                                    font-size: inherit;
+                                                                    font-family: inherit;
+                                                                    transform: translate(-5vh, 0);
+
+                                                                    width: fit-content;
+                                                                    height: fit-content;
+
+                                                                    .icon {
+                                                                        @include transition(all, 0.45s, cubic-bezier(0.65, 0, .076, 1));
+                                                                        position: absolute;
+                                                                        margin: 0;
+                                                                        right: -5.5vh;
+                                                                        top: 50%;
+                                                                        transform: translate(0, -50%);
+                                                                        width: 5vh;
+                                                                        height: 5vh;
+                                                                        background: $black;
+                                                                        z-index: -1;
+
+                                                                        i {
+                                                                            @include transition(all, 0.45s, cubic-bezier(0.65, 0, .076, 1));
+                                                                            color: $white;
+                                                                            position: absolute;
+                                                                            right: 2.5vh;
+                                                                            top: 2.5vh;
+                                                                            transform: translate(50%, -50%);
+                                                                            height: fit-content;
+                                                                            width: fit-content;
+
+                                                                            &::before {
+                                                                                @include transition(all, 0.45s, cubic-bezier(0.65, 0, .076, 1));
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                    .button-text {
+                                                                        @include transition(all, 0.45s, cubic-bezier(0.65, 0, .076, 1));
+                                                                        opacity: 0;
+                                                                        color: $white;
+                                                                        font-size: 80%;
+                                                                        text-align: center;
+                                                                    }
+
+                                                                    &:hover {
+                                                                        .icon {
+                                                                            width: calc(100% + 6.5vh);
+
+                                                                            i {
+                                                                                &::before {
+                                                                                    content: "\f067";
+                                                                                }
+                                                                            }
+                                                                        }
+
+                                                                        .button-text {
+                                                                            opacity: 1;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            ._data {
+                                                                position: relative;
+                                                                width: 100%;
+                                                                height: 100%;
+
+                                                                .swiper-container {
+                                                                    width: 100%;
+                                                                    height: 100%;
+                                                                    margin: 0 !important;
+                                                                    display: flex;
+                                                                    flex-direction: column;
+
+                                                                    .swiper-wrapper {
+                                                                        .swiper-slide {
+                                                                            .swiper-slide_item {
+                                                                                padding: .75vh;
+
+                                                                                .col.card {
+                                                                                    .card-body {
+                                                                                        padding: .25vh;
+
+                                                                                        ._heads_up {
+                                                                                            display: flex;
+                                                                                            justify-content: flex-end;
+
+                                                                                            .dropdown {
+                                                                                                margin-left: auto;
+                                                                                                height: fit-content;
+
+                                                                                                span {
+                                                                                                    cursor: pointer;
+
+                                                                                                    i {
+                                                                                                        color: $black;
+                                                                                                    }
+
+                                                                                                    &.dropdown-toggle::after {
+                                                                                                        display: none;
+                                                                                                    }
+                                                                                                }
+
+                                                                                                .dropdown-menu {
+                                                                                                    flex-direction: row;
+                                                                                                    position: absolute;
+                                                                                                    left: unset !important;
+                                                                                                    right: 100% !important;
+                                                                                                    transform-origin: right;
+                                                                                                    will-change: transform;
+                                                                                                    transform: unset !important;
+                                                                                                    min-width: unset !important;
+                                                                                                    width: fit-content !important;
+                                                                                                    padding: 0;
+                                                                                                    margin: .5vh;
+
+                                                                                                    &.show {
+                                                                                                        display: flex !important;
+                                                                                                    }
+
+                                                                                                    .dropdown-item {
+                                                                                                        width: 6.5vh;
+                                                                                                        height: 6.5vh;
+                                                                                                        padding: .5vh;
+                                                                                                        display: flex;
+                                                                                                        justify-content: center;
+                                                                                                        align-items: center;
+
+                                                                                                        &.edit,
+                                                                                                        &._view {
+                                                                                                            &:hover {
+                                                                                                                color: $green;
+                                                                                                            }
+                                                                                                        }
+
+                                                                                                        &.delete {
+                                                                                                            &:hover {
+                                                                                                                color: $calendar-red;
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+
+                                                                                        ._fournisseur_body {
+                                                                                            h6 {
+                                                                                                margin: 0;
+                                                                                            }
+                                                                                        }
+
+                                                                                        ._siege {
+                                                                                            margin-top: auto;
+                                                                                            display: inline-flex;
+                                                                                            align-items: baseline;
+                                                                                            justify-content: flex-end;
+                                                                                            width: 100%;
+
+                                                                                            p {
+                                                                                                margin-bottom: 0;
+                                                                                            }
+
+                                                                                            ._siege {
+                                                                                                font-size: 1.6vh;
+
+                                                                                                i {
+                                                                                                    padding-left: .5vh;
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         &.vehicules_pane {
-                            ._vehicules_pane {
+                            &>._vehicules_pane {
                                 background: $white;
                                 height: 100%;
                                 box-shadow: 0vh 0vh 5vh -2.5vh rgba(0, 0, 0, 0.25);
@@ -3690,7 +4068,7 @@ html {
                         }
 
                         &.parametres_pane {
-                            ._parametres_pane {
+                            &>._parametres_pane {
                                 background: $white;
                                 height: 100%;
                                 box-shadow: 0vh 0vh 5vh -2.5vh rgba(0, 0, 0, 0.25);
@@ -4467,6 +4845,10 @@ html {
 
                                         &.agences_fieldset {
                                             grid-template-rows: 7.5vh 7.5vh 7.5vh;
+                                        }
+
+                                        &.fournisseurs_fieldset {
+                                            grid-template-rows: 7.5vh 7.5vh 7.5vh 7.5vh 7.5vh 7.5vh 7.5vh;
                                         }
 
                                         &.first-of-type {
