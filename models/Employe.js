@@ -74,4 +74,7 @@ const Employe = new Schema({
 	}]
 }, { timestamps: true });
 
+//Déclaration et suivi des congés des employés
+//Gestion et déclaration des notes de frais (transports, repas, ...)
+
 mongoose.model('Employe', Employe);

@@ -625,70 +625,70 @@ export default (state = initialState, action) => {
         case SOCIETE_PAGE_LOADED:
             return {
                 ...state,
-                __societes: action.data.__societes,
+                _societes: action.data._societes,
             };
         case SUBMIT_SOCIETE:
             return {
                 ...state,
-                __societes: ([action.data.__societe]).concat(state.__societes),
+                _societes: ([action.data._societe]).concat(state._societes),
             };
         case DELETE_SOCIETE:
             return {
                 ...state,
-                __societes: state.__societes.filter((__societe) => __societe._id !== action.id),
+                _societes: state._societes.filter((_societe) => _societe._id !== action.id),
             };
         case SET_EDIT_SOCIETE:
             return {
                 ...state,
-                __societeToEdit: action.__societe,
+                _societeToEdit: action._societe,
             };
         case EDIT_SOCIETE:
             return {
                 ...state,
-                __societes: state.__societes.map((__societe) => {
-                    if (__societe._id === action.data.__societe._id) {
+                _societes: state._societes.map((_societe) => {
+                    if (_societe._id === action.data._societe._id) {
                         return {
-                            ...action.data.__societe,
+                            ...action.data._societe,
                         }
                     }
-                    return __societe;
+                    return _societe;
                 }),
-                __societeToEdit: undefined,
+                _societeToEdit: undefined,
             };
 
         //STOCK
         case STOCK_PAGE_LOADED:
             return {
                 ...state,
-                __stocks: action.data.__stocks,
+                _stocks: action.data._stocks,
             };
         case SUBMIT_STOCK:
             return {
                 ...state,
-                __stocks: ([action.data.__stock]).concat(state.__stocks),
+                _stocks: ([action.data._stock]).concat(state._stocks),
             };
         case DELETE_STOCK:
             return {
                 ...state,
-                __stocks: state.__stocks.filter((__stock) => __stock._id !== action.id),
+                _stocks: state._stocks.filter((_stock) => _stock._id !== action.id),
             };
         case SET_EDIT_STOCK:
             return {
                 ...state,
-                __stockToEdit: action.__stock,
+                _stockToEdit: action._stock,
             };
         case EDIT_STOCK:
             return {
                 ...state,
-                __stocks: state.__stocks.map((__stock) => {
-                    if (__stock._id === action.data.__stock._id) {
+                _stocks: state._stocks.map((_stock) => {
+                    if (_stock._id === action.data._stock._id) {
                         return {
-                            ...action.data.__stock,
+                            ...action.data._stock,
                         }
                     }
-                    return __stock;
+                    return _stock;
                 }),
-                __stockToEdit: undefined,
+                _stockToEdit: undefined,
             };
 
         //VEHICULE

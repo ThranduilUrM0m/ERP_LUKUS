@@ -3113,7 +3113,7 @@ class Reservation extends React.Component {
                                                 <label htmlFor='_client_ville' className={_client_ville ? 'active' : ''}>Ville</label>
                                                 <div className="form-group-line"></div>
                                             </div>
-                                            <div className="input-field col s6">
+                                            <div className="input-field col s6 _autocomplete">
                                                 <Autocomplete
                                                     items={["Afghanistan",
                                                         "Albania",

@@ -77,20 +77,15 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
-	if (!body.Agence) {
-		return res.status(422).json({
-			errors: {
-				Agencej: 'is required',
-			},
-		});
-	}
-
 	const finalSociete = new Societe(body);
 	return finalSociete
 		.save()
 		.then(finalSociete => finalSociete
 			.populate({
 				path: 'Agence'
+			})
+			.populate({
+				path: 'Employe'
 			})
 			.execPopulate())
 		.then(() => {
@@ -104,6 +99,9 @@ router.get('/', (req, res, next) => {
 		.sort({ createdAt: 'descending' })
 		.populate({
 			path: 'Agence'
+		})
+		.populate({
+			path: 'Employe'
 		})
 		.then((_societes) => res.json({ _societes: _societes.map(_societe => _societe.toJSON()) }))
 		.catch(next);
@@ -165,8 +163,16 @@ router.patch('/:id', (req, res, next) => {
 		req._societe._societe_CNSS = body._societe_CNSS;
 	}
 
+	if (typeof body._societe_logo !== 'undefined') {
+		req._societe._societe_logo = body._societe_logo;
+	}
+
 	if (typeof body.Agence !== 'undefined') {
 		req._societe.Agence = body.Agence;
+	}
+
+	if (typeof body.Employe !== 'undefined') {
+		req._societe.Employe = body.Employe;
 	}
 
 	return req._societe
@@ -174,6 +180,9 @@ router.patch('/:id', (req, res, next) => {
 		.then(() => req._societe
 			.populate({
 				path: 'Agence'
+			})
+			.populate({
+				path: 'Employe'
 			})
 			.execPopulate())
 		.then(() => res.json({ _societe: req._societe.toJSON() }))

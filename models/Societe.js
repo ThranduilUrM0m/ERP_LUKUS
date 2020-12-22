@@ -28,10 +28,18 @@ const Societe = new Schema({
 	_societe_CNSS: {
 		type: String
 	},
+	_societe_logo: {
+		type: String
+	},
 	Agence: [{
 		type: Schema.Types.ObjectId,
 		required: true,
 		ref: 'Agence'
+	}],
+	Employe: [{
+		type: Schema.Types.ObjectId,
+		required: true,
+		ref: 'Employe'
 	}]
 }, { timestamps: true });
 
