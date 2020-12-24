@@ -3,7 +3,6 @@ import axios from 'axios';
 import moment from 'moment';
 import PhoneInput from 'react-phone-number-input';
 import Autocomplete from 'react-autocomplete';
-import Swiper, { Navigation, Pagination } from 'swiper';
 import Select from 'react-select';
 import { connect } from 'react-redux';
 import API from "../../utils/API";
@@ -17,6 +16,18 @@ import favicon from '../../favicon.svg';
 import update from 'immutability-helper';
 import 'react-phone-number-input/style.css';
 import validator from 'validator';
+
+// import Swiper core and required components
+import SwiperCore, { Scrollbar, A11y, EffectCoverflow, Virtual } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/swiper.scss';
+import 'swiper/components/scrollbar/scrollbar.scss';
+import 'swiper/components/effect-coverflow/effect-coverflow.scss';
+
+// install Virtual module
+SwiperCore.use([Scrollbar, A11y, Virtual, EffectCoverflow]);
 
 const socketURL =
     process.env.NODE_ENV === 'production'
@@ -378,7 +389,6 @@ class Dashboard extends React.Component {
         this.handleChangeUser = this.handleChangeUser.bind(this);
         this.handleChangeNested = this.handleChangeNested.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this._handleDrag = this._handleDrag.bind(this);
 
         this._handleClickEvents = this._handleClickEvents.bind(this);
         this.handleNext = this.handleNext.bind(this);
@@ -415,17 +425,6 @@ class Dashboard extends React.Component {
         axios('/api/agence')
             .then((response) => {
                 onLoadAgence(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .agences_slider_wrapper_cards_item", () => {
-                    this._handleDrag('agences_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -434,17 +433,6 @@ class Dashboard extends React.Component {
         axios('/api/bon')
             .then((response) => {
                 onLoadBon(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .bons_slider_wrapper_cards_item", () => {
-                    this._handleDrag('bons_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -453,17 +441,6 @@ class Dashboard extends React.Component {
         axios('/api/client')
             .then((response) => {
                 onLoadClient(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .clients_slider_wrapper_cards_item", () => {
-                    this._handleDrag('clients_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -472,17 +449,6 @@ class Dashboard extends React.Component {
         axios('/api/devis')
             .then((response) => {
                 onLoadDevis(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .deviss_slider_wrapper_cards_item", () => {
-                    this._handleDrag('deviss_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -491,17 +457,6 @@ class Dashboard extends React.Component {
         axios('/api/employe')
             .then((response) => {
                 onLoadEmploye(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .employes_slider_wrapper_cards_item", () => {
-                    this._handleDrag('employes_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -510,17 +465,6 @@ class Dashboard extends React.Component {
         axios('/api/facture')
             .then((response) => {
                 onLoadFacture(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .factures_slider_wrapper_cards_item", () => {
-                    this._handleDrag('factures_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -529,17 +473,6 @@ class Dashboard extends React.Component {
         axios('/api/fournisseur')
             .then((response) => {
                 onLoadFournisseur(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .fournisseurs_slider_wrapper_cards_item", () => {
-                    this._handleDrag('fournisseurs_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -548,17 +481,6 @@ class Dashboard extends React.Component {
         axios('/api/passager')
             .then((response) => {
                 onLoadPassager(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .passagers_slider_wrapper_cards_item", () => {
-                    this._handleDrag('passagers_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -567,17 +489,6 @@ class Dashboard extends React.Component {
         axios('/api/permission')
             .then((response) => {
                 onLoadPermission(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .permissions_slider_wrapper_cards_item", () => {
-                    this._handleDrag('permissions_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -586,17 +497,6 @@ class Dashboard extends React.Component {
         axios('/api/poste')
             .then((response) => {
                 onLoadPoste(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .postes_slider_wrapper_cards_item", () => {
-                    this._handleDrag('postes_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -605,17 +505,6 @@ class Dashboard extends React.Component {
         axios('/api/produit')
             .then((response) => {
                 onLoadProduit(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .produits_slider_wrapper_cards_item", () => {
-                    this._handleDrag('produits_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -624,17 +513,6 @@ class Dashboard extends React.Component {
         axios('/api/reservation')
             .then((response) => {
                 onLoadReservation(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .reservations_slider_wrapper_cards_item", () => {
-                    this._handleDrag('reservation_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -643,17 +521,6 @@ class Dashboard extends React.Component {
         axios('/api/revueDePerformance')
             .then((response) => {
                 onLoadRevueDePerformance(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .revueDePerformances_slider_wrapper_cards_item", () => {
-                    this._handleDrag('revueDePerformances_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -662,17 +529,6 @@ class Dashboard extends React.Component {
         axios('/api/societe')
             .then((response) => {
                 onLoadSociete(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .societes_slider_wrapper_cards_item", () => {
-                    this._handleDrag('societes_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -681,17 +537,6 @@ class Dashboard extends React.Component {
         axios('/api/stock')
             .then((response) => {
                 onLoadStock(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .stocks_slider_wrapper_cards_item", () => {
-                    this._handleDrag('stocks_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -700,17 +545,6 @@ class Dashboard extends React.Component {
         axios('/api/vehicule')
             .then((response) => {
                 onLoadVehicule(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .vehicules_slider_wrapper_cards_item", () => {
-                    this._handleDrag('vehicules_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -719,17 +553,6 @@ class Dashboard extends React.Component {
         axios('/api/voyage')
             .then((response) => {
                 onLoadVoyage(response.data);
-                function runAfterElementExists(jquery_selector, callback) {
-                    var checker = window.setInterval(function () {
-                        if ($(jquery_selector).length) {
-                            clearInterval(checker);
-                            callback();
-                        }
-                    }, 200);
-                }
-                runAfterElementExists(".first_section_dashboard .voyages_slider_wrapper_cards_item", () => {
-                    this._handleDrag('voyages_slider_wrapper');
-                });
             })
             .catch((errors) => {
                 console.log(errors);
@@ -3034,38 +2857,6 @@ class Dashboard extends React.Component {
         });
     }
 
-    _handleDrag(source) {
-        // configure Swiper to use modules
-        Swiper.use([Navigation, Pagination]);
-
-        var mySwiper = new Swiper('.' + source + '.swiper-container', {
-            effect: 'coverflow',
-            direction: 'vertical',
-            loop: false,
-            slideToClickedSlide: true,
-            slidesPerView: 2.5,
-            grabCursor: true,
-            centeredSlides: false,
-            paginationClickable: true,
-            centerInsufficientSlides: true,
-            spaceBetween: 0,
-            autoResize: false,
-            observer: true,
-            watchOverflow: true,
-            freeMode: false,
-            freeModeSticky: true,
-            coverflowEffect: {
-                rotate: 0,
-                stretch: 0,
-                depth: 0,
-                modifier: 3,
-                slideShadows: false
-            },
-            simulateTouch: true,
-            scrollbar: '.' + source + ' .swiper-scrollbar',
-        });
-    }
-
     handleNext(parent) {
         var current_fs, next_fs;
         var left, opacity, scale;
@@ -3418,12 +3209,12 @@ class Dashboard extends React.Component {
                             </div>
 
                             <div className="tab-content clearfix">
-                                <div className="home_pane tab-pane active" id="1a">
-                                    <div className="_home_pane">
-                                        <div className="_home_header">
+                                <div className="tab-pane active" id="1a">
+                                    <div className="_sub_pane">
+                                        <div className="_sub_pane_header">
 
                                         </div>
-                                        <div className="_home_content">
+                                        <div className="_sub_pane_content">
                                             <ul className="cards">
                                                 <li className="cards__item">{/* calendar */}</li>
                                                 <li className="cards__item"></li>
@@ -3431,12 +3222,12 @@ class Dashboard extends React.Component {
                                                 <li className="cards__item"></li>
                                                 <li className="cards__item"></li>
                                                 <li className="cards__item"></li>
-                                                <li className="cards__item societes__item">
+                                                <li className="cards__item">
                                                     <div className="card">
                                                         <div className="card__content">
-                                                            <div className="_societes_pane _pane">
-                                                                <div className="_societes_content _content">
-                                                                    <div className="_societes_head _head">
+                                                            <div className="_pane">
+                                                                <div className="_content">
+                                                                    <div className="_head">
                                                                         <h6>Les Societes</h6>
                                                                         <button id="_add_societe" type="button" data-toggle="modal" data-target="#_societe_modal">
                                                                             <span className="icon" aria-hidden="true">
@@ -3445,55 +3236,66 @@ class Dashboard extends React.Component {
                                                                             <span className="button-text">Ajouter Societe.</span>
                                                                         </button>
                                                                     </div>
-                                                                    <div className="_societes_data _data">
-                                                                        <div className="societes_slider_wrapper swiper-container">
-                                                                            <div className="societes_slider_wrapper_cards swiper-wrapper">
-                                                                                {
-                                                                                    _societes.map((_societe, index) => {
-                                                                                        return (
-                                                                                            <div className="societes_slider_wrapper_cards_item swiper-slide" id="societes_slider_wrapper_cards_item" key={index}>
-                                                                                                <div className={`societe_item swiper-slide_item`}>
-                                                                                                    <div className={"col card card_societes card_" + index} data-title={_.snakeCase(_societe._societe_raison)} data-index={_.add(index, 1)}>
-                                                                                                        <div className="card-body">
-                                                                                                            <div className="_heads_up">
-                                                                                                                <div className="dropdown">
-                                                                                                                    <span className="dropdown-toggle" id="dropdownMenuButton_societes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                                                        <i className="fas fa-ellipsis-h"></i>
-                                                                                                                    </span>
-                                                                                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_societes">
-                                                                                                                        <a href="# " className="dropdown-item edit" data-toggle="modal" data-target="#_societe_modal" onClick={() => this.handleEditSociete(_societe)}><i className="fas fa-edit"></i></a>
-                                                                                                                        <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteSociete(_societe._id)}><i className="far fa-trash-alt"></i></a>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div className="_societe_body">
-                                                                                                                <h6>{_societe._societe_raison}</h6>
-                                                                                                            </div>
-                                                                                                            <div className="_siege">
-                                                                                                                <p className="text-muted _siege"><b>{_societe._societe_siege}</b><i className="fas fa-map-marker-alt"></i></p>
+                                                                    <div className="_data">
+                                                                        <Swiper
+                                                                            spaceBetween={0}
+                                                                            slidesPerView={3.25}
+                                                                            direction='vertical'
+                                                                            effect='coverflow'
+                                                                            coverflowEffect={{
+                                                                                rotate: 0,
+                                                                                stretch: 0,
+                                                                                depth: 0,
+                                                                                modifier: 3,
+                                                                                slideShadows: false
+                                                                            }}
+                                                                            grabCursor='true'
+                                                                            watchOverflow='true'
+                                                                            slideToClickedSlide='true'
+                                                                            observer='true'
+                                                                            scrollbar={{ draggable: true }}
+                                                                            onSwiper={(swiper) => console.log(swiper)}
+                                                                        >
+                                                                            {
+                                                                                _societes.map((_societe, index) => {
+                                                                                    return (
+                                                                                        <SwiperSlide key={_societe} virtualIndex={index}>
+                                                                                            <div className={"card card_societes card_" + index} data-title={_.snakeCase(_societe._societe_raison)} data-index={_.add(index, 1)}>
+                                                                                                <div className="card-body">
+                                                                                                    <div className="_corps">
+                                                                                                        <h6>{_societe._societe_raison}</h6>
+                                                                                                        <p className="text-muted"><i className="fas fa-map-marker-alt"></i><b>{_societe._societe_siege}</b></p>
+                                                                                                    </div>
+                                                                                                    <div className="_heads_up">
+                                                                                                        <div className="dropdown">
+                                                                                                            <span className="dropdown-toggle" id="dropdownMenuButton_societes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                                <i className="fas fa-ellipsis-h"></i>
+                                                                                                            </span>
+                                                                                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_societes">
+                                                                                                                <a href="# " className="dropdown-item edit" data-toggle="modal" data-target="#_societe_modal" onClick={() => this.handleEditSociete(_societe)}><i className="fas fa-edit"></i></a>
+                                                                                                                <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteSociete(_societe._id)}><i className="far fa-trash-alt"></i></a>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        )
-                                                                                    })
-                                                                                }
-                                                                            </div>
-                                                                            <div className="societes_slider_scrollbar swiper-scrollbar"></div>
-                                                                        </div>
+                                                                                        </SwiperSlide>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </Swiper>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </li>
-                                                <li className="cards__item agences__item">
+                                                <li className="cards__item">
                                                     <div className="card">
                                                         <div className="card__content">
-                                                            <div className="_agences_pane _pane">
-                                                                <div className="_agences_content _content">
-                                                                    <div className="_agences_head _head">
+                                                            <div className="_pane">
+                                                                <div className="_content">
+                                                                    <div className="_head">
                                                                         <h6>Les Agences</h6>
                                                                         <button id="_add_agence" type="button" data-toggle="modal" data-target="#_agence_modal">
                                                                             <span className="icon" aria-hidden="true">
@@ -3502,43 +3304,53 @@ class Dashboard extends React.Component {
                                                                             <span className="button-text">Ajouter Agence.</span>
                                                                         </button>
                                                                     </div>
-                                                                    <div className="_agences_data _data">
-                                                                        <div className="agences_slider_wrapper swiper-container">
-                                                                            <div className="agences_slider_wrapper_cards swiper-wrapper">
-                                                                                {
-                                                                                    _agences.map((_agence, index) => {
-                                                                                        return (
-                                                                                            <div className="agences_slider_wrapper_cards_item swiper-slide" id="agences_slider_wrapper_cards_item" key={index}>
-                                                                                                <div className={`agence_item swiper-slide_item`}>
-                                                                                                    <div className={"col card card_agences card_" + index} data-title={_.snakeCase(_agence._agence_numero)} data-index={_.add(index, 1)}>
-                                                                                                        <div className="card-body">
-                                                                                                            <div className="_heads_up">
-                                                                                                                <div className="dropdown">
-                                                                                                                    <span className="dropdown-toggle" id="dropdownMenuButton_agences" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                                                        <i className="fas fa-ellipsis-h"></i>
-                                                                                                                    </span>
-                                                                                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_agences">
-                                                                                                                        <a href="# " className="dropdown-item edit" data-toggle="modal" data-target="#_agence_modal" onClick={() => { this.handleEditAgence(_agence); this.handleEditSociete(_.find(_societes, (_s) => { return _.find(_s.Agence, { _id: _agence._id }) })); }}><i className="fas fa-edit"></i></a>
-                                                                                                                        <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteAgence(_agence._id)}><i className="far fa-trash-alt"></i></a>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div className="_agence_body">
-                                                                                                                <h6>{_agence._agence_pays}, {_agence._agence_ville}</h6>
-                                                                                                            </div>
-                                                                                                            <div className="_siege">
-                                                                                                                <p className="text-muted _siege"><b>{_agence._agence_adresse}</b><i className="fas fa-map-marker-alt"></i></p>
+                                                                    <div className="_data">
+                                                                        <Swiper
+                                                                            spaceBetween={0}
+                                                                            slidesPerView={3.25}
+                                                                            direction='vertical'
+                                                                            effect='coverflow'
+                                                                            coverflowEffect={{
+                                                                                rotate: 0,
+                                                                                stretch: 0,
+                                                                                depth: 0,
+                                                                                modifier: 3,
+                                                                                slideShadows: false
+                                                                            }}
+                                                                            grabCursor='true'
+                                                                            watchOverflow='true'
+                                                                            slideToClickedSlide='true'
+                                                                            observer='true'
+                                                                            scrollbar={{ draggable: true }}
+                                                                        >
+                                                                            {
+                                                                                _agences.map((_agence, index) => {
+                                                                                    return (
+                                                                                        <SwiperSlide key={_agence} virtualIndex={index}>
+                                                                                            <div className={"card card_agences card_" + index} data-title={_.snakeCase(_agence._agence_numero)} data-index={_.add(index, 1)}>
+                                                                                                <div className="card-body">
+                                                                                                    <div className="_corps">
+                                                                                                        <h6>{_agence._agence_pays}, {_agence._agence_ville}</h6>
+                                                                                                        <p className="text-muted"><i className="fas fa-map-marker-alt"></i><b>{_agence._agence_adresse}</b></p>
+                                                                                                    </div>
+                                                                                                    <div className="_heads_up">
+                                                                                                        <div className="dropdown">
+                                                                                                            <span className="dropdown-toggle" id="dropdownMenuButton_agences" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                                <i className="fas fa-ellipsis-h"></i>
+                                                                                                            </span>
+                                                                                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_agences">
+                                                                                                                <a href="# " className="dropdown-item edit" data-toggle="modal" data-target="#_agence_modal" onClick={() => { this.handleEditAgence(_agence); this.handleEditSociete(_.find(_societes, (_s) => { return _.find(_s.Agence, { _id: _agence._id }) })); }}><i className="fas fa-edit"></i></a>
+                                                                                                                <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteAgence(_agence._id)}><i className="far fa-trash-alt"></i></a>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        )
-                                                                                    })
-                                                                                }
-                                                                            </div>
-                                                                            <div className="agences_slider_scrollbar swiper-scrollbar"></div>
-                                                                        </div>
+                                                                                        </SwiperSlide>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </Swiper>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -3549,12 +3361,12 @@ class Dashboard extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="finances_pane tab-pane" id="2a">
-                                    <div className="_finances_pane">
-                                        <div className="_finances_header">
+                                <div className="tab-pane active" id="2a">
+                                    <div className="_sub_pane">
+                                        <div className="_sub_pane_header">
 
                                         </div>
-                                        <div className="_finances_content">
+                                        <div className="_sub_pane_content">
                                             <ul className="cards">
                                                 <li className="cards__item"></li>
                                                 <li className="cards__item"></li>
@@ -3562,12 +3374,12 @@ class Dashboard extends React.Component {
                                                 <li className="cards__item"></li>
                                                 <li className="cards__item"></li>
                                                 <li className="cards__item"></li>
-                                                <li className="cards__item factures__item">
+                                                <li className="cards__item">
                                                     <div className="card">
                                                         <div className="card__content">
-                                                            <div className="_factures_pane _pane">
-                                                                <div className="_factures_content _content">
-                                                                    <div className="_factures_head _head">
+                                                            <div className="_pane">
+                                                                <div className="_content">
+                                                                    <div className="_head">
                                                                         <h6>Les Factures</h6>
                                                                         <button id="_add_facture" type="button" data-toggle="modal" data-target="#_facture_modal">
                                                                             <span className="icon" aria-hidden="true">
@@ -3576,52 +3388,64 @@ class Dashboard extends React.Component {
                                                                             <span className="button-text">Ajouter Facture.</span>
                                                                         </button>
                                                                     </div>
-                                                                    <div className="_factures_data _data">
-                                                                        <div className="factures_slider_wrapper swiper-container">
-                                                                            <div className="factures_slider_wrapper_cards swiper-wrapper">
-                                                                                {
-                                                                                    _factures.map((_facture, index) => {
-                                                                                        return (
-                                                                                            <div className="factures_slider_wrapper_cards_item swiper-slide" id="factures_slider_wrapper_cards_item" key={index}>
-                                                                                                <div className={`facture_item swiper-slide_item`}>
-                                                                                                    <div className={"col card card_factures card_" + index} data-title={_.snakeCase(_facture._facture_numero)} data-index={_.add(index, 1)}>
-                                                                                                        <div className="card-body">
-                                                                                                            <div className="_heads_up">
-                                                                                                                <div className="intel">
-                                                                                                                    <p className="text-muted author">by </p>
-                                                                                                                    <p className="text-muted author">{_facture.Societe._societe_raison}</p>
-                                                                                                                    <p className="text-muted author">{moment(new Date(_facture._facture_date)).fromNow()}</p>
-                                                                                                                </div>
-                                                                                                                <div className="dropdown">
-                                                                                                                    <span className="dropdown-toggle" id="dropdownMenuButton_factures" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                                                        <i className="fas fa-ellipsis-h"></i>
-                                                                                                                    </span>
-                                                                                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_factures">
-                                                                                                                        <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteFacture(_facture._id)}><i className="far fa-trash-alt"></i></a>
-                                                                                                                        <a href="# " className="dropdown-item _view" onClick={() => { this.setState({ __facture: _facture }); }} data-id={_facture._id} data-toggle="modal" data-target="#_facture_modal"><i className="fas fa-expand-alt"></i></a>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div className="_facture_body">
-                                                                                                                <h6>{_facture._facture_numero}</h6>
+                                                                    <div className="_data">
+                                                                        <Swiper
+                                                                            spaceBetween={0}
+                                                                            slidesPerView={3.25}
+                                                                            direction='vertical'
+                                                                            effect='coverflow'
+                                                                            coverflowEffect={{
+                                                                                rotate: 0,
+                                                                                stretch: 0,
+                                                                                depth: 0,
+                                                                                modifier: 3,
+                                                                                slideShadows: false
+                                                                            }}
+                                                                            grabCursor='true'
+                                                                            watchOverflow='true'
+                                                                            slideToClickedSlide='true'
+                                                                            observer='true'
+                                                                            scrollbar={{ draggable: true }}
+                                                                        >
+                                                                            {
+                                                                                _factures.map((_facture, index) => {
+                                                                                    return (
+                                                                                        <SwiperSlide key={_facture} virtualIndex={index}>
+                                                                                            <div className={"card card_factures card_" + index} data-title={_.snakeCase(_facture._facture_numero)} data-index={_.add(index, 1)}>
+                                                                                                <div className="card-body">
+                                                                                                    <div className="_corps">
+                                                                                                        <h6>{_facture._facture_numero}</h6>
+                                                                                                    </div>
+                                                                                                    <div className="_heads_up">
+                                                                                                        <div className="intel">
+                                                                                                            <p className="text-muted author">by </p>
+                                                                                                            <p className="text-muted author">{_facture.Societe._societe_raison}</p>
+                                                                                                            <p className="text-muted author">{moment(new Date(_facture._facture_date)).fromNow()}</p>
+                                                                                                        </div>
+                                                                                                        <div className="dropdown">
+                                                                                                            <span className="dropdown-toggle" id="dropdownMenuButton_factures" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                                <i className="fas fa-ellipsis-h"></i>
+                                                                                                            </span>
+                                                                                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_factures">
+                                                                                                                <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteFacture(_facture._id)}><i className="far fa-trash-alt"></i></a>
+                                                                                                                <a href="# " className="dropdown-item _view" onClick={() => { this.setState({ __facture: _facture }); }} data-id={_facture._id} data-toggle="modal" data-target="#_facture_modal"><i className="fas fa-expand-alt"></i></a>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        )
-                                                                                    })
-                                                                                }
-                                                                            </div>
-                                                                            <div className="factures_slider_scrollbar swiper-scrollbar"></div>
-                                                                        </div>
+                                                                                        </SwiperSlide>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </Swiper>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </li>
-                                                <li className="cards__item deviss__item">
+                                                <li className="cards__item">
                                                     <div className="card">
                                                         <div className="card__content">
                                                             <div className="_deviss_pane _pane">
@@ -3636,44 +3460,56 @@ class Dashboard extends React.Component {
                                                                         </button>
                                                                     </div>
                                                                     <div className="_deviss_data _data">
-                                                                        <div className="deviss_slider_wrapper swiper-container">
-                                                                            <div className="deviss_slider_wrapper_cards swiper-wrapper">
-                                                                                {
-                                                                                    _deviss.map((_devis, index) => {
-                                                                                        return (
-                                                                                            <div className="deviss_slider_wrapper_cards_item swiper-slide" id="deviss_slider_wrapper_cards_item" key={index}>
-                                                                                                <div className={`devis_item swiper-slide_item`}>
-                                                                                                    <div className={"col card card_deviss card_" + index} data-title={_.snakeCase(_devis._devis_numero)} data-index={_.add(index, 1)}>
-                                                                                                        <div className="card-body">
-                                                                                                            <div className="_heads_up">
-                                                                                                                <div className="intel">
-                                                                                                                    <p className="text-muted author">by </p>
-                                                                                                                    <p className="text-muted author">{_devis.Societe._societe_raison}</p>
-                                                                                                                    <p className="text-muted author">{moment(new Date(_devis._devis_date)).fromNow()}</p>
-                                                                                                                </div>
-                                                                                                                <div className="dropdown">
-                                                                                                                    <span className="dropdown-toggle" id="dropdownMenuButton_deviss" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                                                        <i className="fas fa-ellipsis-h"></i>
-                                                                                                                    </span>
-                                                                                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_deviss">
-                                                                                                                        <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteDevis(_devis._id)}><i className="far fa-trash-alt"></i></a>
-                                                                                                                        <a href="# " className="dropdown-item _view" onClick={() => { this.setState({ __devis: _devis }); }} data-id={_devis._id} data-toggle="modal" data-target="#_devis_modal"><i className="fas fa-expand-alt"></i></a>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div className="_devis_body">
-                                                                                                                <h6>{_devis._devis_numero}</h6>
+                                                                        <Swiper
+                                                                            spaceBetween={0}
+                                                                            slidesPerView={3.25}
+                                                                            direction='vertical'
+                                                                            effect='coverflow'
+                                                                            coverflowEffect={{
+                                                                                rotate: 0,
+                                                                                stretch: 0,
+                                                                                depth: 0,
+                                                                                modifier: 3,
+                                                                                slideShadows: false
+                                                                            }}
+                                                                            grabCursor='true'
+                                                                            watchOverflow='true'
+                                                                            slideToClickedSlide='true'
+                                                                            observer='true'
+                                                                            scrollbar={{ draggable: true }}
+                                                                        >
+                                                                            {
+                                                                                _deviss.map((_devis, index) => {
+                                                                                    return (
+                                                                                        <SwiperSlide key={_devis} virtualIndex={index}>
+                                                                                            <div className={"col card card_deviss card_" + index} data-title={_.snakeCase(_devis._devis_numero)} data-index={_.add(index, 1)}>
+                                                                                                <div className="card-body">
+                                                                                                    <div className="_corps">
+                                                                                                        <h6>{_devis._devis_numero}</h6>
+                                                                                                    </div>
+                                                                                                    <div className="_heads_up">
+                                                                                                        <div className="intel">
+                                                                                                            <p className="text-muted author">by </p>
+                                                                                                            <p className="text-muted author">{_devis.Societe._societe_raison}</p>
+                                                                                                            <p className="text-muted author">{moment(new Date(_devis._devis_date)).fromNow()}</p>
+                                                                                                        </div>
+                                                                                                        <div className="dropdown">
+                                                                                                            <span className="dropdown-toggle" id="dropdownMenuButton_deviss" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                                <i className="fas fa-ellipsis-h"></i>
+                                                                                                            </span>
+                                                                                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_deviss">
+                                                                                                                <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteDevis(_devis._id)}><i className="far fa-trash-alt"></i></a>
+                                                                                                                <a href="# " className="dropdown-item _view" onClick={() => { this.setState({ __devis: _devis }); }} data-id={_devis._id} data-toggle="modal" data-target="#_devis_modal"><i className="fas fa-expand-alt"></i></a>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        )
-                                                                                    })
-                                                                                }
-                                                                            </div>
-                                                                            <div className="deviss_slider_scrollbar swiper-scrollbar"></div>
-                                                                        </div>
+                                                                                        </SwiperSlide>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </Swiper>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -3684,18 +3520,18 @@ class Dashboard extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="personnels_pane tab-pane" id="3a">
-
+                                <div className="tab-pane active" id="3a">
+                                    <div className="_sub_pane">
+                                        <div className="_sub_pane_header"></div>
+                                        <div className="_sub_pane_content"></div>
+                                    </div>
                                 </div>
-                                <div className="clients_pane tab-pane" id="4a">
-
-                                </div>
-                                <div className="fournisseurs_pane tab-pane" id="5a">
-                                    <div className="_fournisseurs_pane">
-                                        <div className="_fournisseurs_header">
+                                <div className="tab-pane active" id="4a">
+                                    <div className="_sub_pane">
+                                        <div className="_sub_pane_header">
 
                                         </div>
-                                        <div className="_fournisseurs_content">
+                                        <div className="_sub_pane_content">
                                             <ul className="cards">
                                                 <li className="cards__item"></li>
                                                 <li className="cards__item"></li>
@@ -3703,12 +3539,98 @@ class Dashboard extends React.Component {
                                                 <li className="cards__item"></li>
                                                 <li className="cards__item"></li>
                                                 <li className="cards__item"></li>
-                                                <li className="cards__item fournisseurs__item">
+                                                <li className="cards__item">
                                                     <div className="card">
                                                         <div className="card__content">
-                                                            <div className="_fournisseurs_pane _pane">
-                                                                <div className="_fournisseurs_content _content">
-                                                                    <div className="_fournisseurs_head _head">
+                                                            <div className="_pane">
+                                                                <div className="_content">
+                                                                    <div className="_head">
+                                                                        <h6>Les Clients</h6>
+                                                                        <button id="_add_client" type="button" data-toggle="modal" data-target="#_client_modal">
+                                                                            <span className="icon" aria-hidden="true">
+                                                                                <i className="fas fa-minus"></i>
+                                                                            </span>
+                                                                            <span className="button-text">Ajouter Client.</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div className="_data">
+                                                                        <Swiper
+                                                                            spaceBetween={0}
+                                                                            slidesPerView={3.25}
+                                                                            direction='vertical'
+                                                                            effect='coverflow'
+                                                                            coverflowEffect={{
+                                                                                rotate: 0,
+                                                                                stretch: 0,
+                                                                                depth: 0,
+                                                                                modifier: 3,
+                                                                                slideShadows: false
+                                                                            }}
+                                                                            grabCursor='true'
+                                                                            watchOverflow='true'
+                                                                            slideToClickedSlide='true'
+                                                                            observer='true'
+                                                                            scrollbar={{ draggable: true }}
+                                                                            onSwiper={(swiper) => console.log(swiper)}
+                                                                        >
+                                                                            {
+                                                                                _clients.map((_client, index) => {
+                                                                                    return (
+                                                                                        <SwiperSlide key={_client} virtualIndex={index}>
+                                                                                            <div className={"card card_clients card_" + index} data-title={_.snakeCase(_client._client_raison ? _client._client_raison : _client._client_prenomcontact + ' ' + _client._client_nomcontact)} data-index={_.add(index, 1)}>
+                                                                                                <div className="card-body">
+                                                                                                    <div className="_corps">
+                                                                                                        <h6>{_client._client_raison ? _client._client_raison : _client._client_prenomcontact + ' ' + _client._client_nomcontact}</h6>
+                                                                                                        <p className="text-muted"><i className="fas fa-map-marker-alt"></i><b>{_client._client_adresse}</b></p>
+                                                                                                    </div>
+                                                                                                    <div className="_heads_up">
+                                                                                                        <div className="dropdown">
+                                                                                                            <span className="dropdown-toggle" id="dropdownMenuButton_clients" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                                <i className="fas fa-ellipsis-h"></i>
+                                                                                                            </span>
+                                                                                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_clients">
+                                                                                                                <a href="# " className="dropdown-item edit" data-toggle="modal" data-target="#_client_modal" onClick={() => this.handleEditClient(_client)}><i className="fas fa-edit"></i></a>
+                                                                                                                <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteClient(_client._id)}><i className="far fa-trash-alt"></i></a>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </SwiperSlide>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </Swiper>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li className="cards__item"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="tab-pane active" id="5a">
+                                    <div className="_sub_pane">
+                                        <div className="_sub_pane_header">
+
+                                        </div>
+                                        <div className="_sub_pane_content">
+                                            <ul className="cards">
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item">
+                                                    <div className="card">
+                                                        <div className="card__content">
+                                                            <div className="_pane">
+                                                                <div className="_content">
+                                                                    <div className="_head">
                                                                         <h6>Les Fournisseurs</h6>
                                                                         <button id="_add_fournisseur" type="button" data-toggle="modal" data-target="#_fournisseur_modal">
                                                                             <span className="icon" aria-hidden="true">
@@ -3717,43 +3639,53 @@ class Dashboard extends React.Component {
                                                                             <span className="button-text">Ajouter Fournisseur.</span>
                                                                         </button>
                                                                     </div>
-                                                                    <div className="_fournisseurs_data _data">
-                                                                        <div className="fournisseurs_slider_wrapper swiper-container">
-                                                                            <div className="fournisseurs_slider_wrapper_cards swiper-wrapper">
-                                                                                {
-                                                                                    _fournisseurs.map((_fournisseur, index) => {
-                                                                                        return (
-                                                                                            <div className="fournisseurs_slider_wrapper_cards_item swiper-slide" id="fournisseurs_slider_wrapper_cards_item" key={index}>
-                                                                                                <div className={`fournisseur_item swiper-slide_item`}>
-                                                                                                    <div className={"col card card_fournisseurs card_" + index} data-title={_.snakeCase(_fournisseur._fournisseur_raison)} data-index={_.add(index, 1)}>
-                                                                                                        <div className="card-body">
-                                                                                                            <div className="_heads_up">
-                                                                                                                <div className="dropdown">
-                                                                                                                    <span className="dropdown-toggle" id="dropdownMenuButton_fournisseurs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                                                        <i className="fas fa-ellipsis-h"></i>
-                                                                                                                    </span>
-                                                                                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_fournisseurs">
-                                                                                                                        <a href="# " className="dropdown-item edit" data-toggle="modal" data-target="#_fournisseur_modal" onClick={() => this.handleEditFournisseur(_fournisseur)}><i className="fas fa-edit"></i></a>
-                                                                                                                        <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteFournisseur(_fournisseur._id)}><i className="far fa-trash-alt"></i></a>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div className="_fournisseur_body">
-                                                                                                                <h6>{_fournisseur._fournisseur_raison}</h6>
-                                                                                                            </div>
-                                                                                                            <div className="_siege">
-                                                                                                                <p className="text-muted _siege"><b>{_fournisseur._fournisseur_siege}</b><i className="fas fa-map-marker-alt"></i></p>
+                                                                    <div className="_data">
+                                                                        <Swiper
+                                                                            spaceBetween={0}
+                                                                            slidesPerView={3.25}
+                                                                            direction='vertical'
+                                                                            effect='coverflow'
+                                                                            coverflowEffect={{
+                                                                                rotate: 0,
+                                                                                stretch: 0,
+                                                                                depth: 0,
+                                                                                modifier: 3,
+                                                                                slideShadows: false
+                                                                            }}
+                                                                            grabCursor='true'
+                                                                            watchOverflow='true'
+                                                                            slideToClickedSlide='true'
+                                                                            observer='true'
+                                                                            scrollbar={{ draggable: true }}
+                                                                        >
+                                                                            {
+                                                                                _fournisseurs.map((_fournisseur, index) => {
+                                                                                    return (
+                                                                                        <SwiperSlide key={_fournisseur} virtualIndex={index}>
+                                                                                            <div className={"card card_fournisseurs card_" + index} data-title={_.snakeCase(_fournisseur._fournisseur_raison)} data-index={_.add(index, 1)}>
+                                                                                                <div className="card-body">
+                                                                                                    <div className="_corps">
+                                                                                                        <h6>{_fournisseur._fournisseur_raison}</h6>
+                                                                                                        <p className="text-muted"><i className="fas fa-map-marker-alt"></i><b>{_fournisseur._fournisseur_siege}</b></p>
+                                                                                                    </div>
+                                                                                                    <div className="_heads_up">
+                                                                                                        <div className="dropdown">
+                                                                                                            <span className="dropdown-toggle" id="dropdownMenuButton_fournisseurs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                                <i className="fas fa-ellipsis-h"></i>
+                                                                                                            </span>
+                                                                                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_fournisseurs">
+                                                                                                                <a href="# " className="dropdown-item edit" data-toggle="modal" data-target="#_fournisseur_modal" onClick={() => this.handleEditFournisseur(_fournisseur)}><i className="fas fa-edit"></i></a>
+                                                                                                                <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteFournisseur(_fournisseur._id)}><i className="far fa-trash-alt"></i></a>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        )
-                                                                                    })
-                                                                                }
-                                                                            </div>
-                                                                            <div className="fournisseurs_slider_scrollbar swiper-scrollbar"></div>
-                                                                        </div>
+                                                                                        </SwiperSlide>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </Swiper>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -3765,9 +3697,9 @@ class Dashboard extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="vehicules_pane tab-pane" id="6a">
-                                    <div className="_vehicules_pane">
-                                        <div className="_vehicules_header">
+                                <div className="tab-pane active" id="6a">
+                                    <div className="_sub_pane">
+                                        <div className="_sub_pane_header">
                                             <form className="search_form_vehicules">
                                                 <div className="input-field search-wrapper_vehicules">
                                                     <input
@@ -3786,7 +3718,7 @@ class Dashboard extends React.Component {
                                                 </div>
                                             </form>
                                         </div>
-                                        <div className="_vehicules_content">
+                                        <div className="_sub_pane_content">
                                             <ul className="cards">
                                                 {
                                                     _.map(_vehicules, (_v) => {
@@ -3842,18 +3774,27 @@ class Dashboard extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="reservations_pane tab-pane" id="7a">
-
+                                <div className="tab-pane active" id="7a">
+                                    <div className="_sub_pane">
+                                        <div className="_sub_pane_header"></div>
+                                        <div className="_sub_pane_content"></div>
+                                    </div>
                                 </div>
-                                <div className="voyages_pane tab-pane" id="8a">
-
+                                <div className="tab-pane active" id="8a">
+                                    <div className="_sub_pane">
+                                        <div className="_sub_pane_header"></div>
+                                        <div className="_sub_pane_content"></div>
+                                    </div>
                                 </div>
-                                <div className="stocks_pane tab-pane" id="9a">
-
+                                <div className="tab-pane active" id="9a">
+                                    <div className="_sub_pane">
+                                        <div className="_sub_pane_header"></div>
+                                        <div className="_sub_pane_content"></div>
+                                    </div>
                                 </div>
-                                <div className="parametres_pane tab-pane" id="10a">
-                                    <div className="_parametres_pane">
-                                        <div className="_parametres_header">
+                                <div className="tab-pane active" id="10a">
+                                    <div className="_sub_pane">
+                                        <div className="_sub_pane_header">
                                             <form className="search_form_parametres">
                                                 <div className="input-field search-wrapper_parametres">
                                                     <input
@@ -3872,7 +3813,7 @@ class Dashboard extends React.Component {
                                                 </div>
                                             </form>
                                         </div>
-                                        <div className="_parametres_content">
+                                        <div className="_sub_pane_content">
                                             <div className="forms__item">
                                                 <div className="card">
                                                     <div className="card__content">
@@ -4287,6 +4228,7 @@ class Dashboard extends React.Component {
                                     </div>
                                 </div>
                             </div>
+
                             <div className="_societes_modal modal fade" id="_societe_modal" tabIndex="-1" role="dialog" aria-labelledby="_societe_modalLabel" aria-hidden="true">
                                 <div className="modal-dialog" role="document">
                                     <div className="modal-content">
@@ -4796,155 +4738,6 @@ class Dashboard extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="_deviss_modal modal fade" id="_devis_modal" tabIndex="-1" role="dialog" aria-labelledby="_devis_modalLabel" aria-hidden="true">
-                                <div className="modal-dialog" role="document">
-                                    <div className="modal-content">
-                                        <div className="modal-body">
-                                            <a href="# " title="Close" className="modal-close" data-dismiss="modal">Close</a>
-                                            <div className="mail_form card">
-                                                <div className="fieldset">
-                                                    <div className="row">
-                                                        <div className="input-field col s6">
-                                                            <Select
-                                                                id="Fournisseur"
-                                                                className="validate form-group-input Fournisseur"
-                                                                classNamePrefix="select"
-                                                                defaultValue={_.find(_societes, (_s) => { _.includes(_s.Employe, _user.Employe) })}
-                                                                isClearable="true"
-                                                                isSearchable="true"
-                                                                name="Fournisseur"
-                                                                value={Fournisseur}
-                                                                getOptionLabel={(option) => option._fournisseur_raison}
-                                                                getOptionValue={(option) => option}
-                                                                onChange={this.handleChange}
-                                                                onSelect={this.handleChange}
-                                                                options={_fournisseurs}
-                                                                width='100%'
-                                                            />
-                                                            <label htmlFor='Fournisseur' className={Fournisseur ? 'active' : ''}>Fournisseur</label>
-                                                            <div className="form-group-line"></div>
-                                                        </div>
-                                                        <div className="input-field col s6">
-                                                            <Select
-                                                                id="Client"
-                                                                className="validate form-group-input Client"
-                                                                classNamePrefix="select"
-                                                                defaultValue={_.find(_societes, (_s) => { _.includes(_s.Employe, _user.Employe) })}
-                                                                isClearable="true"
-                                                                isSearchable="true"
-                                                                name="Client"
-                                                                value={Client}
-                                                                getOptionLabel={(option) => option._client_raison}
-                                                                getOptionValue={(option) => option}
-                                                                onChange={this.handleChange}
-                                                                onSelect={this.handleChange}
-                                                                options={_clients}
-                                                                width='100%'
-                                                            />
-                                                            <label htmlFor='Client' className={Client ? 'active' : ''}>Client</label>
-                                                            <div className="form-group-line"></div>
-                                                        </div>
-                                                    </div>
-                                                    <fieldset className="Produit border">
-                                                        <legend className="w-auto" onClick={this.handleAdd}>Ajouter des Produits</legend>
-                                                        {
-                                                            _.map(_devis_Produit, (_P, i) => {
-                                                                return (
-                                                                    <div className="_P">
-                                                                        <div className="row">
-                                                                            <div className="input-field col s6">
-                                                                                <input
-                                                                                    className="validate form-group-input _produit_designation"
-                                                                                    id="_produit_designation"
-                                                                                    type="text"
-                                                                                    name="_produit_designation"
-                                                                                    value={_P._produit_designation}
-                                                                                    onChange={(event) => this.handleChangeNestedAlotis(_devis_Produit.indexOf(_P), '_produit_designation', event.target.value)}
-                                                                                />
-                                                                                <label htmlFor="_produit_designation" className={_P._produit_designation ? 'active' : ''}>Designation</label>
-                                                                                <div className="form-group-line"></div>
-                                                                            </div>
-                                                                            <div className="input-field col s6">
-                                                                                <input
-                                                                                    className="validate form-group-input _produit_reference"
-                                                                                    id="_produit_reference"
-                                                                                    type="text"
-                                                                                    name="_produit_reference"
-                                                                                    value={_P._produit_reference}
-                                                                                    onChange={(event) => this.handleChangeNestedAlotis(_devis_Produit.indexOf(_P), '_produit_reference', event.target.value)}
-                                                                                />
-                                                                                <label htmlFor="_produit_reference" className={_P._produit_reference ? 'active' : ''}>Reference</label>
-                                                                                <div className="form-group-line"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="row">
-                                                                            <div className="input-field col s6">
-                                                                                <input
-                                                                                    className="validate form-group-input _produit_quantite"
-                                                                                    id="_produit_quantite"
-                                                                                    type="text"
-                                                                                    name="_produit_quantite"
-                                                                                    value={_P._produit_quantite}
-                                                                                    onChange={(event) => this.handleChangeNestedAlotis(_devis_Produit.indexOf(_P), '_produit_quantite', event.target.value)}
-                                                                                />
-                                                                                <label htmlFor="_produit_quantite" className={_P._produit_quantite ? 'active' : ''}>Quantite</label>
-                                                                                <div className="form-group-line"></div>
-                                                                            </div>
-                                                                            <div className="input-field col s6">
-                                                                                <input
-                                                                                    className="validate form-group-input _produit_prixunitaire"
-                                                                                    id="_produit_prixunitaire"
-                                                                                    type="text"
-                                                                                    name="_produit_prixunitaire"
-                                                                                    value={_P._produit_prixunitaire}
-                                                                                    onChange={(event) => this.handleChangeNestedAlotis(_devis_Produit.indexOf(_P), '_produit_prixunitaire', event.target.value)}
-                                                                                />
-                                                                                <label htmlFor="_produit_prixunitaire" className={_P._produit_prixunitaire ? 'active' : ''}>Prix Unitaire</label>
-                                                                                <div className="form-group-line"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="row button_row">
-                                                                            <div className="input-field col s6"></div>
-                                                                            <div className="input-field col s6">
-                                                                                <button
-                                                                                    className="pull-right"
-                                                                                    type="submit"
-                                                                                    onClick={() => this.handleRemove(_P)}
-                                                                                >
-                                                                                    <span>
-                                                                                        <span>
-                                                                                            <span data-attr-span="Supprimer le Produit">
-                                                                                                Supprimer le Produit
-                                                                                            </span>
-                                                                                        </span>
-                                                                                    </span>
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </fieldset>
-                                                    <div className="row">
-                                                        <div className="input-field col s6">
-                                                            Societe
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="input-field col s6">
-
-                                                        </div>
-                                                        <div className="input-field col s6">
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div className="_factures_modal modal fade" id="_facture_modal" tabIndex="-1" role="dialog" aria-labelledby="_facture_modalLabel" aria-hidden="true">
                                 <div className="modal-dialog" role="document">
                                     <div className="modal-content">
@@ -4982,6 +4775,511 @@ class Dashboard extends React.Component {
                                                         </div>
                                                         <div className="input-field col s6">
 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="_deviss_modal modal fade" id="_devis_modal" tabIndex="-1" role="dialog" aria-labelledby="_devis_modalLabel" aria-hidden="true">
+                                <div className="modal-dialog" role="document">
+                                    <div className="modal-content">
+                                        <div className="modal-body">
+                                            <a href="# " title="Close" className="modal-close" data-dismiss="modal">Close</a>
+                                            <div className="mail_form card">
+                                                <div className="fieldset deviss_fieldset">
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6"></div>
+                                                        <div className="input-field col s6">
+                                                            <button
+                                                                className="pull-right"
+                                                                type="submit"
+                                                                name='btn_login'
+                                                                onClick={this.handleSubmitDevis}
+                                                            >
+                                                                <span>
+                                                                    <span>
+                                                                        <span data-attr-span={_devisToEdit ? 'Update.' : 'Submit.'}>
+                                                                            {_devisToEdit ? 'Update' : 'Submit'}.
+                                                                        </span>
+                                                                    </span>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="_clients_modal modal fade" id="_client_modal" tabIndex="-1" role="dialog" aria-labelledby="_client_modalLabel" aria-hidden="true">
+                                <div className="modal-dialog" role="document">
+                                    <div className="modal-content">
+                                        <div className="modal-body">
+                                            <a href="# " title="Close" className="modal-close" data-dismiss="modal">Close</a>
+                                            <div className="mail_form card">
+                                                <div className="fieldset clients_fieldset">
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _client_raison"
+                                                                id="_client_raison"
+                                                                type="text"
+                                                                name="_client_raison"
+                                                                value={_client_raison}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_client_raison' className={_client_raison ? 'active' : ''}>_client_raison</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _client_adresse"
+                                                                id="_client_adresse"
+                                                                type="text"
+                                                                name="_client_adresse"
+                                                                value={_client_adresse}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_client_adresse' className={_client_adresse ? 'active' : ''}>_client_adresse</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6 _autocomplete">
+                                                            <Autocomplete
+                                                                items={["Afghanistan",
+                                                                    "Albania",
+                                                                    "Algeria",
+                                                                    "American Samoa",
+                                                                    "Andorra",
+                                                                    "Angola",
+                                                                    "Anguilla",
+                                                                    "Antarctica",
+                                                                    "Antigua and Barbuda",
+                                                                    "Argentina",
+                                                                    "Armenia",
+                                                                    "Aruba",
+                                                                    "Australia",
+                                                                    "Austria",
+                                                                    "Azerbaijan",
+                                                                    "Bahamas (the)",
+                                                                    "Bahrain",
+                                                                    "Bangladesh",
+                                                                    "Barbados",
+                                                                    "Belarus",
+                                                                    "Belgium",
+                                                                    "Belize",
+                                                                    "Benin",
+                                                                    "Bermuda",
+                                                                    "Bhutan",
+                                                                    "Bolivia (Plurinational State of)",
+                                                                    "Bonaire, Sint Eustatius and Saba",
+                                                                    "Bosnia and Herzegovina",
+                                                                    "Botswana",
+                                                                    "Bouvet Island",
+                                                                    "Brazil",
+                                                                    "British Indian Ocean Territory (the)",
+                                                                    "Brunei Darussalam",
+                                                                    "Bulgaria",
+                                                                    "Burkina Faso",
+                                                                    "Burundi",
+                                                                    "Cabo Verde",
+                                                                    "Cambodia",
+                                                                    "Cameroon",
+                                                                    "Canada",
+                                                                    "Cayman Islands (the)",
+                                                                    "Central African Republic (the)",
+                                                                    "Chad",
+                                                                    "Chile",
+                                                                    "China",
+                                                                    "Christmas Island",
+                                                                    "Cocos (Keeling) Islands (the)",
+                                                                    "Colombia",
+                                                                    "Comoros (the)",
+                                                                    "Congo (the Democratic Republic of the)",
+                                                                    "Congo (the)",
+                                                                    "Cook Islands (the)",
+                                                                    "Costa Rica",
+                                                                    "Croatia",
+                                                                    "Cuba",
+                                                                    "Curaçao",
+                                                                    "Cyprus",
+                                                                    "Czechia",
+                                                                    "Côte d'Ivoire",
+                                                                    "Denmark",
+                                                                    "Djibouti",
+                                                                    "Dominica",
+                                                                    "Dominican Republic (the)",
+                                                                    "Ecuador",
+                                                                    "Egypt",
+                                                                    "El Salvador",
+                                                                    "Equatorial Guinea",
+                                                                    "Eritrea",
+                                                                    "Estonia",
+                                                                    "Eswatini",
+                                                                    "Ethiopia",
+                                                                    "Falkland Islands (the) [Malvinas]",
+                                                                    "Faroe Islands (the)",
+                                                                    "Fiji",
+                                                                    "Finland",
+                                                                    "France",
+                                                                    "French Guiana",
+                                                                    "French Polynesia",
+                                                                    "French Southern Territories (the)",
+                                                                    "Gabon",
+                                                                    "Gambia (the)",
+                                                                    "Georgia",
+                                                                    "Germany",
+                                                                    "Ghana",
+                                                                    "Gibraltar",
+                                                                    "Greece",
+                                                                    "Greenland",
+                                                                    "Grenada",
+                                                                    "Guadeloupe",
+                                                                    "Guam",
+                                                                    "Guatemala",
+                                                                    "Guernsey",
+                                                                    "Guinea",
+                                                                    "Guinea-Bissau",
+                                                                    "Guyana",
+                                                                    "Haiti",
+                                                                    "Heard Island and McDonald Islands",
+                                                                    "Holy See (the)",
+                                                                    "Honduras",
+                                                                    "Hong Kong",
+                                                                    "Hungary",
+                                                                    "Iceland",
+                                                                    "India",
+                                                                    "Indonesia",
+                                                                    "Iran (Islamic Republic of)",
+                                                                    "Iraq",
+                                                                    "Ireland",
+                                                                    "Isle of Man",
+                                                                    "Israel",
+                                                                    "Italy",
+                                                                    "Jamaica",
+                                                                    "Japan",
+                                                                    "Jersey",
+                                                                    "Jordan",
+                                                                    "Kazakhstan",
+                                                                    "Kenya",
+                                                                    "Kiribati",
+                                                                    "Korea (the Democratic People's Republic of)",
+                                                                    "Korea (the Republic of)",
+                                                                    "Kuwait",
+                                                                    "Kyrgyzstan",
+                                                                    "Lao People's Democratic Republic (the)",
+                                                                    "Latvia",
+                                                                    "Lebanon",
+                                                                    "Lesotho",
+                                                                    "Liberia",
+                                                                    "Libya",
+                                                                    "Liechtenstein",
+                                                                    "Lithuania",
+                                                                    "Luxembourg",
+                                                                    "Macao",
+                                                                    "Madagascar",
+                                                                    "Malawi",
+                                                                    "Malaysia",
+                                                                    "Maldives",
+                                                                    "Mali",
+                                                                    "Malta",
+                                                                    "Marshall Islands (the)",
+                                                                    "Martinique",
+                                                                    "Mauritania",
+                                                                    "Mauritius",
+                                                                    "Mayotte",
+                                                                    "Mexico",
+                                                                    "Micronesia (Federated States of)",
+                                                                    "Moldova (the Republic of)",
+                                                                    "Monaco",
+                                                                    "Mongolia",
+                                                                    "Montenegro",
+                                                                    "Montserrat",
+                                                                    "Morocco",
+                                                                    "Mozambique",
+                                                                    "Myanmar",
+                                                                    "Namibia",
+                                                                    "Nauru",
+                                                                    "Nepal",
+                                                                    "Netherlands (the)",
+                                                                    "New Caledonia",
+                                                                    "New Zealand",
+                                                                    "Nicaragua",
+                                                                    "Niger (the)",
+                                                                    "Nigeria",
+                                                                    "Niue",
+                                                                    "Norfolk Island",
+                                                                    "Northern Mariana Islands (the)",
+                                                                    "Norway",
+                                                                    "Oman",
+                                                                    "Pakistan",
+                                                                    "Palau",
+                                                                    "Palestine, State of",
+                                                                    "Panama",
+                                                                    "Papua New Guinea",
+                                                                    "Paraguay",
+                                                                    "Peru",
+                                                                    "Philippines (the)",
+                                                                    "Pitcairn",
+                                                                    "Poland",
+                                                                    "Portugal",
+                                                                    "Puerto Rico",
+                                                                    "Qatar",
+                                                                    "Republic of North Macedonia",
+                                                                    "Romania",
+                                                                    "Russian Federation (the)",
+                                                                    "Rwanda",
+                                                                    "Réunion",
+                                                                    "Saint Barthélemy",
+                                                                    "Saint Helena, Ascension and Tristan da Cunha",
+                                                                    "Saint Kitts and Nevis",
+                                                                    "Saint Lucia",
+                                                                    "Saint Martin (French part)",
+                                                                    "Saint Pierre and Miquelon",
+                                                                    "Saint Vincent and the Grenadines",
+                                                                    "Samoa",
+                                                                    "San Marino",
+                                                                    "Sao Tome and Principe",
+                                                                    "Saudi Arabia",
+                                                                    "Senegal",
+                                                                    "Serbia",
+                                                                    "Seychelles",
+                                                                    "Sierra Leone",
+                                                                    "Singapore",
+                                                                    "Sint Maarten (Dutch part)",
+                                                                    "Slovakia",
+                                                                    "Slovenia",
+                                                                    "Solomon Islands",
+                                                                    "Somalia",
+                                                                    "South Africa",
+                                                                    "South Georgia and the South Sandwich Islands",
+                                                                    "South Sudan",
+                                                                    "Spain",
+                                                                    "Sri Lanka",
+                                                                    "Sudan (the)",
+                                                                    "Suriname",
+                                                                    "Svalbard and Jan Mayen",
+                                                                    "Sweden",
+                                                                    "Switzerland",
+                                                                    "Syrian Arab Republic",
+                                                                    "Taiwan",
+                                                                    "Tajikistan",
+                                                                    "Tanzania, United Republic of",
+                                                                    "Thailand",
+                                                                    "Timor-Leste",
+                                                                    "Togo",
+                                                                    "Tokelau",
+                                                                    "Tonga",
+                                                                    "Trinidad and Tobago",
+                                                                    "Tunisia",
+                                                                    "Turkey",
+                                                                    "Turkmenistan",
+                                                                    "Turks and Caicos Islands (the)",
+                                                                    "Tuvalu",
+                                                                    "Uganda",
+                                                                    "Ukraine",
+                                                                    "United Arab Emirates (the)",
+                                                                    "United Kingdom of Great Britain and Northern Ireland (the)",
+                                                                    "United States Minor Outlying Islands (the)",
+                                                                    "United States of America (the)",
+                                                                    "Uruguay",
+                                                                    "Uzbekistan",
+                                                                    "Vanuatu",
+                                                                    "Venezuela (Bolivarian Republic of)",
+                                                                    "Viet Nam",
+                                                                    "Virgin Islands (British)",
+                                                                    "Virgin Islands (U.S.)",
+                                                                    "Wallis and Futuna",
+                                                                    "Western Sahara",
+                                                                    "Yemen",
+                                                                    "Zambia",
+                                                                    "Zimbabwe",
+                                                                    "Åland Islands"]}
+                                                                getItemValue={(item) => item}
+                                                                inputProps={{ id: '_client_pays', className: 'validate form-group-input _client_pays', name: '_client_pays', autoComplete: "off" }}
+                                                                shouldItemRender={(item, _client_pays) => item.toLowerCase().indexOf(_client_pays.toLowerCase()) > -1}
+                                                                renderItem={(item, isHighlighted) =>
+                                                                    <div className={`item ${isHighlighted ? 'item-highlighted' : ''}`}>
+                                                                        {item}
+                                                                    </div>
+                                                                }
+                                                                value={_client_pays}
+                                                                onChange={this.handleChange}
+                                                                onSelect={(_client_pays) => this.setState({ _client_pays })}
+                                                            />
+                                                            <label htmlFor='_client_pays' className={_client_pays ? 'active' : ''}>_client_pays</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _client_ville"
+                                                                id="_client_ville"
+                                                                type="text"
+                                                                name="_client_ville"
+                                                                value={_client_ville}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_client_ville' className={_client_ville ? 'active' : ''}>_client_ville</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _client_prenomcontact"
+                                                                id="_client_prenomcontact"
+                                                                type="text"
+                                                                name="_client_prenomcontact"
+                                                                value={_client_prenomcontact}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_client_prenomcontact' className={_client_prenomcontact ? 'active' : ''}>_client_prenomcontact</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _client_nomcontact"
+                                                                id="_client_nomcontact"
+                                                                type="text"
+                                                                name="_client_nomcontact"
+                                                                value={_client_nomcontact}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_client_nomcontact' className={_client_nomcontact ? 'active' : ''}>_client_nomcontact</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _client_email"
+                                                                id="_client_email"
+                                                                type="text"
+                                                                name="_client_email"
+                                                                value={_client_email}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_client_email' className={_client_email ? 'active' : ''}>_client_email</label>
+                                                            <div className="form-group-line"></div>
+                                                            <small id="emailHelp" className={_client_email_valid ? 'text-danger' : 'text-danger active'}>
+                                                                Veuillez fournir une adresse mail valide.
+                                                            </small>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <PhoneInput
+                                                                className="validate form-group-input _client_telephone"
+                                                                id="_client_telephone"
+                                                                name="_client_telephone"
+                                                                value={_client_telephone}
+                                                                onChange={(value) => this.handleChangePhoneAutocomplete("_client_telephone", value)}
+                                                            />
+                                                            <label htmlFor='_client_telephone' className={_client_telephone ? 'active phone_label' : 'phone_label'}>_client_telephone</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _client_patente"
+                                                                id="_client_patente"
+                                                                type="text"
+                                                                name="_client_patente"
+                                                                value={_client_patente}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_client_patente' className={_client_patente ? 'active' : ''}>_client_patente</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _client_IF"
+                                                                id="_client_IF"
+                                                                type="text"
+                                                                name="_client_IF"
+                                                                value={_client_IF}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_client_IF' className={_client_IF ? 'active' : ''}>_client_IF</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _client_RC"
+                                                                id="_client_RC"
+                                                                type="text"
+                                                                name="_client_RC"
+                                                                value={_client_RC}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_client_RC' className={_client_RC ? 'active' : ''}>_client_RC</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _client_ICE"
+                                                                id="_client_ICE"
+                                                                type="text"
+                                                                name="_client_ICE"
+                                                                value={_client_ICE}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_client_ICE' className={_client_ICE ? 'active' : ''}>_client_ICE</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _client_contrat"
+                                                                id="_client_contrat"
+                                                                type="text"
+                                                                name="_client_contrat"
+                                                                value={_client_contrat}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_client_contrat' className={_client_contrat ? 'active' : ''}>_client_contrat</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6"></div>
+                                                        <div className="input-field col s6">
+                                                            <button
+                                                                className="pull-right"
+                                                                type="submit"
+                                                                name='btn_login'
+                                                                onClick={this.handleSubmitClient}
+                                                            >
+                                                                <span>
+                                                                    <span>
+                                                                        <span data-attr-span={_clientToEdit ? 'Update.' : 'Submit.'}>
+                                                                            {_clientToEdit ? 'Update' : 'Submit'}.
+                                                                        </span>
+                                                                    </span>
+                                                                </span>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
