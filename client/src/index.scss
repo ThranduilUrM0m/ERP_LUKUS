@@ -2837,6 +2837,64 @@ html {
                                                         width: 100%;
                                                         height: 100%;
 
+                                                        .dropdown {
+                                                            margin-top: auto;
+                                                            margin-left: auto;
+                                                            width: fit-content;
+                                                            height: fit-content;
+
+                                                            span {
+                                                                cursor: pointer;
+
+                                                                i {
+                                                                    color: $black;
+                                                                }
+
+                                                                &.dropdown-toggle::after {
+                                                                    display: none;
+                                                                }
+                                                            }
+
+                                                            .dropdown-menu {
+                                                                flex-direction: row;
+                                                                position: absolute;
+                                                                left: unset !important;
+                                                                right: 100% !important;
+                                                                transform-origin: right;
+                                                                will-change: transform;
+                                                                transform: unset !important;
+                                                                min-width: unset !important;
+                                                                width: fit-content !important;
+                                                                padding: 0;
+                                                                margin: .5vh;
+
+                                                                &.show {
+                                                                    display: flex !important;
+                                                                }
+
+                                                                .dropdown-item {
+                                                                    width: 6.5vh;
+                                                                    height: 6.5vh;
+                                                                    padding: .5vh;
+                                                                    display: flex;
+                                                                    justify-content: center;
+                                                                    align-items: center;
+
+                                                                    &.edit,
+                                                                    &._view {
+                                                                        &:hover {
+                                                                            color: $green;
+                                                                        }
+                                                                    }
+
+                                                                    &.delete {
+                                                                        &:hover {
+                                                                            color: $calendar-red;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }

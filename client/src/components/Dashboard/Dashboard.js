@@ -3784,7 +3784,7 @@ class Dashboard extends React.Component {
                                                 </div>
                                             </form>
                                         </div>
-                                        <div className="_sub_pane_content">
+                                        <div className="_sub_pane_vehicules_content">
                                             <ul className="cards">
                                                 {
                                                     _.map(_vehicules, (_v) => {
@@ -3795,7 +3795,7 @@ class Dashboard extends React.Component {
                                                                         <div className="_vehicule_pane _pane">
                                                                             <div className="_vehicule_content _content">
                                                                                 <div className="_vehicule_datefabrication">
-                                                                                    {_v._vehicule_datefabrication}
+                                                                                    {moment(_v._vehicule_datefabrication).format('MMMM Do YYYY')}
                                                                                 </div>
                                                                                 <div className="_vehicule_marque">
                                                                                     {_v._vehicule_marque}
@@ -3806,6 +3806,15 @@ class Dashboard extends React.Component {
                                                                                 <div className="_vehicule_moteur">
                                                                                     {_v._vehicule_moteur}
                                                                                 </div>
+                                                                                <div className="dropdown">
+                                                                                    <span className="dropdown-toggle" id="dropdownMenuButton_vehicules" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                        <i className="fas fa-ellipsis-h"></i>
+                                                                                    </span>
+                                                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_vehicules">
+                                                                                        <a href="# " className="dropdown-item edit" data-toggle="modal" data-target="#_vehicule_modal" onClick={() => this.handleEditVehicule(_v)}><i className="fas fa-edit"></i></a>
+                                                                                        <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteVehicule(_v._id)}><i className="far fa-trash-alt"></i></a>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -3814,17 +3823,6 @@ class Dashboard extends React.Component {
                                                         )
                                                     })
                                                 }
-                                                <li className="cards__item _vehicule__item">
-                                                    <div className="card" data-attr-span='B'>
-                                                        <div className="card__content">
-                                                            <div className="_vehicule_pane _pane">
-                                                                <div className="_vehicule_content _content">
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
                                                 <li className="cards__item _add_vehicule__item">
                                                     <button id="_add_vehicule" type="button" data-toggle="modal" data-target="#_vehicule_modal">
                                                         <span>
@@ -3842,8 +3840,81 @@ class Dashboard extends React.Component {
                                 </div>
                                 <div className="tab-pane active" id="7a">
                                     <div className="_sub_pane">
-                                        <div className="_sub_pane_header"></div>
-                                        <div className="_sub_pane_content"></div>
+                                        <div className="_sub_pane_header">
+
+                                        </div>
+                                        <div className="_sub_pane_content">
+                                            <ul className="cards">
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item"></li>
+                                                <li className="cards__item">
+                                                    <div className="card">
+                                                        <div className="card__content">
+                                                            <div className="_pane">
+                                                                <div className="_content">
+                                                                    <div className="_head">
+                                                                        <h6>Les Reservations</h6>
+                                                                    </div>
+                                                                    <div className="_data">
+                                                                        <Swiper
+                                                                            spaceBetween={0}
+                                                                            slidesPerView={3.25}
+                                                                            direction='vertical'
+                                                                            effect='coverflow'
+                                                                            coverflowEffect={{
+                                                                                rotate: 0,
+                                                                                stretch: 0,
+                                                                                depth: 0,
+                                                                                modifier: 3,
+                                                                                slideShadows: false
+                                                                            }}
+                                                                            grabCursor='true'
+                                                                            watchOverflow='true'
+                                                                            slideToClickedSlide='true'
+                                                                            observer='true'
+                                                                            scrollbar={{ draggable: true }}
+                                                                        >
+                                                                            {
+                                                                                _reservations.map((_reservation, index) => {
+                                                                                    return (
+                                                                                        <SwiperSlide virtualIndex={index}>
+                                                                                            <div className={"card card_reservations card_" + index} data-index={_.add(index, 1)}>
+                                                                                                <div className="card-body">
+                                                                                                    <div className="_corps">
+                                                                                                        <h6>{_reservation.Client._client_raison ? _reservation.Client._client_raison : _reservation.Client._client_prenomcontact + ' ' + _reservation.Client._client_nomcontact}</h6>
+                                                                                                        <p className="text-muted"><i className="far fa-calendar-alt"></i><b>{moment(_reservation._reservation_datereservation).format('MMMM Do YYYY, HH:mm')}</b></p>
+                                                                                                    </div>
+                                                                                                    <div className="_heads_up">
+                                                                                                        <div className="dropdown">
+                                                                                                            <span className="dropdown-toggle" id="dropdownMenuButton_reservations" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                                <i className="fas fa-ellipsis-h"></i>
+                                                                                                            </span>
+                                                                                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton_reservations">
+                                                                                                                <a href="# " className="dropdown-item delete" onClick={() => this.handleDeleteFacture(_reservation._id)}><i className="far fa-trash-alt"></i></a>
+                                                                                                                <a href="# " className="dropdown-item _view" onClick={() => { this.setState({ __reservation: _reservation }); }} data-id={_reservation._id} data-toggle="modal" data-target="#_reservation_modal"><i className="fas fa-expand-alt"></i></a>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </SwiperSlide>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </Swiper>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li className="cards__item"></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="tab-pane active" id="8a">
@@ -3879,7 +3950,7 @@ class Dashboard extends React.Component {
                                                 </div>
                                             </form>
                                         </div>
-                                        <div className="_sub_pane_content">
+                                        <div className="_sub_pane_parametres_content">
                                             <div className="forms__item">
                                                 <div className="card">
                                                     <div className="card__content">
