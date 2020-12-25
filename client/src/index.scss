@@ -3628,12 +3628,12 @@ html {
 
                                         &.deviss_fieldset {
                                             grid-template-rows: 7.5vh 35vh 7.5vh 7.5vh;
-    
+
                                             fieldset {
                                                 overflow: auto;
                                                 margin: 1.25vh 0;
                                                 padding: 0 1.25vh;
-    
+
                                                 legend {
                                                     font-size: .75rem;
                                                     margin: 1.25vh;
@@ -3641,12 +3641,60 @@ html {
                                                     border-bottom: .5vh solid $main-color;
                                                     cursor: pointer;
                                                 }
-    
+
                                                 div._la {
                                                     padding: 1.25vh 0;
                                                     display: grid;
                                                     grid-template-rows: 7.5vh 7.5vh 7.5vh;
                                                     border-bottom: 1px solid rgba($color: $black, $alpha: .25);
+                                                }
+                                            }
+                                        }
+
+                                        &.factures_fieldset {
+                                            grid-template-rows: 7.5vh 35vh 7.5vh 7.5vh 7.5vh 7.5vh 7.5vh;
+
+                                            fieldset {
+                                                overflow: auto;
+                                                margin: 1.25vh 0;
+                                                padding: 0 1.25vh;
+
+                                                legend {
+                                                    font-size: .75rem;
+                                                    margin: 1.25vh;
+                                                    border: none;
+                                                    border-bottom: .5vh solid $main-color;
+                                                    cursor: pointer;
+                                                }
+
+                                                div._la {
+                                                    padding: 1.25vh 0;
+                                                    display: grid;
+                                                    grid-template-rows: 7.5vh 7.5vh 7.5vh;
+                                                    border-bottom: 1px solid rgba($color: $black, $alpha: .25);
+                                                }
+                                            }
+
+                                            .checkbox_hide {
+                                                display: flex;
+                                                align-items: center;
+
+                                                p {
+                                                    margin-bottom: 0;
+                                                }
+
+                                                label {
+                                                    transform: none !important;
+                                                    position: relative !important;
+
+                                                    &.active {
+                                                        transform: none !important;
+                                                        font-size: 2.25vh !important;
+                                                    }
+
+                                                    i {
+                                                        margin-right: 2vh;
+                                                    }
                                                 }
                                             }
                                         }

@@ -13,9 +13,6 @@ const Facture = new Schema({
 	_facture_TVA: {
 		type: Number
 	},
-	_facture_venteachat: {
-		type: String
-	},
 	_facture_ispayed: {
 		type: Boolean
 	},
@@ -33,7 +30,7 @@ const Facture = new Schema({
 	},
 	Client: {
 		type: Schema.Types.ObjectId,
-		required: true,
+		required: false,
 		ref: 'Client'
 	},
 	Produit: [{
@@ -48,7 +45,7 @@ const Facture = new Schema({
 	},
 	Fournisseur: {
 		type: Schema.Types.ObjectId,
-		required: true,
+		required: false,
 		ref: 'Fournisseur'
 	}
 }, { timestamps: true });

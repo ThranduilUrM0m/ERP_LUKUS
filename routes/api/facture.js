@@ -37,14 +37,6 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
-	if (!body._facture_venteachat) {
-		return res.status(422).json({
-			errors: {
-				_facture_venteachat: 'is required',
-			},
-		});
-	}
-
 	if (!body._facture_ispayed) {
 		return res.status(422).json({
 			errors: {
@@ -69,30 +61,6 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
-	if (!body._facture_type) {
-		return res.status(422).json({
-			errors: {
-				_facture_type: 'is required',
-			},
-		});
-	}
-
-	if (!body._facture_image) {
-		return res.status(422).json({
-			errors: {
-				_facture_image: 'is required',
-			},
-		});
-	}
-
-	if (!body.Client) {
-		return res.status(422).json({
-			errors: {
-				Client: 'is required',
-			},
-		});
-	}
-
 	if (!body.Produit) {
 		return res.status(422).json({
 			errors: {
@@ -109,10 +77,11 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
-	if (!body.Fournisseur) {
+	if (!body.Fournisseur && !body.Client) {
 		return res.status(422).json({
 			errors: {
 				Fournisseur: 'is required',
+				Client: 'is required'
 			},
 		});
 	}
@@ -193,10 +162,6 @@ router.patch('/:id', (req, res, next) => {
 
 	if (typeof body._facture_TVA !== 'undefined') {
 		req._facture._facture_TVA = body._facture_TVA;
-	}
-
-	if (typeof body._facture_venteachat !== 'undefined') {
-		req._facture._facture_venteachat = body._facture_venteachat;
 	}
 
 	if (typeof body._facture_ispayed !== 'undefined') {

@@ -155,7 +155,6 @@ class Dashboard extends React.Component {
             _facture_date: moment().format('YYYY-MM-DD'),
             _facture_commentaire: '',
             _facture_TVA: 0,
-            _facture_venteachat: '',
             _facture_ispayed: false,
             _facture_numeropaiement: 0,
             _facture_datepaiement: moment().format('YYYY-MM-DD'),
@@ -666,7 +665,6 @@ class Dashboard extends React.Component {
                 _facture_date: nextProps._factureToEdit._facture_date,
                 _facture_commentaire: nextProps._factureToEdit._facture_commentaire,
                 _facture_TVA: nextProps._factureToEdit._facture_TVA,
-                _facture_venteachat: nextProps._factureToEdit._facture_venteachat,
                 _facture_ispayed: nextProps._factureToEdit._facture_ispayed,
                 _facture_numeropaiement: nextProps._factureToEdit._facture_numeropaiement,
                 _facture_datepaiement: nextProps._factureToEdit._facture_datepaiement,
@@ -1223,24 +1221,22 @@ class Dashboard extends React.Component {
                                 onSubmitDevis(res.data);
                             })
                             .then(() => {
-                                this.setState(
-                                    {
-                                        _devis_numero: 0,
-                                        _devis_date: moment().format('YYYY-MM-DD'),
-                                        _devis_commentaire: '',
-                                        _devis_TVA: 0,
-                                        _devis_image: '',
-                                        Fournisseur: null,
-                                        Client: null,
-                                        Produit: [],
-                                        Societe: null
-                                    }
-                                )
+                                this.setState({
+                                    _devis_numero: 0,
+                                    _devis_date: moment().format('YYYY-MM-DD'),
+                                    _devis_commentaire: '',
+                                    _devis_TVA: 0,
+                                    _devis_image: '',
+                                    Fournisseur: null,
+                                    Client: null,
+                                    Produit: [],
+                                    Societe: null
+                                });
                             });
                     } else {
                         return axios.patch(`/api/devis/${_devisToEdit._id}`, {
                             _devis_numero,
-                            _devis_date,
+                            _devis_date: moment().format(),
                             _devis_commentaire,
                             _devis_TVA,
                             _devis_image,
@@ -1263,7 +1259,7 @@ class Dashboard extends React.Component {
                                     Client: null,
                                     Produit: [],
                                     Societe: null
-                                })
+                                });
                             });
                     }
                 })
@@ -1458,7 +1454,6 @@ class Dashboard extends React.Component {
             _facture_date,
             _facture_commentaire,
             _facture_TVA,
-            _facture_venteachat,
             _facture_ispayed,
             _facture_numeropaiement,
             _facture_datepaiement,
@@ -1498,6 +1493,10 @@ class Dashboard extends React.Component {
                             _facture_date: moment().format(),
                             _facture_commentaire,
                             _facture_TVA,
+                            _facture_ispayed,
+                            _facture_numeropaiement,
+                            _facture_datepaiement,
+                            _facture_type,
                             _facture_image,
                             Fournisseur,
                             Client,
@@ -1514,6 +1513,10 @@ class Dashboard extends React.Component {
                                         _facture_date: moment().format('YYYY-MM-DD'),
                                         _facture_commentaire: '',
                                         _facture_TVA: 0,
+                                        _facture_ispayed: false,
+                                        _facture_numeropaiement: 0,
+                                        _facture_datepaiement: moment().format('YYYY-MM-DD'),
+                                        _facture_type: '',
                                         _facture_image: '',
                                         Fournisseur: null,
                                         Client: null,
@@ -1524,10 +1527,14 @@ class Dashboard extends React.Component {
                             });
                     } else {
                         return axios.patch(`/api/facture/${_factureToEdit._id}`, {
-                            _facture_numero,
-                            _facture_date,
+                            _facture_numero: _.add(_.get(_.last(_factures), '_facture_numero'), 1),
+                            _facture_date: moment().format(),
                             _facture_commentaire,
                             _facture_TVA,
+                            _facture_ispayed,
+                            _facture_numeropaiement,
+                            _facture_datepaiement,
+                            _facture_type,
                             _facture_image,
                             Fournisseur,
                             Client,
@@ -1543,6 +1550,10 @@ class Dashboard extends React.Component {
                                     _facture_date: moment().format('YYYY-MM-DD'),
                                     _facture_commentaire: '',
                                     _facture_TVA: 0,
+                                    _facture_ispayed: false,
+                                    _facture_numeropaiement: 0,
+                                    _facture_datepaiement: moment().format('YYYY-MM-DD'),
+                                    _facture_type: '',
                                     _facture_image: '',
                                     Fournisseur: null,
                                     Client: null,
@@ -3118,7 +3129,6 @@ class Dashboard extends React.Component {
             _facture_date,
             _facture_commentaire,
             _facture_TVA,
-            _facture_venteachat,
             _facture_ispayed,
             _facture_numeropaiement,
             _facture_datepaiement,
@@ -4970,6 +4980,50 @@ class Dashboard extends React.Component {
                                                             />
                                                             <label htmlFor='_facture_TVA' className={(_facture_TVA === 0 ? true : _facture_TVA) ? 'active' : ''}>_facture_TVA</label>
                                                             <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _facture_numeropaiement"
+                                                                id="_facture_numeropaiement"
+                                                                type="text"
+                                                                name="_facture_numeropaiement"
+                                                                value={_facture_numeropaiement}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_facture_numeropaiement' className={(_facture_numeropaiement === 0 ? true : _facture_numeropaiement) ? 'active' : ''}>_facture_numeropaiement</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                        <div className="input-field col s6">
+                                                            <input
+                                                                className="validate form-group-input _facture_datepaiement"
+                                                                id="_facture_datepaiement"
+                                                                type="text"
+                                                                name="_facture_datepaiement"
+                                                                value={_facture_datepaiement}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_facture_datepaiement' className={_facture_datepaiement ? 'active' : ''}>_facture_datepaiement</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="input-field col s12 checkbox_hide">
+                                                            <p>
+                                                                <label>
+                                                                    <input
+                                                                        className="validate form-group-input _facture_ispayed"
+                                                                        id="_facture_ispayed"
+                                                                        type="checkbox"
+                                                                        name="_facture_ispayed"
+                                                                        value={_facture_ispayed}
+                                                                        checked={_facture_ispayed}
+                                                                        onChange={this.handleChange}
+                                                                    />
+                                                                    <span>_facture_ispayed ?</span>
+                                                                </label>
+                                                            </p>
                                                         </div>
                                                     </div>
                                                     <div className="row">
