@@ -4,7 +4,7 @@ const Devis = mongoose.model('Devis');
 
 router.post('/', (req, res, next) => {
 	const { body } = req;
-
+	
 	if (!body._devis_numero) {
 		return res.status(422).json({
 			errors: {
@@ -28,7 +28,7 @@ router.post('/', (req, res, next) => {
 			},
 		});
 	}
-
+	
 	if (!body._devis_TVA) {
 		return res.status(422).json({
 			errors: {
@@ -36,31 +36,7 @@ router.post('/', (req, res, next) => {
 			},
 		});
 	}
-
-	if (!body._devis_image) {
-		return res.status(422).json({
-			errors: {
-				_devis_image: 'is required',
-			},
-		});
-	}
-
-	if (!body.Fournisseur) {
-		return res.status(422).json({
-			errors: {
-				Fournisseur: 'is required',
-			},
-		});
-	}
-
-	if (!body.Client) {
-		return res.status(422).json({
-			errors: {
-				Client: 'is required',
-			},
-		});
-	}
-
+	
 	if (!body.Produit) {
 		return res.status(422).json({
 			errors: {
@@ -68,11 +44,20 @@ router.post('/', (req, res, next) => {
 			},
 		});
 	}
-
+	
 	if (!body.Societe) {
 		return res.status(422).json({
 			errors: {
 				Societe: 'is required',
+			},
+		});
+	}
+	
+	if (!body.Fournisseur && !body.Client) {
+		return res.status(422).json({
+			errors: {
+				Fournisseur: 'is required',
+				Client: 'is required',
 			},
 		});
 	}

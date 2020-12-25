@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const Devis = new Schema({
 	_devis_numero: {
-		type: String
+		type: Number
 	},
 	_devis_date: {
 		type: Date
@@ -18,12 +18,12 @@ const Devis = new Schema({
 	},
 	Fournisseur: {
 		type: Schema.Types.ObjectId,
-		required: true,
+		required: false,
 		ref: 'Fournisseur'
 	},
 	Client: {
 		type: Schema.Types.ObjectId,
-		required: true,
+		required: false,
 		ref: 'Client'
 	},
 	Produit: [{

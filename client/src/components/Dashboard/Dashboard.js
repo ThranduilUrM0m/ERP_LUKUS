@@ -121,12 +121,11 @@ class Dashboard extends React.Component {
             _client_RC: '',
             _client_patente: '',
             _client_contrat: '',
-            _devis_numero: '',
+            _devis_numero: 0,
             _devis_date: moment().format('YYYY-MM-DD'),
             _devis_commentaire: '',
             _devis_TVA: 0,
             _devis_image: '',
-            _devis_Produit: [],
             _employe_prenom: '',
             _employe_nom: '',
             _employe_telephone: '',
@@ -211,7 +210,7 @@ class Dashboard extends React.Component {
             _societe_CNSS: '',
             _societe_logo: '',
             Agence: null,
-            Produit: null,
+            Produit: [],
             _user_email: '',
             _user_username: '',
             _user_password: '',
@@ -389,6 +388,9 @@ class Dashboard extends React.Component {
         this.handleChangeUser = this.handleChangeUser.bind(this);
         this.handleChangeNested = this.handleChangeNested.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
+        this.handleChangePhoneAutocomplete = this.handleChangePhoneAutocomplete.bind(this);
+        this.handleChangeNestedProduits = this.handleChangeNestedProduits.bind(this);
 
         this._handleClickEvents = this._handleClickEvents.bind(this);
         this.handleNext = this.handleNext.bind(this);
@@ -1169,8 +1171,9 @@ class Dashboard extends React.Component {
         setEditDevis(devis);
     }
     handleSubmitDevis() {
-        const { onSubmitDevis, _devisToEdit, onEditDevis } = this.props;
+        const { onSubmitDevis, _devisToEdit, onEditDevis, onSubmitProduit } = this.props;
         const {
+            _deviss,
             _devis_numero,
             _devis_date,
             _devis_commentaire,
@@ -1182,65 +1185,92 @@ class Dashboard extends React.Component {
             Societe
         } = this.state;
 
-        if (!_devisToEdit) {
-            return axios.post('/api/devis', {
-                _devis_numero,
-                _devis_date,
-                _devis_commentaire,
-                _devis_TVA,
-                _devis_image,
-                Fournisseur,
-                Client,
-                Produit,
-                Societe
+        const requests = _.map(Produit, (P, index) => {
+            return axios.post('/api/produit', {
+                _produit_designation: P._produit_designation,
+                _produit_reference: P._produit_reference,
+                _produit_quantite: P._produit_quantite,
+                _produit_prixunitaire: P._produit_prixunitaire,
+                _produit_statut: 'Devis'
             })
                 .then((res) => {
-                    onSubmitDevis(res.data);
-                })
-                .then(() => {
-                    this.setState(
-                        {
-                            _devis_numero: '',
-                            _devis_date: moment().format('YYYY-MM-DD'),
-                            _devis_commentaire: '',
-                            _devis_TVA: 0,
-                            _devis_image: '',
-                            Fournisseur: null,
-                            Client: null,
-                            Produit: null,
-                            Societe: null
-                        }
-                    )
-                });
-        } else {
-            return axios.patch(`/api/devis/${_devisToEdit._id}`, {
-                _devis_numero,
-                _devis_date,
-                _devis_commentaire,
-                _devis_TVA,
-                _devis_image,
-                Fournisseur,
-                Client,
-                Produit,
-                Societe
-            })
-                .then((res) => {
-                    onEditDevis(res.data);
-                })
-                .then(() => {
+                    onSubmitProduit(res.data);
                     this.setState({
-                        _devis_numero: '',
-                        _devis_date: moment().format('YYYY-MM-DD'),
-                        _devis_commentaire: '',
-                        _devis_TVA: 0,
-                        _devis_image: '',
-                        Fournisseur: null,
-                        Client: null,
-                        Produit: null,
-                        Societe: null
-                    })
+                        Produit: _.map(this.state.Produit, (_P, _I) => {
+                            return _I === index ? res.data._produit : _P;
+                        })
+                    });
                 });
-        }
+        });
+
+        axios
+            .all(requests)
+            .then(
+                axios.spread((...responses) => {
+                    if (!_devisToEdit) {
+                        return axios.post('/api/devis', {
+                            _devis_numero: _.add(_.get(_.last(_deviss), '_devis_numero'), 1),
+                            _devis_date: moment().format(),
+                            _devis_commentaire,
+                            _devis_TVA,
+                            _devis_image,
+                            Fournisseur,
+                            Client,
+                            Produit: this.state.Produit,
+                            Societe
+                        })
+                            .then((res) => {
+                                onSubmitDevis(res.data);
+                            })
+                            .then(() => {
+                                this.setState(
+                                    {
+                                        _devis_numero: 0,
+                                        _devis_date: moment().format('YYYY-MM-DD'),
+                                        _devis_commentaire: '',
+                                        _devis_TVA: 0,
+                                        _devis_image: '',
+                                        Fournisseur: null,
+                                        Client: null,
+                                        Produit: [],
+                                        Societe: null
+                                    }
+                                )
+                            });
+                    } else {
+                        return axios.patch(`/api/devis/${_devisToEdit._id}`, {
+                            _devis_numero,
+                            _devis_date,
+                            _devis_commentaire,
+                            _devis_TVA,
+                            _devis_image,
+                            Fournisseur,
+                            Client,
+                            Produit: this.state.Produit,
+                            Societe
+                        })
+                            .then((res) => {
+                                onEditDevis(res.data);
+                            })
+                            .then(() => {
+                                this.setState({
+                                    _devis_numero: 0,
+                                    _devis_date: moment().format('YYYY-MM-DD'),
+                                    _devis_commentaire: '',
+                                    _devis_TVA: 0,
+                                    _devis_image: '',
+                                    Fournisseur: null,
+                                    Client: null,
+                                    Produit: [],
+                                    Societe: null
+                                })
+                            });
+                    }
+                })
+            )
+            .catch(errors => {
+                console.error(errors);
+            });
     }
 
     handleDeleteEmploye(id) {
@@ -1421,8 +1451,9 @@ class Dashboard extends React.Component {
         setEditFacture(facture);
     }
     handleSubmitFacture() {
-        const { onSubmitFacture, _factureToEdit, onEditFacture } = this.props;
+        const { onSubmitFacture, _factureToEdit, onEditFacture, onSubmitProduit } = this.props;
         const {
+            _factures,
             _facture_numero,
             _facture_date,
             _facture_commentaire,
@@ -1439,85 +1470,92 @@ class Dashboard extends React.Component {
             Fournisseur
         } = this.state;
 
-        if (!_factureToEdit) {
-            return axios.post('/api/facture', {
-                _facture_numero,
-                _facture_date,
-                _facture_commentaire,
-                _facture_TVA,
-                _facture_venteachat,
-                _facture_ispayed,
-                _facture_numeropaiement,
-                _facture_datepaiement,
-                _facture_type,
-                _facture_image,
-                Client,
-                Produit,
-                Societe,
-                Fournisseur
+        const requests = _.map(Produit, (P, index) => {
+            return axios.post('/api/produit', {
+                _produit_designation: P._produit_designation,
+                _produit_reference: P._produit_reference,
+                _produit_quantite: P._produit_quantite,
+                _produit_prixunitaire: P._produit_prixunitaire,
+                _produit_statut: 'Facture'
             })
                 .then((res) => {
-                    onSubmitFacture(res.data);
-                })
-                .then(() => {
-                    this.setState(
-                        {
-                            _facture_numero: '',
-                            _facture_date: moment().format('YYYY-MM-DD'),
-                            _facture_commentaire: '',
-                            _facture_TVA: 0,
-                            _facture_venteachat: '',
-                            _facture_ispayed: false,
-                            _facture_numeropaiement: 0,
-                            _facture_datepaiement: moment().format('YYYY-MM-DD'),
-                            _facture_type: '',
-                            _facture_image: '',
-                            Client: null,
-                            Produit: null,
-                            Societe: null,
-                            Fournisseur: null
-                        }
-                    )
-                });
-        } else {
-            return axios.patch(`/api/facture/${_factureToEdit._id}`, {
-                _facture_numero,
-                _facture_date,
-                _facture_commentaire,
-                _facture_TVA,
-                _facture_venteachat,
-                _facture_ispayed,
-                _facture_numeropaiement,
-                _facture_datepaiement,
-                _facture_type,
-                _facture_image,
-                Client,
-                Produit,
-                Societe,
-                Fournisseur
-            })
-                .then((res) => {
-                    onEditFacture(res.data);
-                })
-                .then(() => {
+                    onSubmitProduit(res.data);
                     this.setState({
-                        _facture_numero: '',
-                        _facture_date: moment().format('YYYY-MM-DD'),
-                        _facture_commentaire: '',
-                        _facture_TVA: 0,
-                        _facture_venteachat: '',
-                        _facture_ispayed: false,
-                        _facture_numeropaiement: 0,
-                        _facture_datepaiement: moment().format('YYYY-MM-DD'),
-                        _facture_type: '',
-                        _facture_image: '',
-                        Client: null,
-                        Produit: null,
-                        Societe: null,
-                        Fournisseur: null
-                    })
+                        Produit: _.map(this.state.Produit, (_P, _I) => {
+                            return _I === index ? res.data._produit : _P;
+                        })
+                    });
                 });
-        }
+        });
+
+        axios
+            .all(requests)
+            .then(
+                axios.spread((...responses) => {
+                    if (!_factureToEdit) {
+                        return axios.post('/api/facture', {
+                            _facture_numero: _.add(_.get(_.last(_factures), '_facture_numero'), 1),
+                            _facture_date: moment().format(),
+                            _facture_commentaire,
+                            _facture_TVA,
+                            _facture_image,
+                            Fournisseur,
+                            Client,
+                            Produit: this.state.Produit,
+                            Societe
+                        })
+                            .then((res) => {
+                                onSubmitFacture(res.data);
+                            })
+                            .then(() => {
+                                this.setState(
+                                    {
+                                        _facture_numero: 0,
+                                        _facture_date: moment().format('YYYY-MM-DD'),
+                                        _facture_commentaire: '',
+                                        _facture_TVA: 0,
+                                        _facture_image: '',
+                                        Fournisseur: null,
+                                        Client: null,
+                                        Produit: [],
+                                        Societe: null
+                                    }
+                                )
+                            });
+                    } else {
+                        return axios.patch(`/api/facture/${_factureToEdit._id}`, {
+                            _facture_numero,
+                            _facture_date,
+                            _facture_commentaire,
+                            _facture_TVA,
+                            _facture_image,
+                            Fournisseur,
+                            Client,
+                            Produit: this.state.Produit,
+                            Societe
+                        })
+                            .then((res) => {
+                                onEditFacture(res.data);
+                            })
+                            .then(() => {
+                                this.setState({
+                                    _facture_numero: 0,
+                                    _facture_date: moment().format('YYYY-MM-DD'),
+                                    _facture_commentaire: '',
+                                    _facture_TVA: 0,
+                                    _facture_image: '',
+                                    Fournisseur: null,
+                                    Client: null,
+                                    Produit: [],
+                                    Societe: null
+                                })
+                            });
+                    }
+                })
+            )
+            .catch(errors => {
+                console.error(errors);
+            });
     }
 
     handleDeleteFournisseur(id) {
@@ -2851,10 +2889,39 @@ class Dashboard extends React.Component {
                 });
         }
     }
+    handleChangeSelect(name, value) {
+        this.setState({
+            [name]: value,
+        });
+    }
     handleChangePhoneAutocomplete(parentObject, value) {
         this.setState({
             [parentObject]: value
         });
+    }
+    handleChangeNestedProduits(index, childObject, value) {
+        this.setState(({ Produit }) => ({
+            Produit: [
+                ...Produit.slice(0, index),
+                {
+                    ...Produit[index],
+                    [childObject]: value,
+                },
+                ...Produit.slice(index + 1)
+            ]
+        }));
+    }
+    handleChangeNestedProduits(index, childObject, value) {
+        this.setState(({ Produit }) => ({
+            Produit: [
+                ...Produit.slice(0, index),
+                {
+                    ...Produit[index],
+                    [childObject]: value,
+                },
+                ...Produit.slice(index + 1)
+            ]
+        }));
     }
 
     handleNext(parent) {
@@ -2938,7 +3005,7 @@ class Dashboard extends React.Component {
     }
     handleAdd(event) {
         this.setState(state => ({
-            _devis_Produit: [...state._devis_Produit, {
+            Produit: [...state.Produit, {
                 _produit_designation: '',
                 _produit_reference: '',
                 _produit_quantite: 0,
@@ -2949,7 +3016,7 @@ class Dashboard extends React.Component {
     }
     handleRemove(_P) {
         this.setState((prevState) => ({
-            _devis_Produit: [...prevState._devis_Produit.slice(0, this.state._devis_Produit.indexOf(_P)), ...prevState._devis_Produit.slice(this.state._devis_Produit.indexOf(_P) + 1)]
+            Produit: [...prevState.Produit.slice(0, this.state.Produit.indexOf(_P)), ...prevState.Produit.slice(this.state.Produit.indexOf(_P) + 1)]
         }))
     }
     _handleClickEvents() {
@@ -3033,7 +3100,6 @@ class Dashboard extends React.Component {
             _devis_commentaire,
             _devis_TVA,
             _devis_image,
-            _devis_Produit,
             _employe_prenom,
             _employe_nom,
             _employe_telephone,
@@ -3254,12 +3320,11 @@ class Dashboard extends React.Component {
                                                                             slideToClickedSlide='true'
                                                                             observer='true'
                                                                             scrollbar={{ draggable: true }}
-                                                                            onSwiper={(swiper) => console.log(swiper)}
                                                                         >
                                                                             {
                                                                                 _societes.map((_societe, index) => {
                                                                                     return (
-                                                                                        <SwiperSlide key={_societe} virtualIndex={index}>
+                                                                                        <SwiperSlide virtualIndex={index}>
                                                                                             <div className={"card card_societes card_" + index} data-title={_.snakeCase(_societe._societe_raison)} data-index={_.add(index, 1)}>
                                                                                                 <div className="card-body">
                                                                                                     <div className="_corps">
@@ -3326,7 +3391,7 @@ class Dashboard extends React.Component {
                                                                             {
                                                                                 _agences.map((_agence, index) => {
                                                                                     return (
-                                                                                        <SwiperSlide key={_agence} virtualIndex={index}>
+                                                                                        <SwiperSlide virtualIndex={index}>
                                                                                             <div className={"card card_agences card_" + index} data-title={_.snakeCase(_agence._agence_numero)} data-index={_.add(index, 1)}>
                                                                                                 <div className="card-body">
                                                                                                     <div className="_corps">
@@ -3410,18 +3475,14 @@ class Dashboard extends React.Component {
                                                                             {
                                                                                 _factures.map((_facture, index) => {
                                                                                     return (
-                                                                                        <SwiperSlide key={_facture} virtualIndex={index}>
+                                                                                        <SwiperSlide virtualIndex={index}>
                                                                                             <div className={"card card_factures card_" + index} data-title={_.snakeCase(_facture._facture_numero)} data-index={_.add(index, 1)}>
                                                                                                 <div className="card-body">
                                                                                                     <div className="_corps">
                                                                                                         <h6>{_facture._facture_numero}</h6>
+                                                                                                        <p className="text-muted"><i className="far fa-calendar-alt"></i><b>{moment(_facture._facture_date).format('MMMM Do YYYY, HH:mm')}</b></p>
                                                                                                     </div>
                                                                                                     <div className="_heads_up">
-                                                                                                        <div className="intel">
-                                                                                                            <p className="text-muted author">by </p>
-                                                                                                            <p className="text-muted author">{_facture.Societe._societe_raison}</p>
-                                                                                                            <p className="text-muted author">{moment(new Date(_facture._facture_date)).fromNow()}</p>
-                                                                                                        </div>
                                                                                                         <div className="dropdown">
                                                                                                             <span className="dropdown-toggle" id="dropdownMenuButton_factures" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                                                                 <i className="fas fa-ellipsis-h"></i>
@@ -3448,9 +3509,9 @@ class Dashboard extends React.Component {
                                                 <li className="cards__item">
                                                     <div className="card">
                                                         <div className="card__content">
-                                                            <div className="_deviss_pane _pane">
-                                                                <div className="_deviss_content _content">
-                                                                    <div className="_deviss_head _head">
+                                                            <div className="_pane">
+                                                                <div className="_content">
+                                                                    <div className="_head">
                                                                         <h6>Les Devis</h6>
                                                                         <button id="_add_devis" type="button" data-toggle="modal" data-target="#_devis_modal">
                                                                             <span className="icon" aria-hidden="true">
@@ -3459,7 +3520,7 @@ class Dashboard extends React.Component {
                                                                             <span className="button-text">Ajouter Devis.</span>
                                                                         </button>
                                                                     </div>
-                                                                    <div className="_deviss_data _data">
+                                                                    <div className="_data">
                                                                         <Swiper
                                                                             spaceBetween={0}
                                                                             slidesPerView={3.25}
@@ -3481,18 +3542,14 @@ class Dashboard extends React.Component {
                                                                             {
                                                                                 _deviss.map((_devis, index) => {
                                                                                     return (
-                                                                                        <SwiperSlide key={_devis} virtualIndex={index}>
-                                                                                            <div className={"col card card_deviss card_" + index} data-title={_.snakeCase(_devis._devis_numero)} data-index={_.add(index, 1)}>
+                                                                                        <SwiperSlide virtualIndex={index}>
+                                                                                            <div className={"card card_deviss card_" + index} data-title={_.snakeCase(_devis._devis_numero)} data-index={_.add(index, 1)}>
                                                                                                 <div className="card-body">
                                                                                                     <div className="_corps">
                                                                                                         <h6>{_devis._devis_numero}</h6>
+                                                                                                        <p className="text-muted"><i className="far fa-calendar-alt"></i><b>{moment(_devis._devis_date).format('MMMM Do YYYY, HH:mm')}</b></p>
                                                                                                     </div>
                                                                                                     <div className="_heads_up">
-                                                                                                        <div className="intel">
-                                                                                                            <p className="text-muted author">by </p>
-                                                                                                            <p className="text-muted author">{_devis.Societe._societe_raison}</p>
-                                                                                                            <p className="text-muted author">{moment(new Date(_devis._devis_date)).fromNow()}</p>
-                                                                                                        </div>
                                                                                                         <div className="dropdown">
                                                                                                             <span className="dropdown-toggle" id="dropdownMenuButton_deviss" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                                                                 <i className="fas fa-ellipsis-h"></i>
@@ -3571,12 +3628,11 @@ class Dashboard extends React.Component {
                                                                             slideToClickedSlide='true'
                                                                             observer='true'
                                                                             scrollbar={{ draggable: true }}
-                                                                            onSwiper={(swiper) => console.log(swiper)}
                                                                         >
                                                                             {
                                                                                 _clients.map((_client, index) => {
                                                                                     return (
-                                                                                        <SwiperSlide key={_client} virtualIndex={index}>
+                                                                                        <SwiperSlide virtualIndex={index}>
                                                                                             <div className={"card card_clients card_" + index} data-title={_.snakeCase(_client._client_raison ? _client._client_raison : _client._client_prenomcontact + ' ' + _client._client_nomcontact)} data-index={_.add(index, 1)}>
                                                                                                 <div className="card-body">
                                                                                                     <div className="_corps">
@@ -3661,7 +3717,7 @@ class Dashboard extends React.Component {
                                                                             {
                                                                                 _fournisseurs.map((_fournisseur, index) => {
                                                                                     return (
-                                                                                        <SwiperSlide key={_fournisseur} virtualIndex={index}>
+                                                                                        <SwiperSlide virtualIndex={index}>
                                                                                             <div className={"card card_fournisseurs card_" + index} data-title={_.snakeCase(_fournisseur._fournisseur_raison)} data-index={_.add(index, 1)}>
                                                                                                 <div className="card-body">
                                                                                                     <div className="_corps">
@@ -4744,37 +4800,195 @@ class Dashboard extends React.Component {
                                         <div className="modal-body">
                                             <a href="# " title="Close" className="modal-close" data-dismiss="modal">Close</a>
                                             <div className="mail_form card">
-                                                <div className="fieldset">
+                                                <div className="fieldset factures_fieldset">
                                                     <div className="row">
                                                         <div className="input-field col s6">
-
+                                                            <Select
+                                                                id="Fournisseur"
+                                                                className="validate form-group-input Fournisseur"
+                                                                classNamePrefix="select"
+                                                                defaultValue={_.find(_societes, (_s) => { _.includes(_s.Employe, _user.Employe) })}
+                                                                isClearable="true"
+                                                                isSearchable="true"
+                                                                name="Fournisseur"
+                                                                value={Fournisseur}
+                                                                getOptionLabel={(option) => option._fournisseur_raison}
+                                                                getOptionValue={(option) => option}
+                                                                onChange={(value) => this.handleChangeSelect('Fournisseur', value)}
+                                                                onSelect={(value) => this.handleChangeSelect('Fournisseur', value)}
+                                                                options={_fournisseurs}
+                                                                width='100%'
+                                                            />
+                                                            <label htmlFor='Fournisseur' className={Fournisseur ? 'active' : ''}>Fournisseur</label>
+                                                            <div className="form-group-line"></div>
                                                         </div>
                                                         <div className="input-field col s6">
-
+                                                            <Select
+                                                                id="Client"
+                                                                className="validate form-group-input Client"
+                                                                classNamePrefix="select"
+                                                                defaultValue={_.find(_societes, (_s) => { _.includes(_s.Employe, _user.Employe) })}
+                                                                isClearable="true"
+                                                                isSearchable="true"
+                                                                name="Client"
+                                                                value={Client}
+                                                                getOptionLabel={(option) => option._client_raison ? option._client_raison : option._client_prenomcontact + ' ' + option._client_nomcontact}
+                                                                getOptionValue={(option) => option}
+                                                                onChange={(value) => this.handleChangeSelect('Client', value)}
+                                                                onSelect={(value) => this.handleChangeSelect('Client', value)}
+                                                                options={_clients}
+                                                                width='100%'
+                                                            />
+                                                            <label htmlFor='Client' className={Client ? 'active' : ''}>Client</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <fieldset className="Produit border">
+                                                        <legend className="w-auto" onClick={this.handleAdd}>Ajouter des Produits</legend>
+                                                        {
+                                                            _.map(Produit, (_P, i) => {
+                                                                return (
+                                                                    <div className="_P">
+                                                                        <div className="row">
+                                                                            <div className="input-field col s6">
+                                                                                <input
+                                                                                    className="validate form-group-input _produit_designation"
+                                                                                    id={"_produit_designation" + i}
+                                                                                    type="text"
+                                                                                    name={"_produit_designation" + i}
+                                                                                    value={_P._produit_designation}
+                                                                                    onChange={(event) => this.handleChangeNestedProduits(Produit.indexOf(_P), '_produit_designation', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor={"_produit_designation" + i} className={_P._produit_designation ? 'active' : ''}>Designation</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col s6">
+                                                                                <input
+                                                                                    className="validate form-group-input _produit_reference"
+                                                                                    id={"_produit_reference" + i}
+                                                                                    type="text"
+                                                                                    name={"_produit_reference" + i}
+                                                                                    value={_P._produit_reference}
+                                                                                    onChange={(event) => this.handleChangeNestedProduits(Produit.indexOf(_P), '_produit_reference', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor={"_produit_reference" + i} className={_P._produit_reference ? 'active' : ''}>Reference</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="row">
+                                                                            <div className="input-field col s6">
+                                                                                <input
+                                                                                    className="validate form-group-input _produit_quantite"
+                                                                                    id={"_produit_quantite" + i}
+                                                                                    type="text"
+                                                                                    name={"_produit_quantite" + i}
+                                                                                    value={_P._produit_quantite}
+                                                                                    onChange={(event) => this.handleChangeNestedProduits(Produit.indexOf(_P), '_produit_quantite', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor={"_produit_quantite" + i} className={(_produit_quantite === 0 ? true : _produit_quantite) ? 'active' : ''}>Quantite</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col s6">
+                                                                                <input
+                                                                                    className="validate form-group-input _produit_prixunitaire"
+                                                                                    id={"_produit_prixunitaire" + i}
+                                                                                    type="text"
+                                                                                    name={"_produit_prixunitaire" + i}
+                                                                                    value={_P._produit_prixunitaire}
+                                                                                    onChange={(event) => this.handleChangeNestedProduits(Produit.indexOf(_P), '_produit_prixunitaire', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor={"_produit_prixunitaire" + i} className={(_produit_prixunitaire === 0 ? true : _produit_prixunitaire) ? 'active' : ''}>Prix Unitaire</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="row button_row">
+                                                                            <div className="input-field col s6"></div>
+                                                                            <div className="input-field col s6">
+                                                                                <button
+                                                                                    className="pull-right"
+                                                                                    type="submit"
+                                                                                    onClick={() => this.handleRemove(_P)}
+                                                                                >
+                                                                                    <span>
+                                                                                        <span>
+                                                                                            <span data-attr-span="Supprimer le Produit">
+                                                                                                Supprimer le Produit
+                                                                                            </span>
+                                                                                        </span>
+                                                                                    </span>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        }
+                                                    </fieldset>
+                                                    <div className="row">
+                                                        <div className="input-field col s12">
+                                                            <Select
+                                                                id="Societe"
+                                                                className="validate form-group-input Societe"
+                                                                classNamePrefix="select"
+                                                                defaultValue={{}}
+                                                                isClearable="true"
+                                                                isSearchable="true"
+                                                                name="Societe"
+                                                                value={Societe}
+                                                                getOptionLabel={(option) => option._societe_raison}
+                                                                getOptionValue={(option) => option}
+                                                                onChange={(value) => this.handleChangeSelect('Societe', value)}
+                                                                onSelect={(value) => this.handleChangeSelect('Societe', value)}
+                                                                options={_societes}
+                                                                width='100%'
+                                                            />
+                                                            <label htmlFor='Societe' className={Societe ? 'active' : ''}>Societe</label>
+                                                            <div className="form-group-line"></div>
                                                         </div>
                                                     </div>
                                                     <div className="row">
                                                         <div className="input-field col s6">
-
+                                                            <input
+                                                                className="validate form-group-input _facture_commentaire"
+                                                                id="_facture_commentaire"
+                                                                type="text"
+                                                                name="_facture_commentaire"
+                                                                value={_facture_commentaire}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_facture_commentaire' className={_facture_commentaire ? 'active' : ''}>_facture_commentaire</label>
+                                                            <div className="form-group-line"></div>
                                                         </div>
                                                         <div className="input-field col s6">
-
+                                                            <input
+                                                                className="validate form-group-input _facture_TVA"
+                                                                id="_facture_TVA"
+                                                                type="text"
+                                                                name="_facture_TVA"
+                                                                value={_facture_TVA}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_facture_TVA' className={(_facture_TVA === 0 ? true : _facture_TVA) ? 'active' : ''}>_facture_TVA</label>
+                                                            <div className="form-group-line"></div>
                                                         </div>
                                                     </div>
                                                     <div className="row">
+                                                        <div className="input-field col s6"></div>
                                                         <div className="input-field col s6">
-
-                                                        </div>
-                                                        <div className="input-field col s6">
-
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="input-field col s6">
-
-                                                        </div>
-                                                        <div className="input-field col s6">
-
+                                                            <button
+                                                                className="pull-right"
+                                                                type="submit"
+                                                                name='btn_login'
+                                                                onClick={this.handleSubmitFacture}
+                                                            >
+                                                                <span>
+                                                                    <span>
+                                                                        <span data-attr-span={_factureToEdit ? 'Update.' : 'Submit.'}>
+                                                                            {_factureToEdit ? 'Update' : 'Submit'}.
+                                                                        </span>
+                                                                    </span>
+                                                                </span>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -4792,18 +5006,173 @@ class Dashboard extends React.Component {
                                                 <div className="fieldset deviss_fieldset">
                                                     <div className="row">
                                                         <div className="input-field col s6">
-                                                            
+                                                            <Select
+                                                                id="Fournisseur"
+                                                                className="validate form-group-input Fournisseur"
+                                                                classNamePrefix="select"
+                                                                defaultValue={_.find(_societes, (_s) => { _.includes(_s.Employe, _user.Employe) })}
+                                                                isClearable="true"
+                                                                isSearchable="true"
+                                                                name="Fournisseur"
+                                                                value={Fournisseur}
+                                                                getOptionLabel={(option) => option._fournisseur_raison}
+                                                                getOptionValue={(option) => option}
+                                                                onChange={(value) => this.handleChangeSelect('Fournisseur', value)}
+                                                                onSelect={(value) => this.handleChangeSelect('Fournisseur', value)}
+                                                                options={_fournisseurs}
+                                                                width='100%'
+                                                            />
+                                                            <label htmlFor='Fournisseur' className={Fournisseur ? 'active' : ''}>Fournisseur</label>
+                                                            <div className="form-group-line"></div>
                                                         </div>
                                                         <div className="input-field col s6">
-                                                            
+                                                            <Select
+                                                                id="Client"
+                                                                className="validate form-group-input Client"
+                                                                classNamePrefix="select"
+                                                                defaultValue={_.find(_societes, (_s) => { _.includes(_s.Employe, _user.Employe) })}
+                                                                isClearable="true"
+                                                                isSearchable="true"
+                                                                name="Client"
+                                                                value={Client}
+                                                                getOptionLabel={(option) => option._client_raison ? option._client_raison : option._client_prenomcontact + ' ' + option._client_nomcontact}
+                                                                getOptionValue={(option) => option}
+                                                                onChange={(value) => this.handleChangeSelect('Client', value)}
+                                                                onSelect={(value) => this.handleChangeSelect('Client', value)}
+                                                                options={_clients}
+                                                                width='100%'
+                                                            />
+                                                            <label htmlFor='Client' className={Client ? 'active' : ''}>Client</label>
+                                                            <div className="form-group-line"></div>
+                                                        </div>
+                                                    </div>
+                                                    <fieldset className="Produit border">
+                                                        <legend className="w-auto" onClick={this.handleAdd}>Ajouter des Produits</legend>
+                                                        {
+                                                            _.map(Produit, (_P, i) => {
+                                                                return (
+                                                                    <div className="_P">
+                                                                        <div className="row">
+                                                                            <div className="input-field col s6">
+                                                                                <input
+                                                                                    className="validate form-group-input _produit_designation"
+                                                                                    id={"_produit_designation" + i}
+                                                                                    type="text"
+                                                                                    name={"_produit_designation" + i}
+                                                                                    value={_P._produit_designation}
+                                                                                    onChange={(event) => this.handleChangeNestedProduits(Produit.indexOf(_P), '_produit_designation', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor={"_produit_designation" + i} className={_P._produit_designation ? 'active' : ''}>Designation</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col s6">
+                                                                                <input
+                                                                                    className="validate form-group-input _produit_reference"
+                                                                                    id={"_produit_reference" + i}
+                                                                                    type="text"
+                                                                                    name={"_produit_reference" + i}
+                                                                                    value={_P._produit_reference}
+                                                                                    onChange={(event) => this.handleChangeNestedProduits(Produit.indexOf(_P), '_produit_reference', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor={"_produit_reference" + i} className={_P._produit_reference ? 'active' : ''}>Reference</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="row">
+                                                                            <div className="input-field col s6">
+                                                                                <input
+                                                                                    className="validate form-group-input _produit_quantite"
+                                                                                    id={"_produit_quantite" + i}
+                                                                                    type="text"
+                                                                                    name={"_produit_quantite" + i}
+                                                                                    value={_P._produit_quantite}
+                                                                                    onChange={(event) => this.handleChangeNestedProduits(Produit.indexOf(_P), '_produit_quantite', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor={"_produit_quantite" + i} className={(_produit_quantite === 0 ? true : _produit_quantite) ? 'active' : ''}>Quantite</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                            <div className="input-field col s6">
+                                                                                <input
+                                                                                    className="validate form-group-input _produit_prixunitaire"
+                                                                                    id={"_produit_prixunitaire" + i}
+                                                                                    type="text"
+                                                                                    name={"_produit_prixunitaire" + i}
+                                                                                    value={_P._produit_prixunitaire}
+                                                                                    onChange={(event) => this.handleChangeNestedProduits(Produit.indexOf(_P), '_produit_prixunitaire', event.target.value)}
+                                                                                />
+                                                                                <label htmlFor={"_produit_prixunitaire" + i} className={(_produit_prixunitaire === 0 ? true : _produit_prixunitaire) ? 'active' : ''}>Prix Unitaire</label>
+                                                                                <div className="form-group-line"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="row button_row">
+                                                                            <div className="input-field col s6"></div>
+                                                                            <div className="input-field col s6">
+                                                                                <button
+                                                                                    className="pull-right"
+                                                                                    type="submit"
+                                                                                    onClick={() => this.handleRemove(_P)}
+                                                                                >
+                                                                                    <span>
+                                                                                        <span>
+                                                                                            <span data-attr-span="Supprimer le Produit">
+                                                                                                Supprimer le Produit
+                                                                                            </span>
+                                                                                        </span>
+                                                                                    </span>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        }
+                                                    </fieldset>
+                                                    <div className="row">
+                                                        <div className="input-field col s12">
+                                                            <Select
+                                                                id="Societe"
+                                                                className="validate form-group-input Societe"
+                                                                classNamePrefix="select"
+                                                                defaultValue={{}}
+                                                                isClearable="true"
+                                                                isSearchable="true"
+                                                                name="Societe"
+                                                                value={Societe}
+                                                                getOptionLabel={(option) => option._societe_raison}
+                                                                getOptionValue={(option) => option}
+                                                                onChange={(value) => this.handleChangeSelect('Societe', value)}
+                                                                onSelect={(value) => this.handleChangeSelect('Societe', value)}
+                                                                options={_societes}
+                                                                width='100%'
+                                                            />
+                                                            <label htmlFor='Societe' className={Societe ? 'active' : ''}>Societe</label>
+                                                            <div className="form-group-line"></div>
                                                         </div>
                                                     </div>
                                                     <div className="row">
                                                         <div className="input-field col s6">
-                                                            
+                                                            <input
+                                                                className="validate form-group-input _devis_commentaire"
+                                                                id="_devis_commentaire"
+                                                                type="text"
+                                                                name="_devis_commentaire"
+                                                                value={_devis_commentaire}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_devis_commentaire' className={_devis_commentaire ? 'active' : ''}>_devis_commentaire</label>
+                                                            <div className="form-group-line"></div>
                                                         </div>
                                                         <div className="input-field col s6">
-                                                            
+                                                            <input
+                                                                className="validate form-group-input _devis_TVA"
+                                                                id="_devis_TVA"
+                                                                type="text"
+                                                                name="_devis_TVA"
+                                                                value={_devis_TVA}
+                                                                onChange={this.handleChange}
+                                                            />
+                                                            <label htmlFor='_devis_TVA' className={(_devis_TVA === 0 ? true : _devis_TVA) ? 'active' : ''}>_devis_TVA</label>
+                                                            <div className="form-group-line"></div>
                                                         </div>
                                                     </div>
                                                     <div className="row">
