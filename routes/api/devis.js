@@ -20,14 +20,6 @@ router.post('/', (req, res, next) => {
 			},
 		});
 	}
-
-	if (!body._devis_commentaire) {
-		return res.status(422).json({
-			errors: {
-				_devis_commentaire: 'is required',
-			},
-		});
-	}
 	
 	if (!body._devis_TVA) {
 		return res.status(422).json({

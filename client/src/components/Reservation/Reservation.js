@@ -3038,8 +3038,8 @@ class Reservation extends React.Component {
                             </div>
                             <div className="rightside">
                                 <div className="avis card">
-                                    <h4>Reserver son voyage sans aucun restriction.</h4>
-                                    <p></p>
+                                    <h4>Réserver son voyage sans aucune restriction.</h4>
+                                    <p>Nous vous contacterons et finalisons ensemble votre réservation.</p>
                                 </div>
                                 <div className="mail_form card">
                                     <div className="card-header">
@@ -3398,7 +3398,9 @@ class Reservation extends React.Component {
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <div className="input-field col s12">
+                                            <div className="input-field col s4"></div>
+                                            <div className="input-field col s4"></div>
+                                            <div className="input-field col s4">
                                                 <button
                                                     className="pull-right suivant action-button"
                                                     type="button"
@@ -3548,7 +3550,7 @@ class Reservation extends React.Component {
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <div className="input-field col s8"></div>
+                                            <div className="input-field col s4"></div>
                                             <div className="input-field col s4">
                                                 <button
                                                     className="pull-right precedent action-button-precedent"

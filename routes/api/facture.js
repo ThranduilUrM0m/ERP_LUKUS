@@ -21,26 +21,10 @@ router.post('/', (req, res, next) => {
 		});
 	}
 
-	if (!body._facture_commentaire) {
-		return res.status(422).json({
-			errors: {
-				_facture_commentaire: 'is required',
-			},
-		});
-	}
-
 	if (!body._facture_TVA) {
 		return res.status(422).json({
 			errors: {
 				_facture_TVA: 'is required',
-			},
-		});
-	}
-
-	if (!body._facture_ispayed) {
-		return res.status(422).json({
-			errors: {
-				_facture_ispayed: 'is required',
 			},
 		});
 	}
